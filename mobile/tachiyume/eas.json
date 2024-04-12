@@ -1,0 +1,25 @@
+{
+  "cli": {
+    "version": ">= 7.8.1"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "releaseChannel": "development"
+    },
+    "staging": {
+      "extends": "production",
+      "releaseChannel": "staging",
+      "android":{
+        "buildType": "apk"
+      }
+    },
+    "production": {
+      "releaseChannel": "production"
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
