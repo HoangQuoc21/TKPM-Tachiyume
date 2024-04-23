@@ -1,7 +1,7 @@
 import { Dimensions } from "react-native"
 import Constants from "expo-constants"
 
-//Hàm này trả về một object chứa thông tin về kích thước chiều cao và chiều rộng màn hình và thanh status bar
+// Metric help to get the screen size (height, width) and status bar height
 export const metric = {
   screenHeight: Dimensions.get("window").height,
   screenWidth: Dimensions.get("window").width,

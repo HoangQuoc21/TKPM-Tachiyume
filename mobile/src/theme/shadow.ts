@@ -1,9 +1,9 @@
 import { color } from "./color"
 
-// Định nghĩa các loại shadow sử dụng trong ứng dụng
+// Shadow for component
 export const shadow = {
   default: {
-    shadowColor: color.black,
+    shadowColor: color.common.black,
     shadowOffset: {
       width: 0,
       height: 0,
@@ -13,7 +13,7 @@ export const shadow = {
     elevation: 5,
   },
   top: {
-    shadowColor: color.black,
+    shadowColor: color.common.black,
     shadowOffset: {
       width: 0,
       height: -6,
@@ -23,7 +23,7 @@ export const shadow = {
     elevation: 5,
   },
   none: {
-    shadowColor: color.transparent,
+    shadowColor: color.common.black,
     shadowOffset: {
       width: 0,
       height: 0,

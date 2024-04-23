@@ -1,6 +1,6 @@
 import { metric } from "./metric"
 
-//Định nghĩa các khoảng cách sử dụng trong ứng dụng
+// Used spacing in the app
 export const spacing = [0, 4, 8, 12, 16, 20, 32, 48, 64, 80]
 
 export const rootHorizontalSpacing = spacing[3]
