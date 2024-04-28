@@ -7,8 +7,16 @@ import { View, Text, Button } from 'react-native';
 import { NovelListScreenName } from '../novel-list/novel-list-screen';
 import { NovelDetailScreenName } from '../novel-detail/novel-detail-screen';
 import { ChapterScreenName } from '../chapter/chapter-screen';
+import SourceOne from '../../../factory/SourceOne';
 
 export function BrowseScreen({navigation, route}){
+    console.log('asdasd')
+    const sourceOne = new SourceOne();
+    
+    useEffect(() => {
+        const novels = sourceOne.findNovelsByPage(2);
+        console.log(novels)
+    })
 
     const onPressNovelList = () => {
         navigation.navigate(NovelListScreenName,{
