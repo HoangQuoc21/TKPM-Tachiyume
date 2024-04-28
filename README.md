@@ -23,3 +23,5 @@
 - Đợi build xong sẽ hiện lên bảng Bundle, bấm `a` để mở app.
 - Với những lần chạy tiếp ở branch này thì chỉ cần chạy lệnh: `npx expo start --dev-client`.
 - (Quay về nhánh của mình thì thực hiện như ở trên)
+
+## 3. Build file .apk để cài trên thiết bị Android:
