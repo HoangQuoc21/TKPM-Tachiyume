@@ -3,8 +3,14 @@ import React, {FC, useEffect, useState} from 'react';
 import styles from './favorite-screen.styles';
 import { StackScreenProps } from "@react-navigation/stack"
 import { View, Text } from 'react-native';
+import { getLocales } from 'expo-localization';
+import i18n from '../../i18n'
+
+
 
 export function FavoriteScreen({navigation, route}){
+
+    const deviceLanguage = getLocales()[0].languageCode;
 
     const renderHeader = () => {
         return (
@@ -20,7 +26,7 @@ export function FavoriteScreen({navigation, route}){
         return (
             <View style={styles.BODY}>
                 <Text style={styles.TEXT}>
-                    This is the body of the favorite screen
+                    {i18n.t('languages.en')}
                 </Text>
             </View>
         )
@@ -30,7 +36,7 @@ export function FavoriteScreen({navigation, route}){
         return (
             <View style={styles.FOOTER}>
                 <Text style={styles.TEXT}>
-                    This is the footer of the favorite screen
+                    {`Device language: ${deviceLanguage}`}
                 </Text>
             </View>
         )

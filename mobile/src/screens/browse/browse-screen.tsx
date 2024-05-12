@@ -55,7 +55,6 @@ export function BrowseScreen({navigation, route}){
                     renderItem={({item}) => (
                         <View style={styles.CONTAINER}>
                             <Text style={styles.TITLE}>{item.name}</Text>
-                            <Text style={styles.SUBTITLE}>{item.summary}</Text>
                         </View>
                     )}
                     keyExtractor={item => item.url}
