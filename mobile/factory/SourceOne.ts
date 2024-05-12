@@ -21,7 +21,7 @@ class SourceOne implements SourceInterface {
             if (!doc) return items;
             const rows = doc.find('div.row').toArray();
             for (let [index, element] of rows.entries()) { // ES6
-                console.log(index)
+                //console.log(index)
                 const url = $(element).find('h3.truyen-title > a').attr('href').trim();
                 if (url.length > 0) {
                     const item = {
@@ -36,7 +36,7 @@ class SourceOne implements SourceInterface {
                         const $img = load(responseData);
 
                         item.cover = `${baseUrl}${$img('div.books img').attr('src')}`;
-                        console.log(item)
+                        //console.log(item)
                         items.push(item);
                     } catch (e) {
                         throw e

@@ -2,7 +2,7 @@ import {observer} from 'mobx-react-lite';
 import React, {FC, useEffect, useState} from 'react';
 import styles from './browse-screen.styles';
 import { Header, StackScreenProps } from "@react-navigation/stack"
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, FlatList, ActivityIndicator } from 'react-native';
 
 import { NovelListScreenName } from '../novel-list/novel-list-screen';
 import { NovelDetailScreenName } from '../novel-detail/novel-detail-screen';
@@ -10,13 +10,23 @@ import { ChapterScreenName } from '../chapter/chapter-screen';
 import SourceOne from '../../../factory/SourceOne';
 
 export function BrowseScreen({navigation, route}){
-    console.log('asdasd')
     const sourceOne = new SourceOne();
+
+    const [novelList, setNovelList] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    const fetchNovelList = async () => {
+        setLoading(true);
+        const novelList = await sourceOne.findNovelsByPage(2);
+        return novelList;
+    }
     
     useEffect(() => {
-        const novels = sourceOne.findNovelsByPage(2);
-        console.log(novels)
-    })
+        fetchNovelList().then((novelList) => {
+            setNovelList(novelList);
+            setLoading(false);
+        }) 
+    },[])
 
     const onPressNovelList = () => {
         navigation.navigate(NovelListScreenName,{
@@ -30,13 +40,9 @@ export function BrowseScreen({navigation, route}){
     const renderHeader = () => {
         return (
             <View style={styles.HEADER}>
-                <Text style={styles.TEXT}>
-                    This is content from header of the screen hehe
+                <Text style={[styles.TEXT, {alignSelf:'center', fontWeight:'bold'}]}>
+                    Novel List
                 </Text>
-                <Button
-                    title="Go to Novel List"
-                    onPress={onPressNovelList}
-                />
             </View>
         )
     }
@@ -44,9 +50,16 @@ export function BrowseScreen({navigation, route}){
     const renderBody = () => {
         return (
             <View style={styles.BODY}>
-                <Text style={styles.TEXT}>
-                    This is content from body of the screen
-                </Text>
+                <FlatList
+                    data={novelList}
+                    renderItem={({item}) => (
+                        <View style={styles.CONTAINER}>
+                            <Text style={styles.TITLE}>{item.name}</Text>
+                            <Text style={styles.SUBTITLE}>{item.summary}</Text>
+                        </View>
+                    )}
+                    keyExtractor={item => item.url}
+                />
             </View>
         )
     }
@@ -54,17 +67,24 @@ export function BrowseScreen({navigation, route}){
     const renderFooter = () => {
         return (
             <View style={styles.FOOTER}>
-                <Text style={styles.TEXT}>
-                    This is content from body of the screen
-                </Text>
             </View>
         )
     }
+
+    const LoadingCircle = () => {
+        return (
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+        );
+    };
+
     return (
         <View style={styles.ROOT}>
             {renderHeader()}
             {renderBody()}
             {renderFooter()}
+            {loading && LoadingCircle()}
         </View>
     )
 }
