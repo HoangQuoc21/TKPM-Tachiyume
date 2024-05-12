@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "tachiyume",
+    "name": "Tachiyume",
     "slug": "tachiyume",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -9,7 +9,7 @@
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FFEEDA"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -20,7 +20,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#FFEEDA"
       },
       "package": "com.tkpmchillingchillies.tachiyume"
     },
