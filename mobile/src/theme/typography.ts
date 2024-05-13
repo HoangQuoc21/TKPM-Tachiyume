@@ -11,70 +11,70 @@ export const typography = {
   //body text
   bodySmall: {
     fontFamily: fontFamily.default,
-    fontSize: 8,
+    fontSize: 16,
   },
   bodyMedium: {
     fontFamily: fontFamily.default,
-    fontSize: 9,
+    fontSize: 17,
   },
   bodyLarge: {
     fontFamily: fontFamily.default,
-    fontSize: 10,
+    fontSize: 18,
   },
 
   //label text
   labelSmall: {
     fontFamily: fontFamily.default,
-    fontSize: 11,
+    fontSize: 19,
   },
   labelMedium: {
     fontFamily: fontFamily.default,
-    fontSize: 12,
+    fontSize: 20,
   },
   labelLarge: {
     fontFamily: fontFamily.default,
-    fontSize: 13,
+    fontSize: 21,
   },
 
   //title text
   titleSmall: {
     fontFamily: fontFamily.default,
-    fontSize: 14,
+    fontSize: 22,
   },
   titleMedium: {
     fontFamily: fontFamily.default,
-    fontSize: 15,
+    fontSize: 23,
   },
   titleLarge: {
     fontFamily: fontFamily.default,
-    fontSize: 16,
+    fontSize: 24,
   },
 
   //headline text
   headlineSmall: {
     fontFamily: fontFamily.default,
-    fontSize: 17,
+    fontSize: 25,
   },
   headlineMedium: {
     fontFamily: fontFamily.default,
-    fontSize: 18,
+    fontSize: 26,
   },
   headdlineLage: {
     fontFamily: fontFamily.default,
-    fontSize: 19,
+    fontSize: 27,
   },
 
   //display text
   displaySmall: {
     fontFamily: fontFamily.default,
-    fontSize: 20,
+    fontSize: 28,
   },
   displayMedium: {
     fontFamily: fontFamily.default,
-    fontSize: 21,
+    fontSize: 29,
   },
   displayLarge: {
     fontFamily: fontFamily.default,
-    fontSize: 22,
+    fontSize: 30,
   },
 }

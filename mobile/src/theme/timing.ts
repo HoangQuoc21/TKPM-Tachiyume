@@ -5,5 +5,5 @@ export const timing = {
   quicker: 150,
   quick: 300,
   normal: 3000,
-  slightlyQuick: 1000,
+  slightlyQuick: 5000,
 }

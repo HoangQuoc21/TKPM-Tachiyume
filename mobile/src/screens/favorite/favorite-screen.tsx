@@ -4,11 +4,17 @@ import styles from './favorite-screen.styles';
 import { StackScreenProps } from "@react-navigation/stack"
 import { View, Text } from 'react-native';
 import { getLocales } from 'expo-localization';
+import { MainStackName } from "../../navigators/main-navigators"
+import { NavigatorParamList } from "../../navigators/app-navigator"
+
+// Import the custom components
+import { Screen } from "../../components/screen/screen"
+import { Column } from '../../components/column/column';
 import i18n from '../../i18n'
 
-
-
-export function FavoriteScreen({navigation, route}){
+export const FavoriteScreen: FC<
+    StackScreenProps<NavigatorParamList, typeof FavoriteScreenName>
+> = observer(({ navigation, route }) => {
 
     const deviceLanguage = getLocales()[0].languageCode;
 
@@ -43,12 +49,12 @@ export function FavoriteScreen({navigation, route}){
     }
 
     return (
-        <View style={styles.ROOT}>
+        <Screen style={styles.ROOT} preset='fixed' unsafe>
             {renderHeader()}
             {renderBody()}
             {renderFooter()}
-        </View>
+        </Screen>
     )
-}
+})
 
 export const FavoriteScreenName = "favorite"

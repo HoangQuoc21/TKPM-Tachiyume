@@ -8,8 +8,17 @@ import { NovelListScreenName } from '../novel-list/novel-list-screen';
 import { NovelDetailScreenName } from '../novel-detail/novel-detail-screen';
 import { ChapterScreenName } from '../chapter/chapter-screen';
 import SourceOne from '../../../factory/SourceOne';
+import { MainStackName } from "../../navigators/main-navigators"
+import { NavigatorParamList } from "../../navigators/app-navigator"
 
-export function BrowseScreen({navigation, route}){
+// Import the custom components
+import { Screen } from "../../components/screen/screen"
+import { Column } from '../../components/column/column';
+import i18n from '../../i18n'
+
+export const BrowseScreen: FC<
+    StackScreenProps<NavigatorParamList, typeof BrowseScreenName>
+> = observer(({ navigation, route }) => {
     const sourceOne = new SourceOne();
 
     const [novelList, setNovelList] = useState([]);
@@ -79,13 +88,13 @@ export function BrowseScreen({navigation, route}){
     };
 
     return (
-        <View style={styles.ROOT}>
+        <Screen style={styles.ROOT} preset='fixed' unsafe>
             {renderHeader()}
             {renderBody()}
             {renderFooter()}
             {loading && LoadingCircle()}
-        </View>
+        </Screen>
     )
-}
+})
 
 export const BrowseScreenName = "browse"

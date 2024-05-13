@@ -3,8 +3,17 @@ import React, {FC, useEffect, useState} from 'react';
 import styles from './about-screen.styles';
 import { StackScreenProps } from "@react-navigation/stack"
 import { View, Text } from 'react-native';
+import { MainStackName } from "../../navigators/main-navigators"
+import { NavigatorParamList } from "../../navigators/app-navigator"
 
-export function AboutScreen({navigation, route}){
+// Import the custom components
+import { Screen } from "../../components/screen/screen"
+import { Column } from '../../components/column/column';
+import i18n from '../../i18n'
+
+export const AboutScreen: FC<
+    StackScreenProps<NavigatorParamList, typeof AboutScreenName>
+> = observer(({ navigation, route }) => {
 
     const renderHeader = () => {
         return (
@@ -37,12 +46,12 @@ export function AboutScreen({navigation, route}){
     }
 
     return (
-        <View style={styles.ROOT}>
+        <Screen style={styles.ROOT} preset="fixed" unsafe>
             {renderHeader()}
             {renderBody()}
             {renderFooter()}
-        </View>
+        </Screen>
     )
-}
+})
 
 export const AboutScreenName = "about"
