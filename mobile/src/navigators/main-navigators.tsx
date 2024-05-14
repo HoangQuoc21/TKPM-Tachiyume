@@ -6,11 +6,15 @@ import { FavoriteScreen, FavoriteScreenName } from "../screens/favorite/favorite
 import { HistoryScreen, HistoryScreenName } from "../screens/history/history-screen"
 import { NavigatorParamList } from './app-navigator'
 
+// Import system components
+import { Text } from "react-native"
+
 // Import custom components
-import { color as customColor, radius } from "../theme"
+import { color as customColor, radius, spacing, metric } from "../theme"
 import { VectorIcon } from "../components/vector-icon/vector-icon"
 import i18n from "../i18n"
 import { Row } from "../components/row/row"
+import { Column } from "../components/column/column"
 
 
 const Tab = createBottomTabNavigator<NavigatorParamList>()
@@ -19,6 +23,7 @@ export const MainStackName = "mainStack"
 
 const iconSize = 15;
 const labelSize = 13;
+const titleSize = 30;
 
 export function MainStack() {
     return (
@@ -41,6 +46,17 @@ export function MainStack() {
                     tabBarLabelStyle: {
                         fontWeight: "bold",
                         fontSize: labelSize,
+                    },
+                    header(){
+                        return (
+                            <Column style={{ backgroundColor: customColor.ligthTheme.primary, height: 'auto', marginTop: metric.statusBarHeight}}
+                                justifyContent="center"
+                            >
+                                <Text style={{ fontSize: titleSize, fontWeight: 'bold', padding: spacing[4], paddingVertical: spacing[2] }}>
+                                    {i18n.t("mainTab.favorite")}
+                                </Text>
+                            </Column>
+                        )
                     },
                     tabBarIcon({ color, focused }) {
                         return (
@@ -66,6 +82,17 @@ export function MainStack() {
                     tabBarLabelStyle: {
                         fontWeight: "bold",
                         fontSize: labelSize,
+                    },
+                    header() {
+                        return (
+                            <Column style={{ backgroundColor: customColor.ligthTheme.primary, height: 'auto', marginTop: metric.statusBarHeight }}
+                                justifyContent="center"
+                            >
+                                <Text style={{ fontSize: titleSize, fontWeight: 'bold', padding: spacing[4], paddingVertical: spacing[2] }}>
+                                    {i18n.t("mainTab.browse")}
+                                </Text>
+                            </Column>
+                        )
                     },
                     tabBarIcon({ color, focused }) {
                         return (
@@ -93,6 +120,17 @@ export function MainStack() {
                         fontWeight: "bold",
                         fontSize: labelSize,
                     },
+                    header() {
+                        return (
+                            <Column style={{ backgroundColor: customColor.ligthTheme.primary, height: 'auto', marginTop: metric.statusBarHeight }}
+                                justifyContent="center"
+                            >
+                                <Text style={{ fontSize: titleSize, fontWeight: 'bold', padding: spacing[4], paddingVertical: spacing[2] }}>
+                                    {i18n.t("mainTab.history")}
+                                </Text>
+                            </Column>
+                        )
+                    },
                     tabBarIcon({ color, focused }) {
                         return (
                             focused ? <Row style={{
@@ -118,6 +156,17 @@ export function MainStack() {
                     tabBarLabelStyle: {
                         fontWeight: "bold",
                         fontSize: labelSize,
+                    },
+                    header() {
+                        return (
+                            <Column style={{ backgroundColor: customColor.ligthTheme.primary, height: 'auto', marginTop: metric.statusBarHeight }}
+                                justifyContent="center"
+                            >
+                                <Text style={{ fontSize: titleSize, fontWeight: 'bold', paddingHorizontal: spacing[4], paddingVertical: spacing[2] }}>
+                                    {i18n.t("mainTab.about")}
+                                </Text>
+                            </Column>
+                        )
                     },
                     tabBarIcon({ color, focused }) {
                         return (
