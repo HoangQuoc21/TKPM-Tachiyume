@@ -27,6 +27,7 @@ export const BrowseScreen: FC<
     const fetchNovelList = async () => {
         setLoading(true);
         const novelList = await sourceOne.findNovelsByPage(2);
+        console.log('--> novel list: ', novelList)
         return novelList;
     }
     

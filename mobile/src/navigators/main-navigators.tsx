@@ -12,18 +12,24 @@ import { Text } from "react-native"
 // Import custom components
 import { color as customColor, radius, spacing, metric } from "../theme"
 import { VectorIcon } from "../components/vector-icon/vector-icon"
-import i18n from "../i18n"
 import { Row } from "../components/row/row"
-import { Column } from "../components/column/column"
+import { MainHeader } from "../components/main-header/main-header"
+
+// Import i18n for translations
+import i18n from "../i18n"
 
 
 const Tab = createBottomTabNavigator<NavigatorParamList>()
 
 export const MainStackName = "mainStack"
 
-const iconSize = 15;
+const icon = {
+    size : 15,
+    containerHeight: 30,
+    containerWidth: 60,
+}
 const labelSize = 13;
-const titleSize = 30;
+const tabBarHeight = 60;
 
 export function MainStack() {
     return (
@@ -34,7 +40,7 @@ export function MainStack() {
                 tabBarInactiveTintColor: customColor.ligthTheme.inactive,
                 tabBarStyle: {
                     backgroundColor: customColor.ligthTheme.secondary,
-                    height:60,
+                    height: tabBarHeight,
                 },
             }}
         >
@@ -48,28 +54,20 @@ export function MainStack() {
                         fontSize: labelSize,
                     },
                     header(){
-                        return (
-                            <Column style={{ backgroundColor: customColor.ligthTheme.primary, height: 'auto', marginTop: metric.statusBarHeight}}
-                                justifyContent="center"
-                            >
-                                <Text style={{ fontSize: titleSize, fontWeight: 'bold', padding: spacing[4], paddingVertical: spacing[2] }}>
-                                    {i18n.t("mainTab.favorite")}
-                                </Text>
-                            </Column>
-                        )
+                        return <MainHeader title={i18n.t("mainTab.favorite")} />
                     },
                     tabBarIcon({ color, focused }) {
                         return (
                             focused ? <Row style={{
                                 backgroundColor: customColor.ligthTheme.accentSecondary,
                                 borderRadius: radius[5],
-                                height:30,
-                                width:60,
+                                height: icon.containerHeight,
+                                width: icon.containerWidth,
                                 justifyContent:"center",
                                 alignItems:"center"
                             }}>
-                                <VectorIcon name={"heart"} color={color} size={iconSize} />
-                            </Row> : <VectorIcon name={"heart"} color={color} size={iconSize} />
+                                <VectorIcon name={"heart"} color={color} size={icon.size} />
+                            </Row> : <VectorIcon name={"heart"} color={color} size={icon.size} />
                         )
                     },
                 }}
@@ -84,29 +82,20 @@ export function MainStack() {
                         fontSize: labelSize,
                     },
                     header() {
-                        return (
-                            <Column style={{ backgroundColor: customColor.ligthTheme.primary, height: 'auto', marginTop: metric.statusBarHeight }}
-                                justifyContent="center"
-                            >
-                                <Text style={{ fontSize: titleSize, fontWeight: 'bold', padding: spacing[4], paddingVertical: spacing[2] }}>
-                                    {i18n.t("mainTab.browse")}
-                                </Text>
-                            </Column>
-                        )
+                        return <MainHeader title={i18n.t("mainTab.browse")} />
                     },
                     tabBarIcon({ color, focused }) {
                         return (
                             focused ? <Row style={{
                                 backgroundColor: customColor.ligthTheme.accentSecondary,
                                 borderRadius: radius[5],
-                                opacity: 1,
-                                height: 30,
-                                width: 60,
+                                height: icon.containerHeight,
+                                width: icon.containerWidth,
                                 justifyContent: "center",
                                 alignItems: "center"
                             }}>
-                                <VectorIcon name={"compass-outline"} color={color} size={iconSize} />
-                            </Row> : <VectorIcon name={"compass-outline"} color={color} size={iconSize} />
+                                <VectorIcon name={"compass-outline"} color={color} size={icon.size} />
+                            </Row> : <VectorIcon name={"compass-outline"} color={color} size={icon.size} />
                         )
                     },
                 }}
@@ -121,29 +110,20 @@ export function MainStack() {
                         fontSize: labelSize,
                     },
                     header() {
-                        return (
-                            <Column style={{ backgroundColor: customColor.ligthTheme.primary, height: 'auto', marginTop: metric.statusBarHeight }}
-                                justifyContent="center"
-                            >
-                                <Text style={{ fontSize: titleSize, fontWeight: 'bold', padding: spacing[4], paddingVertical: spacing[2] }}>
-                                    {i18n.t("mainTab.history")}
-                                </Text>
-                            </Column>
-                        )
+                        return <MainHeader title={i18n.t("mainTab.history")} />
                     },
                     tabBarIcon({ color, focused }) {
                         return (
                             focused ? <Row style={{
                                 backgroundColor: customColor.ligthTheme.accentSecondary,
                                 borderRadius: radius[5],
-                                opacity: 1,
-                                height: 30,
-                                width: 60,
+                                height: icon.containerHeight,
+                                width: icon.containerWidth,
                                 justifyContent: "center",
                                 alignItems: "center"
                             }}>
-                                <VectorIcon name={"reload-outline"} color={color} size={iconSize} />
-                            </Row> : <VectorIcon name={"reload-outline"} color={color} size={iconSize} />
+                                <VectorIcon name={"reload-outline"} color={color} size={icon.size} />
+                            </Row> : <VectorIcon name={"reload-outline"} color={color} size={icon.size} />
                         )
                     },
                 }}
@@ -158,29 +138,20 @@ export function MainStack() {
                         fontSize: labelSize,
                     },
                     header() {
-                        return (
-                            <Column style={{ backgroundColor: customColor.ligthTheme.primary, height: 'auto', marginTop: metric.statusBarHeight }}
-                                justifyContent="center"
-                            >
-                                <Text style={{ fontSize: titleSize, fontWeight: 'bold', paddingHorizontal: spacing[4], paddingVertical: spacing[2] }}>
-                                    {i18n.t("mainTab.about")}
-                                </Text>
-                            </Column>
-                        )
+                        return <MainHeader title={i18n.t("mainTab.about")} />
                     },
                     tabBarIcon({ color, focused }) {
                         return (
                             focused ? <Row style={{
                                 backgroundColor: customColor.ligthTheme.accentSecondary,
                                 borderRadius: radius[5],
-                                opacity: 1,
-                                height: 30,
-                                width: 60,
+                                height: icon.containerHeight,
+                                width: icon.containerWidth,
                                 justifyContent: "center",
                                 alignItems: "center"
                             }}>
-                                <VectorIcon name={"information-circle-outline"} color={color} size={iconSize} />
-                            </Row> : <VectorIcon name={"information-circle-outline"} color={color} size={iconSize} />
+                                <VectorIcon name={"information-circle-outline"} color={color} size={icon.size} />
+                            </Row> : <VectorIcon name={"information-circle-outline"} color={color} size={icon.size} />
                         )
                     },
                 }}
