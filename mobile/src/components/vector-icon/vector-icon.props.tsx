@@ -19,10 +19,4 @@ export interface VectorIconProps {
   name: any
   color?: string
   size?: number
-
-  // regular?: boolean
-  // light?: boolean
-  // solid?: boolean
-  // brand?: boolean
-
 }

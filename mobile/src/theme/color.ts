@@ -27,19 +27,22 @@ export const color = {
   ligthTheme: {
     // Main color theme for app
     primary: '#FFF8F3',
-    secondary: 'black',
+    secondary: '#F8ECDF',
 
     // Text and text-related color
     text: '#201B13',
     textSecondary: 'black',
-    placeHolder: 'black',
+    placeHolder: '',
 
-    // Accent color
-    accent: 'black',
-    accentSecondary: 'black',
+    // Accent color#
+    accent: '#201B13',
+    accentSecondary: '#F9DFBB',
 
     // Background color
     background: 'black',
+
+    // Inactive color
+    inactive: '#4F4539',
   },
 
   // Dark Theme
