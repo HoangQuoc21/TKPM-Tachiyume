@@ -10,10 +10,10 @@ import { NavigatorParamList } from './app-navigator'
 import { Text } from "react-native"
 
 // Import custom components
-import { color as customColor, radius, spacing, metric } from "../theme"
+import { color as customColor, radius, iconSize } from "../theme"
 import { VectorIcon } from "../components/vector-icon/vector-icon"
 import { Row } from "../components/row/row"
-import { MainHeader } from "../components/main-header/main-header"
+import { Header } from "../components/header/header"
 
 // Import i18n for translations
 import i18n from "../i18n"
@@ -24,10 +24,11 @@ const Tab = createBottomTabNavigator<NavigatorParamList>()
 export const MainStackName = "mainStack"
 
 const icon = {
-    size : 15,
+    size: iconSize.small,
     containerHeight: 30,
     containerWidth: 60,
 }
+
 const labelSize = 13;
 const tabBarHeight = 60;
 
@@ -54,7 +55,7 @@ export function MainStack() {
                         fontSize: labelSize,
                     },
                     header(){
-                        return <MainHeader title={i18n.t("mainTab.favorite")} />
+                        return <Header title={i18n.t("mainTab.favorite")} />
                     },
                     tabBarIcon({ color, focused }) {
                         return (
@@ -82,7 +83,7 @@ export function MainStack() {
                         fontSize: labelSize,
                     },
                     header() {
-                        return <MainHeader title={i18n.t("mainTab.browse")} />
+                        return <Header title={i18n.t("mainTab.browse")} />
                     },
                     tabBarIcon({ color, focused }) {
                         return (
@@ -110,7 +111,7 @@ export function MainStack() {
                         fontSize: labelSize,
                     },
                     header() {
-                        return <MainHeader title={i18n.t("mainTab.history")} />
+                        return <Header title={i18n.t("mainTab.history")} />
                     },
                     tabBarIcon({ color, focused }) {
                         return (
@@ -138,7 +139,7 @@ export function MainStack() {
                         fontSize: labelSize,
                     },
                     header() {
-                        return <MainHeader title={i18n.t("mainTab.about")} />
+                        return <Header title={i18n.t("mainTab.about")} />
                     },
                     tabBarIcon({ color, focused }) {
                         return (

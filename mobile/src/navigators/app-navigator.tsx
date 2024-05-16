@@ -1,6 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { NavigationContainer } from "@react-navigation/native"
+import { navigationRef } from './navigation-utilities';
 
 import { AboutScreen, AboutScreenName } from "../screens/about/about-screen";
 import { BrowseScreen, BrowseScreenName } from "../screens/browse/browse-screen";
@@ -14,6 +15,8 @@ import { SplashScreen, SplashScreenName } from "../screens/splash/splash-screen"
 import { MainStack, MainStackName } from "./main-navigators";
 import { color } from "../theme";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Header } from "../components/header/header";
+import i18n from "../i18n";
 
 // Define the screen input parameters
 export type NavigatorParamList = {
@@ -84,6 +87,9 @@ function AppStack() {
             <Stack.Screen
                 name={ChapterScreenName}
                 component={ChapterScreen}
+                options={{
+                    header: () => <Header title={"Chapter"} canGoBack />
+                }}
             />
         </Stack.Navigator>
     )
@@ -91,7 +97,7 @@ function AppStack() {
 
 export function AppNavigator() {
     return (
-        <NavigationContainer>
+        <NavigationContainer ref={navigationRef}>
             <AppStack />
         </NavigationContainer>
     )
