@@ -10,7 +10,7 @@ import { NavigatorParamList } from "../../navigators/app-navigator"
 // Import the custom components
 import { Screen } from "../../components/screen/screen"
 import { Column } from '../../components/column/column';
-import i18n from '../../i18n'
+import { translate } from '../../i18n'
 import { ChapterScreenName } from '../chapter/chapter-screen';
 
 export const FavoriteScreen: FC<
@@ -33,7 +33,7 @@ export const FavoriteScreen: FC<
         return (
             <View style={styles.BODY}>
                 <Text style={styles.TEXT}>
-                    {i18n.t('languages.en')}
+                    {translate('languages.en')}
                 </Text>
             </View>
         )

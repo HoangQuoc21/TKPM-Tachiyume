@@ -16,7 +16,7 @@ import { MainStack, MainStackName } from "./main-navigators";
 import { color } from "../theme";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Header } from "../components/header/header";
-import i18n from "../i18n";
+import { translate } from "../i18n";
 
 // Define the screen input parameters
 export type NavigatorParamList = {

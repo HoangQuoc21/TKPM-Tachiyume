@@ -22,4 +22,4 @@ i18n.locale = LANGUAGE_EN; //Set the default language by hand
 // When a value is missing from a language it'll fall back to another language with the key present.
 i18n.enableFallback = true;
 
-export default i18n;
+export const translate = (key: string, config?: any) => i18n.t(key, config);

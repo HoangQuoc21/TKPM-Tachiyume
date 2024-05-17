@@ -16,7 +16,7 @@ import { Row } from "../components/row/row"
 import { Header } from "../components/header/header"
 
 // Import i18n for translations
-import i18n from "../i18n"
+import { translate } from "../i18n"
 
 
 const Tab = createBottomTabNavigator<NavigatorParamList>()
@@ -49,13 +49,13 @@ export function MainStack() {
                 name={FavoriteScreenName}
                 component={FavoriteScreen}
                 options={{
-                    tabBarLabel: i18n.t("mainTab.favorite"),
+                    tabBarLabel: translate("mainTab.favorite"),
                     tabBarLabelStyle: {
                         fontWeight: "bold",
                         fontSize: labelSize,
                     },
                     header(){
-                        return <Header title={i18n.t("mainTab.favorite")} />
+                        return <Header title={translate("mainTab.favorite")} />
                     },
                     tabBarIcon({ color, focused }) {
                         return (
@@ -77,13 +77,13 @@ export function MainStack() {
                 name={BrowseScreenName}
                 component={BrowseScreen}
                 options={{
-                    tabBarLabel: i18n.t("mainTab.browse"),
+                    tabBarLabel: translate("mainTab.browse"),
                     tabBarLabelStyle: {
                         fontWeight: "bold",
                         fontSize: labelSize,
                     },
                     header() {
-                        return <Header title={i18n.t("mainTab.browse")} />
+                        return <Header title={translate("mainTab.browse")} />
                     },
                     tabBarIcon({ color, focused }) {
                         return (
@@ -105,13 +105,13 @@ export function MainStack() {
                 name={HistoryScreenName}
                 component={HistoryScreen}
                 options={{
-                    tabBarLabel: i18n.t("mainTab.history"),
+                    tabBarLabel: translate("mainTab.history"),
                     tabBarLabelStyle: {
                         fontWeight: "bold",
                         fontSize: labelSize,
                     },
                     header() {
-                        return <Header title={i18n.t("mainTab.history")} />
+                        return <Header title={translate("mainTab.history")} />
                     },
                     tabBarIcon({ color, focused }) {
                         return (
@@ -133,13 +133,13 @@ export function MainStack() {
                 name={AboutScreenName}
                 component={AboutScreen}
                 options={{
-                    tabBarLabel: i18n.t("mainTab.about"),
+                    tabBarLabel: translate("mainTab.about"),
                     tabBarLabelStyle: {
                         fontWeight: "bold",
                         fontSize: labelSize,
                     },
                     header() {
-                        return <Header title={i18n.t("mainTab.about")} />
+                        return <Header title={translate("mainTab.about")} />
                     },
                     tabBarIcon({ color, focused }) {
                         return (
