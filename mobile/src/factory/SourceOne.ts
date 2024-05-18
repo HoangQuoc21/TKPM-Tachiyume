@@ -35,7 +35,7 @@ class SourceOne extends SourceInterface {
                     const item = {
                         url,
                         sourceId: sourceId, // Assuming sourceId is defined elsewhere
-                        name: $(element).find('h3.truyen-title > a').text().trim(),
+                        title: $(element).find('h3.truyen-title > a').text().trim(),
                         cover: null,
                     };
                     try {
@@ -74,27 +74,38 @@ class SourceOne extends SourceInterface {
     }
 
     // Novel details (get details from a novel in list of novels )
-    async findNovelsDetail(novel: any) {
+    async findNovelDetails(novel: any) {
         try {
             const response = await fetch(`${this.baseUrl}${novel.url}`);
             const html = await response.text();
             const $ = load(html);
 
             novel.sourceId = this.id; // Assuming `sourceId` is defined elsewhere in your code.
-            novel.name = $("div.books h3.title").text().trim();
+            novel.title = $("div.books h3.title").text().trim();
             novel.cover = `${this.id}${$("div.books img").attr("src").trim()}`;
             novel.summary = $("div.desc-text > p").text().trim();
             novel.rating = parseFloat($("input#rateVal").attr("value")) / 2;
-
+            const lastestChapters = [];
+            const chapterWrapHTML = $(".l-chapter .l-chapters");
+            const chapterListHTML = chapterWrapHTML.find("li");
+            chapterListHTML.each((index, element) => {
+                let chapter = {
+                    url: $(element).find('a').attr("href"),
+                    name: $(element).find('a').attr("href"),
+                    id: null,
+                }
+                lastestChapters.push(chapter)
+           })
+           novel.lastestChapters = lastestChapters
             $("div.info").each((index, element) => {
                 const el = $(element);
 
                 novel.authors = el.find("div:eq(0) > a").text().split(",").map(author => author.trim());
-                const genres = [];
+                const category = [];
                 el.find("div:eq(2) > a").each((idx, a) => {
-                    genres.push($(a).text());
+                    category.push($(a).text());
                 });
-                novel.genres = genres;
+                novel.category = category;
                 novel.status = el.find("div:eq(4) > a").text();
             });
 

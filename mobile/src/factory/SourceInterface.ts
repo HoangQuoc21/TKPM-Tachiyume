@@ -9,7 +9,7 @@ abstract class SourceInterface {
     // List of novels to show in on page
     abstract findNovelsByPage(page: number): Promise<any[]>
     // Novel details (get details from a novel in list of novels )
-    abstract findNovelsDetail(novel: any): Promise<any>
+    abstract findNovelDetails(novel: any): Promise<any>
     // Get list of chapters from a novel
     abstract findChaptersByNovel(novel: any): Promise<any[]>
     // Get content from a chapter
