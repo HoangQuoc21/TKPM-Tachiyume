@@ -39,6 +39,7 @@ export const BrowseScreen: FC<
         // console.log('--> novel list: ', novelList[0])
         const novelDetail = await sourceOne.findNovelDetails(novel);
         console.log(novelDetail)
+        console.log("asd")
         return novelList;
     }
 

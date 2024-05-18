@@ -91,7 +91,7 @@ class SourceOne extends SourceInterface {
             chapterListHTML.each((index, element) => {
                 let chapter = {
                     url: $(element).find('a').attr("href"),
-                    name: $(element).find('a').attr("href"),
+                    name: $(element).find('a').attr("title"),
                     id: null,
                 }
                 lastestChapters.push(chapter)
