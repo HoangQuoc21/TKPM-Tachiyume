@@ -14,10 +14,7 @@ import { NavigatorParamList } from "../../navigators/app-navigator"
 // Import the custom components
 import { Screen } from "../../components/screen/screen"
 import { Column } from '../../components/column/column';
-import {translate} from '../../i18n'
-
-// Import the models
-import { Source } from '../../models/source';
+import i18n from '../../i18n'
 
 export const BrowseScreen: FC<
     StackScreenProps<NavigatorParamList, typeof BrowseScreenName>
@@ -26,12 +23,10 @@ export const BrowseScreen: FC<
 
     const [novelList, setNovelList] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [source, setSource] = useState<Source>();
-    
 
     const fetchNovelList = async () => {
         setLoading(true);
-        const novelList = await sourceOne.findNovelsByPage(1);
+        const novelList = await sourceOne.findNovelsByPage(2);
         console.log('--> novel list: ', novelList)
         return novelList;
     }
@@ -41,7 +36,6 @@ export const BrowseScreen: FC<
             setNovelList(novelList);
             setLoading(false);
         }) 
-        setSource(sourceOne as unknown as Source);
     },[])
 
     const onPressNovelList = () => {
@@ -59,28 +53,13 @@ export const BrowseScreen: FC<
                 <Text style={[styles.TEXT, {alignSelf:'center', fontWeight:'bold'}]}>
                     Novel List
                 </Text>
-                <Text style = {[styles.TEXT]}>
-                    {`Source one's sourceId: ${source?.id}`}
-                </Text>
-                <Text style={[styles.TEXT]}>
-                    {`Source one's baseURL: ${source?.baseUrl}`}
-                </Text>
-                <Text style={[styles.TEXT]}>
-                    {`Source one's sourceTitle: ${source?.sourceTitle}`}
-                </Text>
-                <Text style={[styles.TEXT]}>
-                    {`Source one's thumbnail: ${source?.thumbnail}`}
-                </Text>
-                <Text style={[styles.TEXT]}>
-                    {`Source one's readLanguage: ${source?.readLanguage}`}
-                </Text>
             </View>
         )
     }
 
     const renderBody = () => {
         return (
-            <View style={[styles.BODY, {marginTop: 20}]}>
+            <View style={styles.BODY}>
                 <FlatList
                     data={novelList}
                     renderItem={({item}) => (
