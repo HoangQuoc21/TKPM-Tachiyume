@@ -3,8 +3,17 @@ import React, {FC, useEffect, useState} from 'react';
 import styles from './chapter-screen.styles';
 import { StackScreenProps } from "@react-navigation/stack"
 import { View, Text } from 'react-native';
+import { MainStackName } from "../../navigators/main-navigators"
+import { NavigatorParamList } from "../../navigators/app-navigator"
 
-export function ChapterScreen({navigation, route}){
+// Import the custom components
+import { Screen } from "../../components/screen/screen"
+import { Column } from '../../components/column/column';
+import {translate} from '../../i18n'
+
+export const ChapterScreen: FC<
+    StackScreenProps<NavigatorParamList, typeof ChapterScreenName>
+> = observer(({ navigation, route }) => {
 
     const renderHeader = () => {
         return (
@@ -37,12 +46,12 @@ export function ChapterScreen({navigation, route}){
     }
 
     return (
-        <View style={styles.ROOT}>
+        <Screen style={styles.ROOT} preset='fixed' unsafe>
             {renderHeader()}
             {renderBody()}
             {renderFooter()}
-        </View>
+        </Screen>
     )
-}
+})
 
 export const ChapterScreenName = "chapter"

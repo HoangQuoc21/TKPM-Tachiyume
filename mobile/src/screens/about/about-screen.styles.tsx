@@ -1,51 +1,37 @@
 import { StyleSheet } from "react-native";
+import { spacing, typography, color } from "../../theme";
 
 export default StyleSheet.create({
     ROOT:{
-
+        flex:1,
+        paddingHorizontal: spacing[4]
     },
-
+    LOGO:{
+        justifyContent:"center",
+    },
     HEADER:{
-
+        flex:4,
     },
     BODY:{
-
-    },
-    FOOTER:{
-
+        flex:6,
     },
 
-    CONTAINER:{
-
+    SECTION_CONTAINER:{
+        padding: spacing[1],
+        marginBottom: spacing[4],
     },
-
-    BUTTON_CONATINER:{
-
+    SECTION_TITLE:{
+        ...typography.titleLarge,
+        fontWeight:"bold",
     },
-    BUTTON:{
-
+    ITEM_CONATINER:{
+        padding: spacing[1],
+        flexDirection:"row",
+        alignItems:"center",
+        gap: spacing[2],
     },
-    BUTTON_TEXT:{
-
+    ITEM_TEXT:{
+        ...typography.labelLarge,
+        textDecorationLine:"underline",
     },
-
-    TEXT_CONTAINER:{
-
-    },
-    TEXT:{
-
-    },
-    TITLE:{
-
-    },
-    SUBTITLE:{
-
-    },
-
-    VALUE_CONTAINER:{
-
-    },
-    VALUE:{
-
-    }
 })

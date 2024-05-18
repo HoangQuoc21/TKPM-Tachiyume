@@ -1,48 +1,103 @@
-import {observer} from 'mobx-react-lite';
-import React, {FC, useEffect, useState} from 'react';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useEffect, useState } from 'react';
 import styles from './splash-screen.styles';
 import { StackScreenProps } from "@react-navigation/stack"
 import { View, Text } from 'react-native';
+import { MainStackName } from "../../navigators/main-navigators"
+import { NavigatorParamList } from "../../navigators/app-navigator"
 
-export function SplashScreen({navigation, route}){
+// Import the custom components
+import { Logo } from '../../components/logo/logo';
+import { Screen } from "../../components/screen/screen"
+import { Column } from '../../components/column/column';
+import { translate } from '../../i18n'
+
+// import the app name from app.json
+import {expo} from '../../../app.json'
+import { timing } from '../../theme/timing';
+const appName = expo.name
+const appVersion = expo.version
+
+export const SplashScreen: FC<
+    StackScreenProps<NavigatorParamList, typeof SplashScreenName>
+> = observer(({ navigation, route }) => {
+
+    const init = () => {
+        setTimeout(() => {
+            nextScreen()
+        }, timing.normal)
+    }
+
+    const nextScreen = () => {
+        navigation.navigate(MainStackName)
+    }
+
+    useEffect(() => {
+        init()
+    }, [])
 
     const renderHeader = () => {
         return (
-            <View style={styles.HEADER}>
-                <Text style={styles.TEXT}>
-                    This is the header of the splash screen
-                </Text>
-            </View>
+            <Column style={styles.HEADER}/>
         )
+    }
+
+    const renderLogo = () => {
+        return (
+            <Logo />
+        )
+    }
+
+    const renderTitle = () => {
+        return (
+            <Text style={styles.TITLE}>
+                {appName}
+            </Text>
+        )
+        
     }
 
     const renderBody = () => {
         return (
-            <View style={styles.BODY}>
-                <Text style={styles.TEXT}>
-                    This is the body of the splash screen
-                </Text>
-            </View>
+            <Column style={styles.BODY}>
+                {renderLogo()}
+                {renderTitle()}
+            </Column>
+        )
+    }
+
+    const renderAppVersion = () => {
+        return (
+            <Text style={styles.TEXT}>
+                {translate('splashScreen.version')} {appVersion}
+            </Text>
+        )
+    }
+
+    const renderDeveloper = () => {
+        return (
+            <Text style={styles.TEXT}>
+                {translate('splashScreen.developedBy')}
+            </Text>
         )
     }
 
     const renderFooter = () => {
         return (
-            <View style={styles.FOOTER}>
-                <Text style={styles.TEXT}>
-                    This is the footer of the splash screen
-                </Text>
-            </View>
+            <Column style={styles.FOOTER}>
+                {renderAppVersion()}
+                {renderDeveloper()}
+            </Column>
         )
     }
 
     return (
-        <View style={styles.ROOT}>
+        <Screen style={styles.ROOT} preset="fixed" unsafe>
             {renderHeader()}
             {renderBody()}
             {renderFooter()}
-        </View>
+        </Screen>
     )
-}
+})
 
 export const SplashScreenName = "splash"

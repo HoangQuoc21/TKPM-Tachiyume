@@ -1,50 +1,80 @@
 import { Platform } from "react-native"
 
-
+//define the font family based on the platform
 export const fontFamily = {
-  /**
-   * The primary font.  Used in most places.
-   */
-  primary: Platform.select({ ios: "Helvetica", android: "normal" }),
-
-  /**
-   * An alternate font used for perhaps titles and stuff.
-   */
-  secondary: Platform.select({ ios: "Arial", android: "sans-serif" }),
-
-  /**
-   * Lets get fancy with a monospace font!
-   */
-  code: Platform.select({ ios: "Courier", android: "monospace" }),
+  //define the default font family
+  default: Platform.select({ android:"Roboto", ios: "Arial" }),
+  //other font families go here
 }
 
 export const typography = {
-  tiny: {
-    fontFamily: fontFamily.primary,
-    fontSize: 9,
+  //body text
+  bodySmall: {
+    fontFamily: fontFamily.default,
+    fontSize: 16,
   },
-  note: {
-    fontFamily: fontFamily.primary,
-    fontSize: 12,
+  bodyMedium: {
+    fontFamily: fontFamily.default,
+    fontSize: 17,
   },
-  body: {
-    fontFamily: fontFamily.primary,
-    fontSize: 15,
-  },
-  headline: {
-    fontFamily: fontFamily.primary,
+  bodyLarge: {
+    fontFamily: fontFamily.default,
     fontSize: 18,
   },
-  title3: {
-    fontFamily: fontFamily.primary,
+
+  //label text
+  labelSmall: {
+    fontFamily: fontFamily.default,
+    fontSize: 19,
+  },
+  labelMedium: {
+    fontFamily: fontFamily.default,
+    fontSize: 20,
+  },
+  labelLarge: {
+    fontFamily: fontFamily.default,
     fontSize: 21,
   },
-  title2: {
-    fontFamily: fontFamily.primary,
+
+  //title text
+  titleSmall: {
+    fontFamily: fontFamily.default,
+    fontSize: 22,
+  },
+  titleMedium: {
+    fontFamily: fontFamily.default,
+    fontSize: 23,
+  },
+  titleLarge: {
+    fontFamily: fontFamily.default,
     fontSize: 24,
   },
-  title1: {
-    fontFamily: fontFamily.primary,
+
+  //headline text
+  headlineSmall: {
+    fontFamily: fontFamily.default,
+    fontSize: 25,
+  },
+  headlineMedium: {
+    fontFamily: fontFamily.default,
+    fontSize: 26,
+  },
+  headdlineLage: {
+    fontFamily: fontFamily.default,
     fontSize: 27,
+  },
+
+  //display text
+  displaySmall: {
+    fontFamily: fontFamily.default,
+    fontSize: 28,
+  },
+  displayMedium: {
+    fontFamily: fontFamily.default,
+    fontSize: 29,
+  },
+  displayLarge: {
+    fontFamily: fontFamily.default,
+    fontSize: 30,
   },
 }

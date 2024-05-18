@@ -1,0 +1,80 @@
+{
+  "languages": {
+    "en": "English"
+  },
+  "common": {
+    "ok": "OK",
+    "cancel": "Cancel",
+    "search": "Search"
+  },
+  "errors": {
+   
+  },
+  "success": {
+   
+  },
+  "mainTab": {
+    "favorite": "Favorite",
+    "browse": "Browse",
+    "history": "History",
+    "about": "About"
+  },
+  "aboutScreen": {
+    "header": "About",
+    "aboutProject": "About project",
+    "aboutDeveloperTeam": "About developer team"
+  },
+  "browseScreen": {
+    "header": "Browse",
+    "importModal":{
+      "title": "Import novel source",
+      "novelUrl": "Novel URL",
+      "import": "Import"
+    }
+  },
+  "chapterScreen": {
+    "header": "Chapter",
+    "setting": "Setting",
+    "chapterList": "Chapter List",
+    "theme": {
+      "light": "Light",
+      "dark": "Dark"
+    },
+    "settingPopup":{
+      "fontSize": "Font Size",
+      "min": "min",
+      "Max": "Max",
+      "font": "Font",
+      "lineSpacing": "Line Spacing"
+    }
+  },
+  "favoriteScreen": {
+    "header": "Favorite"
+  },
+  "historyScreen": {
+    "header": "History"
+  },
+  "novelDetailScreen": {
+    "header": "Novel Detail",
+    "author": "Author",
+    "status": "Status",
+    "downloadModal": {
+      "title": "Download Chapter",
+      "savingUrl": "Saving URL",
+      "savingFileType": "Saving File Type"
+    },
+    "download": "Download",
+    "read": "Read",
+    "addToFavorite": "Add to Favorite"
+  },
+  "novelListScreen": {
+    "header": "Novel List",
+    "popular": "Popular",
+    "lastest": "Lastest"
+  },
+  "splashScreen": {
+    "header": "Splash",
+    "version": "Version: ",
+    "developedBy": "Developed by: Chillin Chillies"
+  }
+}

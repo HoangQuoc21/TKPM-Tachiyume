@@ -1,51 +1,30 @@
 import { StyleSheet } from "react-native";
+import { spacing, typography } from "../../theme";
 
 export default StyleSheet.create({
     ROOT:{
-
+        flex:1,
     },
-
     HEADER:{
-
+        flex: 1,
     },
     BODY:{
-
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: spacing[8]
     },
     FOOTER:{
-
-    },
-
-    CONTAINER:{
-
-    },
-
-    BUTTON_CONATINER:{
-
-    },
-    BUTTON:{
-
-    },
-    BUTTON_TEXT:{
-
-    },
-
-    TEXT_CONTAINER:{
-
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        marginBottom: spacing[4]
     },
     TEXT:{
-
+        ...typography.bodyLarge,
     },
     TITLE:{
-
+        ...typography.displayLarge,
+        fontWeight: 'bold',
     },
-    SUBTITLE:{
-
-    },
-
-    VALUE_CONTAINER:{
-
-    },
-    VALUE:{
-
-    }
 })
