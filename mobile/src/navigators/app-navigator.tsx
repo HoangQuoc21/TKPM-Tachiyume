@@ -18,6 +18,9 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Header } from "../components/header/header";
 import { translate } from "../i18n";
 
+import Source from "../models/sources/source"
+import { data } from "cheerio/lib/api/attributes";
+
 // Define the screen input parameters
 export type NavigatorParamList = {
     [AboutScreenName]: undefined
@@ -42,7 +45,7 @@ export type NavigatorParamList = {
     {
         header: string,
         data: {
-
+            source: Source
         }
     }
     [SplashScreenName]: undefined
@@ -77,7 +80,10 @@ function AppStack() {
                 name={NovelListScreenName}
                 component={NovelListScreen}
                 options={
-                    ({ route }) => ({ title: route.params.header })
+                    // ({ route }) => ({ title: route.params.header })
+                    {
+                        header: () => <Header title={""} canGoBack />
+                    }
                 }
             />
             <Stack.Screen

@@ -1,12 +1,12 @@
-import SourceInterface from "./SourceInterface";
+import Source from './source';
 import {load} from 'cheerio'
-//const sourceId = 1;
-//const baseUrl = 'https://allnovel.org'; // Source: ALL NOVEL
+
 function cleanContent(content: string) {
     return content.replace(/\n\n/g, "\n");
 }
 
-class SourceOne extends SourceInterface {
+// Source: ALL NOVEL
+class SourceOne extends Source {
     constructor () {
         super();
         this.id = 1;
