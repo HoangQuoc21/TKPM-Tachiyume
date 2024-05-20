@@ -79,12 +79,9 @@ function AppStack() {
             <Stack.Screen
                 name={NovelListScreenName}
                 component={NovelListScreen}
-                options={
-                    // ({ route }) => ({ title: route.params.header })
-                    {
-                        header: () => <Header title={""} canGoBack />
-                    }
-                }
+                options={({ route }) => ({
+                    header: () => <Header title={route.params.header} canGoBack />
+                })}
             />
             <Stack.Screen
                 name={NovelDetailScreenName}
