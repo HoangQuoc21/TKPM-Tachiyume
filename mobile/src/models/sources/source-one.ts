@@ -43,8 +43,18 @@ class SourceOne extends Source {
                         const responseData = await response.text();
                         const $img = load(responseData);
 
+<<<<<<< Updated upstream:mobile/src/models/sources/source-one.ts
+<<<<<<< Updated upstream:mobile/src/models/sources/source-one.ts
                         item.cover = `${sourceBaseUrl}${$img('div.books img').attr('src')}`;
                         //console.log(item)
+=======
+                        item.cover = `${baseUrl}${$img('div.books img').attr('src')}`;
+                        console.log("Item list", item)
+>>>>>>> Stashed changes:mobile/factory/SourceOne.ts
+=======
+                        item.cover = `${baseUrl}${$img('div.books img').attr('src')}`;
+                        console.log("Item list", item)
+>>>>>>> Stashed changes:mobile/factory/SourceOne.ts
                         items.push(item);
                     } catch (e) {
                         throw e
