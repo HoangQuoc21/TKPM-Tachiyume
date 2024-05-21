@@ -22,7 +22,7 @@ import { ImportSourceModal } from '../../components/import-source-modal/import-s
 
 // Import the models
 import Source from '../../models/sources/source';
-import SourceOne from '../../models/sources/source-one';
+import {SourceOne} from '../../models/sources/source-one';
 
 export const BrowseScreen: FC<
     StackScreenProps<NavigatorParamList, typeof BrowseScreenName>

@@ -4,14 +4,14 @@ import { observer } from "mobx-react-lite"
 
 import { useState } from 'react';
 
-import {Text, Modal,TouchableOpacity, TextInput} from 'react-native';
+import {Text, Modal,TouchableOpacity} from 'react-native';
 
 import { ImportSourceModalProps } from './import-source-modal.props';
 import { stylePresets } from './import-source-modal.presets';
 
 import { Column } from '../column/column';
 import { Row } from '../row/row';
-import { VectorIcon } from '../vector-icon/vector-icon';
+import { TextInput } from '../text-input/text-input';
 
 import {translate} from '../../i18n'
 
@@ -30,9 +30,6 @@ export const ImportSourceModal = observer(function ImportSourceModal(props: Impo
     const buttonContainer = flatten([stylePresets[preset].BUTTON_CONTAINER])
     const buttonStyle = flatten([stylePresets[preset].BUTTON])
     const buttonTextStyle = flatten([stylePresets[preset].BUTTON_TEXT])
-    const inputContainerStyle = flatten([stylePresets[preset].INPUT_CONTAINER])
-    const inputStyle = flatten([stylePresets[preset].INPUT])
-    const clearTextButtonStyle = flatten([stylePresets[preset].CLEAR_TEXT_BUTTON])
 
     //The url input state:
     const [url, setUrl] = useState('')
@@ -46,28 +43,14 @@ export const ImportSourceModal = observer(function ImportSourceModal(props: Impo
 
     const renderInput = () => {
         return (
-            <Row style={inputContainerStyle}>
-                <TextInput
-                    placeholder={translate("imporSourcetModal.novelUrl")}
-                    value={url}
-                    onChangeText={setUrl}
-                    inputMode='url'
-                    style= {inputStyle}
-                />
-                {
-                    url.length > 0 && (
-                        <TouchableOpacity
-                            onPress={() => setUrl('')}
-                            style={clearTextButtonStyle}
-                        >
-                            <VectorIcon
-                                name='close'
-                                size={20}
-                            />
-                        </TouchableOpacity>
-                    )
-                }
-            </Row>
+            <TextInput
+                preset='default'
+                placeholder={translate("imporSourcetModal.novelUrl")}
+                value={url}
+                onChangeText={setUrl}
+                inputMode='url'
+                onTextClear={() => setUrl('')}
+            />
         )
     }
 
@@ -77,7 +60,7 @@ export const ImportSourceModal = observer(function ImportSourceModal(props: Impo
     }
 
     const onImportPress = () => {
-        console.log(`--> [Import source modal] import url: ${url}`)
+        console.log(`--> [Import source modal] import url: "${url}"`)
         setUrl('')
         onClosePress()
     }

@@ -24,23 +24,6 @@ const DEFAULT_STYLE = {
         color: color.ligthTheme.text,
         ...typography.titleLarge
     } as TextStyle,
-    INPUT_CONTAINER:{
-        height: 50,
-        backgroundColor: color.ligthTheme.primary,
-        borderColor: color.ligthTheme.boder,
-        borderWidth: 1,
-        borderRadius: radius[6],
-        paddingHorizontal: spacing[3],
-        color: color.ligthTheme.text,
-        alignItems: 'center',
-        gap: spacing[1],
-    } as TextStyle,
-    INPUT:{
-        flex: 9,
-    },
-    CLEAR_TEXT_BUTTON: {
-        flex: 1
-    },
     BUTTON_CONTAINER: {
         justifyContent: 'flex-end',
         gap: spacing[3],

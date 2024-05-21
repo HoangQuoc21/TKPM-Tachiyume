@@ -13,7 +13,7 @@ import { translate } from '../../i18n'
 
 // Import the models
 import Source from '../../models/sources/source';
-import SourceOne from '../../models/sources/source-one';
+import {SourceOne} from '../../models/sources/source-one';
 import { color, radius, spacing, typography } from '../../theme';
 
 
