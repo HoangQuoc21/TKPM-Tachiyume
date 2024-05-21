@@ -74,7 +74,11 @@
   },
   "splashScreen": {
     "header": "Splash",
-    "version": "Version: {%version%}",
-    "developedBy": "Developed by: {%developer%}"
+    "version": "Version: ",
+    "developedBy": "Developed by: Chillin Chillies"
+  },
+  "sourceList":{
+    "title": "Sources",
+    "empty": "No source available"
   }
 }

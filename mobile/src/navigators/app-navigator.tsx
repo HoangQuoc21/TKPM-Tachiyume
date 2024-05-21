@@ -1,6 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { NavigationContainer } from "@react-navigation/native"
+import { navigationRef } from './navigation-utilities';
 
 import { AboutScreen, AboutScreenName } from "../screens/about/about-screen";
 import { BrowseScreen, BrowseScreenName } from "../screens/browse/browse-screen";
@@ -14,6 +15,11 @@ import { SplashScreen, SplashScreenName } from "../screens/splash/splash-screen"
 import { MainStack, MainStackName } from "./main-navigators";
 import { color } from "../theme";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Header } from "../components/header/header";
+import { translate } from "../i18n";
+
+import Source from "../models/sources/source"
+import { data } from "cheerio/lib/api/attributes";
 
 // Define the screen input parameters
 export type NavigatorParamList = {
@@ -39,7 +45,7 @@ export type NavigatorParamList = {
     {
         header: string,
         data: {
-
+            source: Source
         }
     }
     [SplashScreenName]: undefined
@@ -51,7 +57,7 @@ const Stack = createNativeStackNavigator<NavigatorParamList>()
 function AppStack() {
     return (
         <Stack.Navigator
-            initialRouteName={MainStackName}
+            initialRouteName={SplashScreenName}
             screenOptions={{
                 //headerShown: false
             }}
@@ -59,7 +65,9 @@ function AppStack() {
             <Stack.Screen
                 name={SplashScreenName}
                 component={SplashScreen}
-                
+                options={{
+                    headerShown: false
+                }}
             />
             <Stack.Screen
                 name={MainStackName}
@@ -71,9 +79,9 @@ function AppStack() {
             <Stack.Screen
                 name={NovelListScreenName}
                 component={NovelListScreen}
-                options={
-                    ({ route }) => ({ title: route.params.header })
-                }
+                options={({ route }) => ({
+                    header: () => <Header title={route.params.header} canGoBack />
+                })}
             />
             <Stack.Screen
                 name={NovelDetailScreenName}
@@ -82,6 +90,9 @@ function AppStack() {
             <Stack.Screen
                 name={ChapterScreenName}
                 component={ChapterScreen}
+                options={{
+                    header: () => <Header title={"Chapter"} canGoBack />
+                }}
             />
         </Stack.Navigator>
     )
@@ -89,7 +100,7 @@ function AppStack() {
 
 export function AppNavigator() {
     return (
-        <NavigationContainer>
+        <NavigationContainer ref={navigationRef}>
             <AppStack />
         </NavigationContainer>
     )
