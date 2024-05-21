@@ -13,6 +13,9 @@ export const color = {
     // Transparent color
     transparent: 'rgba(0,0,0,0)',
 
+    // Overlay color
+    overlay: 'rgba(0,0,0,0.5)',
+
     // Status color
     status: {
       success: 'black',
@@ -39,9 +42,10 @@ export const color = {
     // Accent color
     accent: '#201B13',
     accentSecondary: '#F9DFBB',
+    accentThird: "#7E570E",
 
-    // Background color
-    background: 'black',
+    // Border color
+    boder: "#D2C4B4",
 
     // Inactive color
     inactive: '#4F4539',

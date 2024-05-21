@@ -25,12 +25,7 @@
     "aboutDeveloperTeam": "About developer team"
   },
   "browseScreen": {
-    "header": "Browse",
-    "importModal":{
-      "title": "Import novel source",
-      "novelUrl": "Novel URL",
-      "import": "Import"
-    }
+    "header": "Browse"
   },
   "chapterScreen": {
     "header": "Chapter",
@@ -80,5 +75,10 @@
   "sourceList":{
     "title": "Sources",
     "empty": "No source available"
+  },
+  "imporSourcetModal": {
+    "title": "Import novel source",
+    "novelUrl": "Novel URL",
+    "import": "Import"
   }
 }
