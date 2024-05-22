@@ -2,9 +2,9 @@ import * as React from 'react';
 import { flatten } from "ramda"
 import { observer } from "mobx-react-lite"
 
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 
-import {Text, Modal,TouchableOpacity} from 'react-native';
+import { Text, Modal, TouchableOpacity } from 'react-native';
 
 import { ImportSourceModalProps } from './import-source-modal.props';
 import { stylePresets } from './import-source-modal.presets';
@@ -13,7 +13,14 @@ import { Column } from '../column/column';
 import { Row } from '../row/row';
 import { TextInput } from '../text-input/text-input';
 
-import {translate} from '../../i18n'
+import { translate } from '../../i18n'
+
+// Import the models
+import Source from '../../models/sources/source';
+import SourceFactory from '../../models/source-factory';
+
+// Import the contexts
+import { NovelSourceListContext } from '../../providers/novel-source-list-provider';
 
 export const ImportSourceModal = observer(function ImportSourceModal(props: ImportSourceModalProps) {
     //Destructure the props
@@ -34,7 +41,10 @@ export const ImportSourceModal = observer(function ImportSourceModal(props: Impo
     //The url input state:
     const [url, setUrl] = useState('')
 
-    
+    //Get the source list from the context
+    const [sourceList, setSourceList] = useContext(NovelSourceListContext);
+
+
     const renderTitle = () => {
         return (
             <Text style={titleStyle}>{translate("imporSourcetModal.title")}</Text>
@@ -59,8 +69,29 @@ export const ImportSourceModal = observer(function ImportSourceModal(props: Impo
         setUrl('')
     }
 
+    const addSource = (importSource: Source) => {
+        setSourceList(prevSourceList => [...prevSourceList, importSource]);
+    }
+
+    // Check if the import source is already in the source list
+    const isSourceInList = (importSource: Source) => {
+        return sourceList.some((source: Source) => source.sourceTitle === importSource.sourceTitle)
+    }
+
     const onImportPress = () => {
-        console.log(`--> [Import source modal] import url: "${url}"`)
+        const importSource = SourceFactory.getSource(url)
+        if (!importSource) {
+            console.log('--> [ImportSourceModal]: Invalid source import')
+        }
+        else {
+            if (!isSourceInList(importSource)) {
+                addSource(importSource)
+            }
+            else {
+                console.log('--> [ImportSourceModal]: importing source is already in the list')
+            }
+        }
+
         setUrl('')
         onClosePress()
     }
