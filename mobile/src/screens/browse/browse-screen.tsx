@@ -22,11 +22,13 @@ import { SourceList } from '../../components/source-list/source-list';
 // Import the models
 import Source from '../../models/sources/source';
 import SourceOne  from '../../models/sources/source-one';
+import SourceTwo from '../../models/sources/source-two';
 
 export const BrowseScreen: FC<
     StackScreenProps<NavigatorParamList, typeof BrowseScreenName>
 > = observer(({ navigation, route }) => {
     const sourceOne = new SourceOne();
+    const sourceTwo = new SourceTwo();
 
     const [novelList, setNovelList] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -39,7 +41,7 @@ export const BrowseScreen: FC<
 
     const fetchNovelList = async () => {
         setLoading(true);
-        const novelList = await sourceOne.findNovelsByPage(1);
+        // const novelList = await sourceOne.findNovelsByPage(1);
         //console.log('--> novel list: ', novelList)
         return novelList;
     }

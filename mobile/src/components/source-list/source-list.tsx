@@ -14,6 +14,7 @@ import { translate } from '../../i18n'
 // Import the models
 import Source from '../../models/sources/source';
 import SourceOne from '../../models/sources/source-one';
+import SourceTwo from '../../models/sources/source-two';
 import { color, radius, spacing, typography } from '../../theme';
 
 
@@ -39,7 +40,9 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
     const [isEmpty, setIsEmpty] = useState(false)
     const [loading, setLoading] = useState(false)
 
+    // Initialize the sources
     const sourceOne = new SourceOne();
+    const sourceTwo = new SourceTwo();
 
     const fetchSourceList = async () => {
         setLoading(true)
@@ -49,6 +52,7 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
         // For now, we are just returning the hardcode source list
         const sourceList = [
             sourceOne,
+            sourceTwo
         ]
         return sourceList
     }
