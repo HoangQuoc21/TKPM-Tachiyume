@@ -22,6 +22,8 @@ import SourceFactory from '../../models/source-factory';
 // Import the contexts
 import { NovelSourceListContext } from '../../providers/novel-source-list-provider';
 
+import { addSourceToStorage as addSourceToStorage } from '../../storages/novel-sources-storage';
+
 export const ImportSourceModal = observer(function ImportSourceModal(props: ImportSourceModalProps) {
     //Destructure the props
     const {
@@ -69,9 +71,21 @@ export const ImportSourceModal = observer(function ImportSourceModal(props: Impo
         setUrl('')
     }
 
-    const addSource = (importSource: Source) => {
-        setSourceList(prevSourceList => [...prevSourceList, importSource]);
-    }
+    // const addSource = (importSource: Source) => {
+    //     setSourceList(prevSourceList => [...prevSourceList, importSource]);
+    // }
+
+    // const addSource = async (source: Source) => {
+    //     const newSourceList = [...sourceList, source];
+    //     setSourceList(newSourceList);
+    //     await setSources(newSourceList);
+    // };
+
+    const addSource = async (importSource: Source) => {
+        const newSourceList = [...sourceList, importSource];
+        setSourceList(newSourceList);
+        await addSourceToStorage(importSource);
+    };
 
     // Check if the import source is already in the source list
     const isSourceInList = (importSource: Source) => {

@@ -74,7 +74,8 @@
   },
   "sourceList":{
     "title": "Sources",
-    "empty": "No source available"
+    "empty": "No source available",
+    "clear": "Clear sources"
   },
   "imporSourcetModal": {
     "title": "Import novel source",

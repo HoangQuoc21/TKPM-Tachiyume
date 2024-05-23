@@ -13,11 +13,12 @@ import { translate } from '../../i18n'
 
 // Import the models
 import Source from '../../models/sources/source';
-import { SourceOne } from '../../models/sources/source-one';
-import { color } from '../../theme';
+import { color} from '../../theme';
 
 // Import the context
 import { NovelSourceListContext } from '../../providers/novel-source-list-provider';
+
+import { clearSourcesInStorage } from '../../storages/novel-sources-storage';
 
 
 export const SourceList = observer(function SourceList(props: SourceListProps) {
@@ -37,6 +38,8 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
     const emptyTextStyles = flatten([stylePresets[preset].EMPTY_TEXT])
     const loadingContainerStyles = flatten([stylePresets[preset].LOADING_CONTAINER])
     const loadingStyles = flatten([stylePresets[preset].LOADING])
+    const clearButtonStyles = flatten([stylePresets[preset].CLEAR_BUTTON])
+    const clearButtonTextStyles = flatten([stylePresets[preset].CLEAR_BUTTON_TEXT])
 
     //const [sourceList, setSourceList] = useState<Source[]>()
     const [isEmpty, setIsEmpty] = useState(false)
@@ -78,6 +81,11 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
         )
     }
 
+    const onClearSourcesPress = () => {
+        setSourceList([])
+        clearSourcesInStorage()
+    }
+
     const renderTitle = () => {
         return (
             <Row style={titleContainerStyles}>
@@ -85,7 +93,14 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
                     <Text style={titleStyles}>{translate("sourceList.title")}</Text>
                 </Column>
                 <Column style={{ flex: 6 }} />
-
+                <TouchableOpacity
+                    onPress={onClearSourcesPress}
+                    style={clearButtonStyles}
+                >
+                    <Text style={clearButtonTextStyles}>
+                        {translate("sourceList.clear")}
+                    </Text>
+                </TouchableOpacity>
             </Row>
 
         )
