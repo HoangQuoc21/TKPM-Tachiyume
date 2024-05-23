@@ -17,7 +17,7 @@ import { translate } from '../../i18n'
 
 // Import the models
 import Source from '../../models/sources/source';
-import SourceFactory from '../../models/source-factory';
+import SourceFactory from '../../factories/source-factory';
 
 // Import the contexts
 import { NovelSourceListContext } from '../../providers/novel-source-list-provider';

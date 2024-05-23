@@ -1,8 +1,8 @@
 // This is the source code of source factory:
 
 // Import the models
-import Source from "./sources/source";
-import {SourceOneImportURL, SourceOne} from "./sources/source-one";
+import Source from "../models/sources/source";
+import {SourceOneImportURL, SourceOne} from "../models/sources/source-one";
 
 // Source factory class
 export default class SourceFactory {
