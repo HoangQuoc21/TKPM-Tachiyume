@@ -1,15 +1,15 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Source from "../models/sources/source";
 
-const SOURCES_KEY = "sources";
+const NOVEL_SOURCES_KEY = "novel_sources";
 
 export const getSourcesFromStorage = async (): Promise<Source[]> => {
-  const sources = await AsyncStorage.getItem(SOURCES_KEY);
+  const sources = await AsyncStorage.getItem(NOVEL_SOURCES_KEY);
   return sources ? JSON.parse(sources) : [];
 };
 
 export const saveSourcesToStorage = async (sources: Source[]): Promise<void> => {
-  await AsyncStorage.setItem(SOURCES_KEY, JSON.stringify(sources));
+  await AsyncStorage.setItem(NOVEL_SOURCES_KEY, JSON.stringify(sources));
 };
 
 export const addSourceToStorage = async (source: Source): Promise<void> => {
@@ -29,5 +29,5 @@ export const removeSourceFromStorage = async (source: Source): Promise<void> => 
 };
 
 export const clearSourcesInStorage = async (): Promise<void> => {
-  await AsyncStorage.removeItem(SOURCES_KEY);
+  await AsyncStorage.removeItem(NOVEL_SOURCES_KEY);
 };

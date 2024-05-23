@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { flatten } from 'ramda';
 import { SourceListProps } from './source-list.props';
 import { stylePresets } from './source-list.presets';
-import { FlatList, Text, View, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { FlatList, Text, View, ActivityIndicator, TouchableOpacity } from 'react-native';
 
 import { Column } from '../column/column';
 import { Row } from '../row/row';

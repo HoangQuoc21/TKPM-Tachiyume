@@ -11,7 +11,7 @@ export function NovelSourceListProvider({ children }) {
         getSourcesFromStorage().then(fetchedSources => {
             setSourceList(fetchedSources);
         });
-        console.log('--> sourceList from storage:', sourceList);
+        //console.log('--> sourceList from storage:', sourceList);
     }, []);
 
     return (
