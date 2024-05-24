@@ -30,6 +30,7 @@ import { NovelSourceListContext } from '../../providers/novel-source-list-provid
 import { clearSourcesInStorage } from '../../storages/novel-sources-storage';
 
 
+
 export const SourceList = observer(function SourceList(props: SourceListProps) {
     const {
         preset = "default",
@@ -53,7 +54,11 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
     const [isEmpty, setIsEmpty] = useState(false)
     const [loading, setLoading] = useState(false)
 
+
     const [sourceList, setSourceList] = useContext(NovelSourceListContext);
+
+
+
 
     const [isSearch, setIsSearch] = useState(false);
     const [search, setSearch] = useState("");
@@ -71,6 +76,7 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
         });
         return () => backHandler.remove();
     }, []);
+
 
 
     useEffect(() => {
