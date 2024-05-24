@@ -15,6 +15,7 @@
     "@react-navigation/native-stack": "^6.9.26",
     "@react-navigation/stack": "^6.3.29",
     "@types/react": "~18.2.45",
+    "axios": "^1.7.2",
     "cheerio": "^1.0.0-rc.12",
     "expo": "~50.0.17",
     "expo-localization": "~14.8.4",

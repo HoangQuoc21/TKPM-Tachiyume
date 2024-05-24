@@ -1,8 +1,15 @@
 import Source from "./source";
 import { load } from "cheerio";
+import axios from "axios";
 
 function cleanContent(content: string) {
   return content.replace(/\n\n/g, "\n");
+}
+
+function getSummaryImage($) {
+  const imgElement = $(".summary_image > a > img");
+  const imgUrl = imgElement.attr("data-src").trim();
+  return imgUrl;
 }
 
 // Source: Box novel
@@ -44,7 +51,6 @@ class SourceTwo extends Source {
         }
       });
 
-
       return items;
     }
 
@@ -53,27 +59,21 @@ class SourceTwo extends Source {
 
       // Fetch the page
       const response = await fetch(pageUrl, {
-        method: 'GET',
+        method: "GET",
         headers: {
-            'Access-Control-Allow-Origin': '*',
-        }
-
-
-    });
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
       // Get the body of the page
       const html = await response.text();
       const novelsFromSource = await parse(html);
-      // 
-      console.log('Novels from source 2', novelsFromSource);
+      //
+      console.log("Novels from source 2", novelsFromSource);
       return novelsFromSource;
-
-
     } catch (error) {
-      console.log('Failed to fetch novels: ' + error.message); 
-      throw new Error('Failed to fetch novels: ' + error.message);
+      console.log("Failed to fetch novels: " + error.message);
+      throw new Error("Failed to fetch novels: " + error.message);
     }
-
-
   }
 
   // Novel details (get details from a novel in list of novels )
@@ -85,68 +85,90 @@ class SourceTwo extends Source {
       const $ = load(html);
 
       // Get the details of the novel
-      novel.id = this.id;
+      novel.id = 1; //assuming the id is 1
+
+      novel.sourceId = this.id;
       novel.title = $("post-title > h1").text().trim();
-      
+      novel.thumbnail = getSummaryImage($);
+      novel.description = $("div.summary__content")
+        .text()
+        .replace(/\n/g, "\n\n")
+        .trim();
+      novel.rating = parseFloat($(".total_votes").text().trim());
+      novel.authors = $(".author-content > a")
+        .map((i, el) => $(el).text().trim())
+        .get();
 
+      novel.view = 1000; // Assuming the view count is 1000
 
+      const genres = [];
+      $(".genres-content > a").each((i, el) => {
+        genres.push($(el).text().trim());
+      });
+      novel.category = genres;
+
+      //Find the status
+      $(".post-content_item").each((i, el) => {
+        const header = $(el).find(".summary-heading > h5").text().trim();
+        const content = $(el).find(".summary-content").text().trim();
+
+        if (header.toLowerCase() === "status") {
+          novel.state = content;
+        }
+      });
+
+      return novel;
     } catch (error) {
-      throw new Error('Failed to get novel detail: ' + error.message);
+      throw new Error("Failed to get novel detail: " + error.message);
     }
   }
   // Get list of chapters from a novel
   async findChaptersByNovel(novel: any) {
     try {
-      let items = [];
+      const chapters = [];
+      const web = `${novel.url}ajax/chapters`;
+      const response = await axios.post(web);
+      const html = response.data;
+      const $ = load(html);
 
-      // Fetch the novel page to get the novel ID
-      let response = await fetch(`${this.baseUrl}${novel.url}`);
-      let html = await response.text();
-      let $ = load(html);
-      let id = $("div#rating").attr("data-novel-id");
-
-      // Construct the URL to fetch chapters data
-      let chaptersUrl = `${this.baseUrl}/ajax-chapter-option?novelId=${id}`;
-      response = await fetch(chaptersUrl);
-      html = await response.text();
-      $ = load(html);
-
-      // Iterate over each option element and extract chapter details
-      $("select option").each((index, element) => {
-        let chapter = {
-          url: $(element).attr("value").trim(),
-          name: $(element).text().trim(),
-          id: parseFloat($(element).text().trim()), // Assuming the name contains a float number
+      $(".wp-manga-chapter").each((index, element) => {
+        const item = {
+          url: $(element).find("a").attr("href").trim(),
+          title: $(element).find("a").text().trim(),
+          id: parseFloat($(element).find("a").text().trim()), // Assuming the chapter name is a number
+          uploadDate: $(element)
+            .find("span.chapter-release-date")
+            .text()
+            .trim(),
         };
-        items.push(chapter);
+        chapters.push(item);
       });
 
-      return items;
+      return chapters;
     } catch (error) {
-      console.error("Failed to fetch chapters:", error);
+      console.log("Failed to fetch chapters:", error);
       throw error;
     }
   }
 
   async findContentByChapter(chapter: any) {
     try {
-      // Fetch the chapter page
-      const response = await fetch(`${this.baseUrl}${chapter.url}`);
-      const html = await response.text();
+      const response = await axios.get(chapter.url);
+      const html = response.data;
       const $ = load(html);
+      const main = $(".reading-content").first();
 
-      // Update the chapter URL to the absolute URL
-      chapter.url = `${this.baseUrl}${chapter.url}`;
-      chapter.content = "";
-      // Remove all script tags within `div.chapter-c`
-      $("div.chapter-c script").remove();
-      // Select paragraphs in 'div.chapter-c', append '::' to each, then replace '::' with '\n\n'
-      $("div.chapter-c p").append("::");
-      chapter.content = cleanContent(
-        $("div.chapter-c").text().replaceAll("::", "\n\n").trim()
-      );
+      if (!main.length) {
+        return null;
+      }
 
+      chapter.content = main
+        .find("p")
+        .map((i, el) => $(el).text().trim())
+        .get()
+        .join("\n\n");
       return chapter;
+
     } catch (error) {
       console.error("Failed to fetch chapter:", error);
       throw error;
