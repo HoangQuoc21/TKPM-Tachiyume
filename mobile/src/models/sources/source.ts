@@ -1,6 +1,7 @@
 // Novel Source abstract class
 
 abstract class Source {
+    static importURL: string;
     // Properties
     id: number 
     baseUrl: string

@@ -1,10 +1,18 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import { flatten } from 'ramda';
 import { SourceListProps } from './source-list.props';
 import { stylePresets } from './source-list.presets';
-import { FlatList, Text, View, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
+import {
+    FlatList,
+    Text,
+    View,
+    ActivityIndicator,
+    TouchableOpacity,
+    TextInput,
+    BackHandler
+} from 'react-native';
 
 import { Column } from '../column/column';
 import { Row } from '../row/row';
@@ -13,9 +21,14 @@ import { translate } from '../../i18n'
 
 // Import the models
 import Source from '../../models/sources/source';
-import SourceOne from '../../models/sources/source-one';
-import SourceTwo from '../../models/sources/source-two';
-import { color, radius, spacing, typography } from '../../theme';
+import { color, iconSize } from "../../theme";
+import { VectorIcon } from "../vector-icon/vector-icon";
+
+// Import the context
+import { NovelSourceListContext } from '../../providers/novel-source-list-provider';
+
+import { clearSourcesInStorage } from '../../storages/novel-sources-storage';
+
 
 
 export const SourceList = observer(function SourceList(props: SourceListProps) {
@@ -35,45 +48,99 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
     const emptyTextStyles = flatten([stylePresets[preset].EMPTY_TEXT])
     const loadingContainerStyles = flatten([stylePresets[preset].LOADING_CONTAINER])
     const loadingStyles = flatten([stylePresets[preset].LOADING])
+    const clearButtonStyles = flatten([stylePresets[preset].CLEAR_BUTTON])
+    const clearButtonTextStyles = flatten([stylePresets[preset].CLEAR_BUTTON_TEXT])
 
-    const [sourceList, setSourceList] = useState<Source[]>()
     const [isEmpty, setIsEmpty] = useState(false)
     const [loading, setLoading] = useState(false)
 
-    // Initialize the sources
-    const sourceOne = new SourceOne();
-    const sourceTwo = new SourceTwo();
 
-    const fetchSourceList = async () => {
-        setLoading(true)
+    const [sourceList, setSourceList] = useContext(NovelSourceListContext);
 
-        // Reading the source list from the local storage (implement later)
 
-        // For now, we are just returning the hardcode source list
-        const sourceList = [
-            sourceOne,
-            sourceTwo
-        ]
-        return sourceList
-    }
+
+
+    const [isSearch, setIsSearch] = useState(false);
+    const [search, setSearch] = useState("");
+    const [filteredData, setFilteredData] = useState(sourceList);
+
+    // Add this ref to clear focus on text input when press back button
+    const textInputRef = useRef(null);
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            if (textInputRef.current && textInputRef.current.isFocused()) {
+                textInputRef.current.blur();
+                return true; // prevent default behavior (exit app)
+            }
+            return false; // allow default behavior
+        });
+        return () => backHandler.remove();
+    }, []);
+
+
 
     useEffect(() => {
-        fetchSourceList().then((sourceList) => {
-            setSourceList(sourceList)
-            if (sourceList.length === 0) {
-                setIsEmpty(true)
-            }
-            setLoading(false)
-        })
-    }, [])
+        if (sourceList.length == 0) {
+            setIsEmpty(true)
+        }
+        else {
+            setIsEmpty(false)
+        }
+        setLoading(false)
+    }, [sourceList])
+
+    const handleSearch = (text: string) => {
+        setSearch(text);
+        setIsSearch(true);
+        if (text) {
+            const filterSourceList = sourceList.filter((item: Source) => {
+                const itemData = item.sourceTitle.toUpperCase();
+                const textData = text.toUpperCase();
+                return itemData.indexOf(textData) > -1;
+            });
+            setFilteredData(filterSourceList);
+        } else {
+            setIsSearch(false);
+            setFilteredData(sourceList);
+        }
+    };
+
+    const clearSearch = () => {
+        setSearch("");
+        setFilteredData(sourceList);
+        setIsSearch(false);
+    };
 
     const renderHeader = () => {
         return (
-            <Column style={searchBarContainerStyles}>
-                <Text>Search bar goes here</Text>
-            </Column>
-        )
-    }
+            <Row style={searchBarContainerStyles}>
+                <Column style={{ flex: 9 }}>
+                    <TextInput
+                        ref={textInputRef}
+                        style={searchBarStyles}
+                        placeholder="Search"
+                        value={search}
+                        onChangeText={(text) => handleSearch(text)}
+                    />
+                </Column>
+                <Column style={{ flex: 1 }}>
+                    {isSearch ?
+                        (<TouchableOpacity onPress={clearSearch}>
+                            <VectorIcon
+                                name={"close-outline"}
+                                color={color.ligthTheme.accent}
+                                size={iconSize.small}
+                            />
+                        </TouchableOpacity>) :
+                        (<VectorIcon
+                            name={"search-outline"}
+                            color={color.ligthTheme.accent}
+                            size={iconSize.small}
+                        />)}
+                </Column>
+            </Row>
+        );
+    };
 
     const renderEmpty = () => {
         return (
@@ -85,6 +152,11 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
         )
     }
 
+    const onClearSourcesPress = () => {
+        setSourceList([])
+        clearSourcesInStorage()
+    }
+
     const renderTitle = () => {
         return (
             <Row style={titleContainerStyles}>
@@ -92,7 +164,14 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
                     <Text style={titleStyles}>{translate("sourceList.title")}</Text>
                 </Column>
                 <Column style={{ flex: 6 }} />
-
+                <TouchableOpacity
+                    onPress={onClearSourcesPress}
+                    style={clearButtonStyles}
+                >
+                    <Text style={clearButtonTextStyles}>
+                        {translate("sourceList.clear")}
+                    </Text>
+                </TouchableOpacity>
             </Row>
 
         )
@@ -107,7 +186,7 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
     const renderSourceList = () => {
         return (
             <FlatList
-                data={sourceList}
+                data={filteredData}
                 renderItem={({ item }) => (renderItem(item))}
                 keyExtractor={(item) => item.id.toString()}
                 showsVerticalScrollIndicator={true}

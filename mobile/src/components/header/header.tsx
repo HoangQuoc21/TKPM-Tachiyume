@@ -46,7 +46,7 @@ export const Header = observer(function Logo(props: HeaderProps) {
                         onPress={onGoBack}
                     >
                         <VectorIcon
-                            name="arrow-back-sharp"
+                            name="chevron-back"
                             size={iconSize.medium}
                         />
                     </TouchableOpacity>
