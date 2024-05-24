@@ -5,8 +5,10 @@ function cleanContent(content: string) {
     return content.replace(/\n\n/g, "\n");
 }
 
+export const SourceOneImportURL = 'https://allnovel.org';
+
 // Source: ALL NOVEL
-class SourceOne extends Source {
+export class SourceOne extends Source {
     constructor () {
         super();
         this.id = 1;
@@ -163,5 +165,3 @@ class SourceOne extends Source {
     }
 
 }
-
-export default SourceOne;

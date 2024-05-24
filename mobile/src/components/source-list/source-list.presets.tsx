@@ -46,7 +46,15 @@ const DEFAULT_STYLE = {
     LOADING: {
 
     } as TextStyle,
-
+    CLEAR_BUTTON:{  
+        backgroundColor: color.ligthTheme.accentSecondary, 
+        padding: spacing[3], 
+        borderRadius: radius[3], 
+        ...shadow.default
+    } as ViewStyle,
+    CLEAR_BUTTON_TEXT:{
+        fontWeight: 'bold',
+    }  as TextStyle 
 }
 
 export const stylePresets = {

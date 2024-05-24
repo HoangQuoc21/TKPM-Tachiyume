@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { observer } from 'mobx-react-lite';
 import { flatten } from 'ramda';
 import { SourceListProps } from './source-list.props';
 import { stylePresets } from './source-list.presets';
-import { FlatList, Text, View, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { FlatList, Text, View, ActivityIndicator, TouchableOpacity } from 'react-native';
 
 import { Column } from '../column/column';
 import { Row } from '../row/row';
@@ -13,8 +13,12 @@ import { translate } from '../../i18n'
 
 // Import the models
 import Source from '../../models/sources/source';
-import SourceOne from '../../models/sources/source-one';
-import { color, radius, spacing, typography } from '../../theme';
+import { color} from '../../theme';
+
+// Import the context
+import { NovelSourceListContext } from '../../providers/novel-source-list-provider';
+
+import { clearSourcesInStorage } from '../../storages/novel-sources-storage';
 
 
 export const SourceList = observer(function SourceList(props: SourceListProps) {
@@ -34,34 +38,30 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
     const emptyTextStyles = flatten([stylePresets[preset].EMPTY_TEXT])
     const loadingContainerStyles = flatten([stylePresets[preset].LOADING_CONTAINER])
     const loadingStyles = flatten([stylePresets[preset].LOADING])
+    const clearButtonStyles = flatten([stylePresets[preset].CLEAR_BUTTON])
+    const clearButtonTextStyles = flatten([stylePresets[preset].CLEAR_BUTTON_TEXT])
 
-    const [sourceList, setSourceList] = useState<Source[]>()
+    //const [sourceList, setSourceList] = useState<Source[]>()
     const [isEmpty, setIsEmpty] = useState(false)
     const [loading, setLoading] = useState(false)
 
-    const sourceOne = new SourceOne();
+    const [sourceList, setSourceList] = useContext(NovelSourceListContext);
 
     const fetchSourceList = async () => {
         setLoading(true)
 
         // Reading the source list from the local storage (implement later)
-
-        // For now, we are just returning the hardcode source list
-        const sourceList = [
-            sourceOne,
-        ]
-        return sourceList
     }
 
     useEffect(() => {
-        fetchSourceList().then((sourceList) => {
-            setSourceList(sourceList)
-            if (sourceList.length === 0) {
-                setIsEmpty(true)
-            }
-            setLoading(false)
-        })
-    }, [])
+        if (sourceList.length == 0) {
+            setIsEmpty(true)
+        }
+        else {
+            setIsEmpty(false)
+        }
+        setLoading(false)
+    }, [sourceList])
 
     const renderHeader = () => {
         return (
@@ -81,6 +81,11 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
         )
     }
 
+    const onClearSourcesPress = () => {
+        setSourceList([])
+        clearSourcesInStorage()
+    }
+
     const renderTitle = () => {
         return (
             <Row style={titleContainerStyles}>
@@ -88,7 +93,14 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
                     <Text style={titleStyles}>{translate("sourceList.title")}</Text>
                 </Column>
                 <Column style={{ flex: 6 }} />
-
+                <TouchableOpacity
+                    onPress={onClearSourcesPress}
+                    style={clearButtonStyles}
+                >
+                    <Text style={clearButtonTextStyles}>
+                        {translate("sourceList.clear")}
+                    </Text>
+                </TouchableOpacity>
             </Row>
 
         )
