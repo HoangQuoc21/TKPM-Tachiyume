@@ -49,7 +49,10 @@ export const BrowseScreen: FC<
         setLoading(true);
         // const novelList = await sourceOne.findNovelsByPage(1);
 
-        //console.log('--> novel list: ', novelList)
+        // console.log('--> novel list: ', novelList[0])
+        const novelDetail = await sourceOne.findNovelDetails(novel);
+        console.log(novelDetail)
+
         return novelList;
     }
 

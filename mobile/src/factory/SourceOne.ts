@@ -82,8 +82,8 @@ class SourceOne extends SourceInterface {
 
             novel.sourceId = this.id; // Assuming `sourceId` is defined elsewhere in your code.
             novel.title = $("div.books h3.title").text().trim();
-            novel.cover = `${this.id}${$("div.books img").attr("src").trim()}`;
-            novel.summary = $("div.desc-text > p").text().trim();
+            novel.thumbnail = `${this.id}${$("div.books img").attr("src").trim()}`;
+            novel.description = $("div.desc-text > p").text().trim();
             novel.rating = parseFloat($("input#rateVal").attr("value")) / 2;
             const lastestChapters = [];
             const chapterWrapHTML = $(".l-chapter .l-chapters");
