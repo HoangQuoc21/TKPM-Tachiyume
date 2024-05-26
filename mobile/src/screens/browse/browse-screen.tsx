@@ -10,12 +10,10 @@ import { ChapterScreenName } from '../chapter/chapter-screen';
 import { MainStackName } from "../../navigators/main-navigators"
 import { NavigatorParamList } from "../../navigators/app-navigator"
 
-// Import the i18n for translation
-import { translate } from '../../i18n'
-
 // Import the custom components
 import { Screen } from "../../components/screen/screen"
 import { Column } from '../../components/column/column';
+
 import { SourceList } from '../../components/source-list/source-list';
 import { FloatingButton } from '../../components/floating-button/floating-button';
 import { ImportSourceModal } from '../../components/import-source-modal/import-source-modal';
@@ -25,6 +23,7 @@ import Source from '../../models/sources/source';
 
 import {SourceOne}  from '../../models/sources/source-one';
 import {SourceTwo} from '../../models/sources/source-two';
+
 
 
 export const BrowseScreen: FC<
@@ -37,6 +36,7 @@ export const BrowseScreen: FC<
     const [loading, setLoading] = useState(false);
     const [source, setSource] = useState<Source>();
 
+
     const [novelDetail, setNovelDetail] = useState();
     const [chapterList, setChapterList] = useState([]);
     const [chapterContent, setChapterContent] = useState();
@@ -47,7 +47,7 @@ export const BrowseScreen: FC<
     const fetchNovelList = async () => {
         setLoading(true);
         // const novelList = await sourceOne.findNovelsByPage(1);
-        //console.log('--> novel list: ', novelList)
+
         return novelList;
     }
 
@@ -60,53 +60,19 @@ export const BrowseScreen: FC<
 
     // },[])
 
-    const fetchNovelDetail = async (novel) => {
-        setLoading(true);
-        const novelDetail = await sourceOne.findNovelsDetail(novel);
-        //console.log('--> novel detail: ', novelDetail)
-        return novelDetail;
-    }
-
-    // useEffect(() => {
-    //     fetchNovelDetail(novelList[0]).then((novelDetail) => {
-    //         setNovelDetail(novelDetail);
-    //         setLoading(false);
-    //     })
-    //     //console.log('novelDetail: ', novelDetail)
-    // },[])
-
-    const fetchChapterList = async (novel) => {
-        setLoading(true);
-        const chapterList = await sourceOne.findChaptersByNovel(novel);
-        return chapterList;
-    }
-
-    // useEffect(() => {
-    //     fetchChapterList(novelList[0]).then((chapterList) => {
-    //         setChapterList(chapterList);
-    //         setLoading(false);
-    //     })
-    //     //console.log('--> chapterList: ', chapterList)
-    // },[])
-
-    const fetchChapterContent = async (chapter) => {
-        setLoading(true);
-        const content = await sourceOne.findContentByChapter(chapter);
-        return content;
-    }
-
-    // useEffect(() => {
-    //     fetchChapterContent(chapterList[0]).then((content) => {
-    //         setChapterContent(content);
-    //         setLoading(false);
-    //     })
-    //     console.log('--> chapterContent: ', chapterContent)
-    // }, [])
+    useEffect(() => {
+        fetchNovelList().then((novelList) => {
+            setNovelList(novelList);
+            setLoading(false);
+        })
+        setSource(sourceOne as unknown as Source);
+    }, [])
 
     const onPressNovelList = () => {
         navigation.navigate(NovelListScreenName, {
             header: 'Novel List Screen Name',
             data: {
+
                 source: sourceOne
             }
         })
@@ -116,6 +82,7 @@ export const BrowseScreen: FC<
         return (
             <View style={styles.HEADER}>
                 <Text style={[styles.TEXT, { alignSelf: 'center', fontWeight: 'bold' }]}>
+                    Novel List
                     Source One information
                 </Text>
                 <Text style={[styles.TEXT]}>
@@ -151,7 +118,6 @@ export const BrowseScreen: FC<
                         </View>
                     )}
                     keyExtractor={item => item.url}
-                    scrollEnabled={false}
                 />
             </View>
         )
@@ -159,16 +125,7 @@ export const BrowseScreen: FC<
 
     const renderFooter = () => {
         return (
-            <View style={[styles.FOOTER, { marginTop: 20 }]}>
-                <Text style={[styles.TEXT, { alignSelf: 'center', fontWeight: 'bold' }]}>
-                    Novel Detail:
-                </Text>
-                <Text>
-                    {JSON.stringify(novelList[0])}
-                </Text>
-                <Text>
-                    {JSON.stringify(novelDetail)}
-                </Text>
+            <View style={styles.FOOTER}>
             </View>
         )
     }
@@ -213,10 +170,11 @@ export const BrowseScreen: FC<
 
     return (
         <Screen style={styles.ROOT} preset='fixed' unsafe>
-            {/* {renderHeader()}
+            {renderHeader()}
             {renderBody()}
             {renderFooter()}
-            {loading && LoadingCircle()} */}
+            {loading && LoadingCircle()}
+            {loading && LoadingCircle()} 
             {renderModal()}
             {renderSourceList()}
             {renderFloatingButton()}

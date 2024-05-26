@@ -1,16 +1,12 @@
-import Chapter from '../chapter';
-import Novel from '../novel';
-import Source from './source';
+import SourceInterface from "./SourceInterface";
 import {load} from 'cheerio'
-
+//const sourceId = 1;
+//const baseUrl = 'https://allnovel.org'; // Source: ALL NOVEL
 function cleanContent(content: string) {
     return content.replace(/\n\n/g, "\n");
 }
 
-export const SourceOneImportURL = 'https://allnovel.org';
-
-// Source: ALL NOVEL
-export class SourceOne extends Source {
+class SourceOne extends SourceInterface {
     constructor () {
         super();
         this.id = 1;
@@ -48,7 +44,6 @@ export class SourceOne extends Source {
                         const $img = load(responseData);
 
                         item.cover = `${sourceBaseUrl}${$img('div.books img').attr('src')}`;
-
                         //console.log(item)
                         items.push(item);
                     } catch (e) {
@@ -79,7 +74,7 @@ export class SourceOne extends Source {
     }
 
     // Novel details (get details from a novel in list of novels )
-    async findNovelDetails(novel: Novel) {
+    async findNovelDetails(novel: any) {
         try {
             const response = await fetch(`${this.baseUrl}${novel.url}`);
             const html = await response.text();
@@ -89,6 +84,7 @@ export class SourceOne extends Source {
             novel.title = $("div.books h3.title").text().trim();
             novel.thumbnail = `${this.id}${$("div.books img").attr("src").trim()}`;
             novel.description = $("div.desc-text > p").text().trim();
+            novel.rating = parseFloat($("input#rateVal").attr("value")) / 2;
             const lastestChapters = [];
             const chapterWrapHTML = $(".l-chapter .l-chapters");
             const chapterListHTML = chapterWrapHTML.find("li");
@@ -110,7 +106,7 @@ export class SourceOne extends Source {
                     category.push($(a).text());
                 });
                 novel.category = category;
-                novel.state = el.find("div:eq(4) > a").text();
+                novel.status = el.find("div:eq(4) > a").text();
             });
 
             return novel;
@@ -154,13 +150,14 @@ export class SourceOne extends Source {
     }
  
 
-    async findContentByChapter(chapter: Chapter) {
+    async findContentByChapter(chapter: any) {
         try {
             // Fetch the chapter page
             const response = await fetch(`${this.baseUrl}${chapter.url}`);
             const html = await response.text();
             const $ = load(html);
-            // Update the chapter URL to the absolute URL   
+
+            // Update the chapter URL to the absolute URL
             chapter.url = `${this.baseUrl}${chapter.url}`;
             chapter.content = "";
             // Remove all script tags within `div.chapter-c`
@@ -168,6 +165,7 @@ export class SourceOne extends Source {
             // Select paragraphs in 'div.chapter-c', append '::' to each, then replace '::' with '\n\n'
             $('div.chapter-c p').append('::');
             chapter.content = cleanContent($('div.chapter-c').text().replaceAll('::', '\n\n').trim());
+
             return chapter;
         } catch (error) {
             console.error('Failed to fetch chapter:', error);
@@ -176,3 +174,5 @@ export class SourceOne extends Source {
     }
 
 }
+
+export default SourceOne;

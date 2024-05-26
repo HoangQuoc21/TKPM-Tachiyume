@@ -13,8 +13,7 @@ class Novel {
     category: number[]
     description: string
     view: number
-    lastestChapter: Chapter
-    chapterList: Chapter[]
+    lastestChapters: Chapter[]
 }
 
 export default Novel;
