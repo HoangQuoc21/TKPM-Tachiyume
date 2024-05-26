@@ -1,5 +1,8 @@
 // Novel Source abstract class
 
+import Chapter from "../chapter";
+import Novel from "../novel";
+
 abstract class Source {
     static importURL: string;
     // Properties
@@ -22,11 +25,11 @@ abstract class Source {
     // List of novels to show in on page
     abstract findNovelsByPage(page: number): Promise<any[]>
     // Novel details (get details from a novel in list of novels )
-    abstract findNovelsDetail(novel: any): Promise<any>
+    abstract findNovelDetails(novel: Novel): Promise<any>
     // Get list of chapters from a novel
     abstract findChaptersByNovel(novel: any): Promise<any[]>
     // Get content from a chapter
-    abstract findContentByChapter(chapter: any): Promise<any>
+    abstract findContentByChapter(chapter: Chapter): Promise<any>
 }
 
 export default Source;

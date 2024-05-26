@@ -1,6 +1,7 @@
 import Source from "./source";
 import { load } from "cheerio";
 import axios from "axios";
+import Novel from "../novel";
 
 function cleanContent(content: string) {
   return content.replace(/\n\n/g, "\n");
@@ -16,6 +17,9 @@ export const SourceTwoImportURL = "https://boxnovel.com";
 
 // Source: Box novel
 export class SourceTwo extends Source {
+  findNovelDetails(novel: Novel): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
   constructor() {
     super();
     this.id = 2;
