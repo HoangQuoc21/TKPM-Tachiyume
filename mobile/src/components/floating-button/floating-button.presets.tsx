@@ -17,7 +17,7 @@ const DEFAULT_STYLE = {
         borderRadius: radius[4],
         ...shadow.default,
         position: 'absolute',
-        bottom: 20,
+        bottom: 70,
         right: 20,
     } as ViewStyle,
 }
