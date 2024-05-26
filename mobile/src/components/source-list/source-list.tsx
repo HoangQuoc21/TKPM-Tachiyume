@@ -84,6 +84,7 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
             setIsEmpty(true)
         }
         else {
+            setFilteredData(sourceList)
             setIsEmpty(false)
         }
         setLoading(false)
@@ -154,6 +155,7 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
 
     const onClearSourcesPress = () => {
         setSourceList([])
+        setFilteredData([])
         clearSourcesInStorage()
     }
 
