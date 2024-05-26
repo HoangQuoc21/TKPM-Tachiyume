@@ -31,13 +31,15 @@ export const color = {
     // Main color theme for app
     primary: '#FFF8F3',
     secondary: '#F8ECDF',
+    third: "#FEF2E5",
+    fourth: "#F2E6DA",
 
     // Text and text-related color
     text: '#201B13',
     textSecondary: 'black',
     placeHolder: '',
 
-    // Accent color#
+    // Accent color
     accent: '#201B13',
     accentSecondary: '#F9DFBB',
     accentThird: "#7E570E",

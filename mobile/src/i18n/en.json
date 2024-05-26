@@ -7,11 +7,13 @@
     "cancel": "Cancel",
     "search": "Search"
   },
-  "errors": {
-   
+  "error": {
+    "sourceExisted": "Source existed",
+    "noSource": "No source available",
   },
   "success": {
-   
+   "importSource": "Import source success",
+    "clearSource": "Clear source success"
   },
   "mainTab": {
     "favorite": "Favorite",
@@ -81,6 +83,7 @@
   "imporSourcetModal": {
     "title": "Import novel source",
     "novelUrl": "Novel URL",
-    "import": "Import"
+    "import": "Import",
+    "chooseSource": "Choose a source"
   }
 }

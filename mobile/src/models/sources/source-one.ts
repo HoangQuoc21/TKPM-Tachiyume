@@ -7,15 +7,15 @@ function cleanContent(content: string) {
     return content.replace(/\n\n/g, "\n");
 }
 
-export const SourceOneImportURL = 'https://allnovel.org';
-
 // Source: ALL NOVEL
-export class SourceOne extends Source {
+export default class SourceOne extends Source {
+    static title = "All Novel";
+    static importURL = "https://allnovel.org";
     constructor () {
         super();
         this.id = 1;
+        this.sourceTitle = 'All Novel';
         this.baseUrl = 'https://allnovel.org';
-        this.sourceTitle = 'AllNovel';
         this.thumbnail = "https://allnovel.org/uploads/thumbs/logo-allnovel-2-1-ad7cde4de9-4a0ffbf5f789092106e8046d01d3c362.png";
         this.readLanguage = 'English';
     }
@@ -110,7 +110,7 @@ export class SourceOne extends Source {
                     category.push($(a).text());
                 });
                 novel.category = category;
-                novel.state = el.find("div:eq(4) > a").text();
+                novel.status = el.find("div:eq(4) > a").text();
             });
 
             return novel;
@@ -120,7 +120,7 @@ export class SourceOne extends Source {
         }
     }
     // Get list of chapters from a novel
-    async findChaptersByNovel(novel: any) {
+    async findChaptersByNovel(novel: Novel) {
         try {
             let items = [];
 
@@ -153,7 +153,7 @@ export class SourceOne extends Source {
         }
     }
  
-
+    // Get content from a chapter
     async findContentByChapter(chapter: Chapter) {
         try {
             // Fetch the chapter page

@@ -1,20 +1,22 @@
 import Source from "./source";
 import {load} from 'cheerio'
 import axios from 'axios'
+import Novel from "../novel";
 
 
 function cleanContent(content: string) {
     return content.replace(/\n\n/g, "\n");
 }
 
-export const SourceThreeImportURL = 'https://lightnovelheaven.com';
 
-export class SourceThree extends Source {
+export default class SourceThree extends Source {
+    static title = "Light Novel Heaven";
+    static importURL = "https://lightnovelheaven.com";
     constructor() {
         super();
         this.id = 3;
+        this.sourceTitle = 'Light Novel Heaven';
         this.baseUrl = 'https://lightnovelheaven.com/';
-        this.sourceTitle = "LightNovelHeaeven"
         this.thumbnail = "https://lightnovelheaven.com/wp-content/uploads/2020/07/cropped-mid-2-192x192.png";
         this.readLanguage = "English";
     }
@@ -64,22 +66,22 @@ export class SourceThree extends Source {
     }
 
     // Novel details (get details from a novel in list of novels )
-    async findNovelsDetail(novel: any) {
+    async findNovelsDetail(novel: Novel) {
         try {
             const response = await axios.get(`${novel.url}`);
             const $ = load(response.data);
 
             novel.sourceId = this.id;
-            novel.name = $(".post-title > h1").text().trim();
-            novel.cover = $(".summary_image > a > img").attr("data-src")?.trim() || '';
-            novel.summary = $(".summary__content > p").map((i, el) => $(el).text().trim()).get().join('\n\n');
+            novel.title = $(".post-title > h1").text().trim();
+            novel.thumbnail = $(".summary_image > a > img").attr("data-src")?.trim() || '';
+            novel.description = $(".summary__content > p").map((i, el) => $(el).text().trim()).get().join('\n\n');
             novel.rating = parseFloat($(".total_votes").text().trim()) || 0;
 
             const authors = $(".author-content > a").map((i, el) => $(el).text().trim()).get();
             novel.authors = authors.length ? authors : [];
 
             const genres = $(".genres-content > a").map((i, el) => $(el).text().trim()).get();
-            novel.genres = genres.length ? genres : [];
+            novel.category = genres.length ? genres : [];
 
             $(".post-content_item").each((i, el) => {
                 const header = $(el).find(".summary-heading > h5").text().trim();
@@ -90,7 +92,7 @@ export class SourceThree extends Source {
                 } else if (header.toLowerCase() === 'alternative') {
                     novel.alternateNames = content.split(',').map(name => name.trim());
                 } else if (header.toLowerCase() === 'release') {
-                    novel.year = parseInt(content, 10);
+                    novel.releaseYear = parseInt(content, 10);
                 }
             });
 
@@ -150,7 +152,9 @@ export class SourceThree extends Source {
         }
     }
 
-    
+    async findNovelDetails(novel: any): Promise<any>{
+        
+    }
 }
 
 // export default SourceThree;

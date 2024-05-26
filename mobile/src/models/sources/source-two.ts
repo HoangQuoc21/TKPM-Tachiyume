@@ -2,6 +2,7 @@ import Source from "./source";
 import { load } from "cheerio";
 import axios from "axios";
 import Novel from "../novel";
+import Chapter from "../chapter";
 
 function cleanContent(content: string) {
   return content.replace(/\n\n/g, "\n");
@@ -13,20 +14,22 @@ function getSummaryImage($) {
   return imgUrl;
 }
 
-export const SourceTwoImportURL = "https://boxnovel.com";
+// export const SourceTwoImportURL = "https://boxnovel.com";
 
 // Source: Box novel
-export class SourceTwo extends Source {
+export default class SourceTwo extends Source {
   findNovelDetails(novel: Novel): Promise<any> {
     throw new Error("Method not implemented.");
   }
+  static title = "Box Novel";
+  static importURL = "https://boxnovel.com";
+
   constructor() {
     super();
     this.id = 2;
+    this.sourceTitle = "Box Novel";
     this.baseUrl = "https://boxnovel.com/";
-    this.sourceTitle = "BoxNovel";
-    this.thumbnail =
-      "https://boxnovel.com/wp-content/uploads/2018/04/box-icon-250x250.png";
+    this.thumbnail ="https://boxnovel.com/wp-content/uploads/2018/04/box-icon-250x250.png";
     this.readLanguage = "English";
   }
   // List of novels to show in one page
@@ -83,7 +86,7 @@ export class SourceTwo extends Source {
   }
 
   // Novel details (get details from a novel in list of novels )
-  async findNovelsDetail(novel: any) {
+  async findNovelsDetail(novel: Novel) {
     try {
       // fetch the detail page of the novel
       const reponse = await fetch(`${this.baseUrl}${novel.url}`);
@@ -119,7 +122,7 @@ export class SourceTwo extends Source {
         const content = $(el).find(".summary-content").text().trim();
 
         if (header.toLowerCase() === "status") {
-          novel.state = content;
+          novel.status = content;
         }
       });
 
@@ -129,7 +132,7 @@ export class SourceTwo extends Source {
     }
   }
   // Get list of chapters from a novel
-  async findChaptersByNovel(novel: any) {
+  async findChaptersByNovel(novel: Novel) {
     try {
       const chapters = [];
       const web = `${novel.url}ajax/chapters`;
@@ -157,7 +160,7 @@ export class SourceTwo extends Source {
     }
   }
 
-  async findContentByChapter(chapter: any) {
+  async findContentByChapter(chapter: Chapter) {
     try {
       const response = await axios.get(chapter.url);
       const html = response.data;
@@ -181,5 +184,3 @@ export class SourceTwo extends Source {
     }
   }
 }
-
-export default SourceTwo;

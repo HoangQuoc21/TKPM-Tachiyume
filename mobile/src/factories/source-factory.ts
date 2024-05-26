@@ -2,19 +2,26 @@
 
 // Import the models
 import Source from "../models/sources/source";
-import {SourceOneImportURL, SourceOne} from "../models/sources/source-one";
-import {SourceTwoImportURL, SourceTwo} from "../models/sources/source-two";
-import {SourceThreeImportURL, SourceThree} from '../models/sources/source-three'
+import SourceOne from "../models/sources/source-one";
+import SourceTwo from "../models/sources/source-two";
+import SourceThree from '../models/sources/source-three'
+
+export const sourceImportURLs = [
+    {label: SourceOne.title, value: SourceOne.importURL},
+    {label: SourceTwo.title, value: SourceTwo.importURL},
+    {label: SourceThree.title, value: SourceThree.importURL},
+]
+
 // Source factory class
-export default class SourceFactory {
+export class SourceFactory {
     // Get source by import URL
     static getSource(SourceImportURL: string): Source {
         switch (SourceImportURL) {
-            case SourceOneImportURL:
+            case SourceOne.importURL:
                 return new SourceOne();
-            case SourceTwoImportURL:
+            case SourceTwo.importURL:
                 return new SourceTwo();
-            case SourceThreeImportURL:
+            case SourceThree.importURL:
                 return new SourceThree();
             default:
                 return null;

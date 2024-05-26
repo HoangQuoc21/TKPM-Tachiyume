@@ -7,4 +7,5 @@ export interface TextInputProps {
     onChangeText(value: string): void
     inputMode?: 'url' | 'text'
     onTextClear?(): void
+    enableEdit?: boolean
 }

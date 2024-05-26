@@ -3,8 +3,10 @@ import { flatten } from "ramda"
 import { observer } from "mobx-react-lite"
 
 import { useState, useContext } from 'react';
+import { useToast } from "react-native-toast-notifications";
 
-import { Text, Modal, TouchableOpacity } from 'react-native';
+import { Text, Modal, TouchableOpacity, } from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 import { ImportSourceModalProps } from './import-source-modal.props';
 import { stylePresets } from './import-source-modal.presets';
@@ -17,12 +19,13 @@ import { translate } from '../../i18n'
 
 // Import the models
 import Source from '../../models/sources/source';
-import SourceFactory from '../../factories/source-factory';
+import { sourceImportURLs, SourceFactory } from '../../factories/source-factory';
 
 // Import the contexts
 import { NovelSourceListContext } from '../../providers/novel-source-list-provider';
 
 import { addSourceToStorage } from '../../storages/novel-sources-storage';
+import { color, radius, spacing } from '../../theme';
 
 export const ImportSourceModal = observer(function ImportSourceModal(props: ImportSourceModalProps) {
     //Destructure the props
@@ -41,11 +44,12 @@ export const ImportSourceModal = observer(function ImportSourceModal(props: Impo
     const buttonTextStyle = flatten([stylePresets[preset].BUTTON_TEXT])
 
     //The url input state:
-    const [url, setUrl] = useState('')
+    const [importURL, setImportURL] = useState('')
 
     //Get the source list from the context
     const [sourceList, setSourceList] = useContext(NovelSourceListContext);
 
+    const toast = useToast();
 
     const renderTitle = () => {
         return (
@@ -58,17 +62,18 @@ export const ImportSourceModal = observer(function ImportSourceModal(props: Impo
             <TextInput
                 preset='default'
                 placeholder={translate("imporSourcetModal.novelUrl")}
-                value={url}
-                onChangeText={setUrl}
+                value={importURL}
+                onChangeText={setImportURL}
                 inputMode='url'
-                onTextClear={() => setUrl('')}
+                onTextClear={() => setImportURL('')}
+                enableEdit={false}
             />
         )
     }
 
     const onCancelPress = () => {
         onClosePress()
-        setUrl('')
+        setImportURL('')
     }
 
     const addSource = async (importSource: Source) => {
@@ -79,27 +84,38 @@ export const ImportSourceModal = observer(function ImportSourceModal(props: Impo
 
     // Check if the import source is already in the source list
     const isSourceInList = (importSource: Source) => {
-        return sourceList.some((source: Source) => source.sourceTitle === importSource.sourceTitle)
+        return sourceList.some((source: Source) => source.id === importSource.id);
     }
 
     const onImportPress = () => {
-        const importSource = SourceFactory.getSource(url)
-        if (!importSource) {
-            //TODO: show an error alert
-            console.log('--> [ImportSourceModal]: Invalid source import')
+        const importSource = SourceFactory.getSource(importURL)
+        if (!isSourceInList(importSource)) {
+            addSource(importSource)
+            toast.show(translate("success.importSource"), { type: 'success' })
         }
         else {
-            if (!isSourceInList(importSource)) {
-                addSource(importSource)
-            }
-            else {
-                //TODO: show an error alert
-                console.log('--> [ImportSourceModal]: importing source is already in the list')
-            }
+            toast.show(translate("error.sourceExisted"), { type: 'warning' })
         }
 
-        setUrl('')
+        setImportURL('')
         onClosePress()
+    }
+
+    const [pickerOpen, setPickerOpen] = useState(false);
+
+    const renderPicker = () => {
+        return (
+            <DropDownPicker
+                open={pickerOpen}
+                value={importURL}
+                items={sourceImportURLs}
+                setOpen={setPickerOpen}
+                setValue={setImportURL}
+                placeholder={translate("imporSourcetModal.chooseSource")}
+                placeholderStyle={{ color: color.ligthTheme.text }}
+                autoScroll={true}
+            />
+        )
     }
 
     const renderButtons = () => {
@@ -129,7 +145,8 @@ export const ImportSourceModal = observer(function ImportSourceModal(props: Impo
             <Column style={overlayContainerStyle}>
                 <Column style={modalContainerStyle}>
                     {renderTitle()}
-                    {renderInput()}
+                    {/* {renderInput()} */}
+                    {renderPicker()}
                     {renderButtons()}
                 </Column>
             </Column>

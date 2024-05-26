@@ -18,6 +18,8 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Header } from "../components/header/header";
 import { translate } from "../i18n";
 
+import { Source } from "../models/source";
+
 // Define the screen input parameters
 export type NavigatorParamList = {
     [AboutScreenName]: undefined
@@ -42,7 +44,7 @@ export type NavigatorParamList = {
     {
         header: string,
         data: {
-
+            source: Source
         }
     }
     [SplashScreenName]: undefined
@@ -76,9 +78,9 @@ function AppStack() {
             <Stack.Screen
                 name={NovelListScreenName}
                 component={NovelListScreen}
-                options={
-                    ({ route }) => ({ title: route.params.header })
-                }
+                options={({ route }) => ({
+                    header: () => <Header title={route.params.header} canGoBack />
+                })}
             />
             <Stack.Screen
                 name={NovelDetailScreenName}
