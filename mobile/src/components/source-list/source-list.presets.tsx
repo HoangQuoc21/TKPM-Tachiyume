@@ -22,7 +22,6 @@ const DEFAULT_STYLE = {
         marginHorizontal: spacing[4],
         marginVertical: spacing[2],
         borderRadius: radius[7],
-        alignContent: "center",
         backgroundColor: color.ligthTheme.fourth,
         paddingHorizontal: spacing[2],
         marginBottom: spacing[1],

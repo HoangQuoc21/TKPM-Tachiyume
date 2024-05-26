@@ -129,13 +129,13 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
                             <VectorIcon
                                 name={"close-outline"}
                                 color={color.ligthTheme.accent}
-                                size={iconSize.small}
+                                size={iconSize.medium}
                             />
                         </TouchableOpacity>) :
                         (<VectorIcon
                             name={"search-outline"}
                             color={color.ligthTheme.accent}
-                            size={iconSize.small}
+                            size={iconSize.medium}
                         />)}
                 </Column>
             </Row>

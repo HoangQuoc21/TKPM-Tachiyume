@@ -12,8 +12,10 @@ function getSummaryImage($) {
   return imgUrl;
 }
 
+export const SourceTwoImportURL = "https://boxnovel.com";
+
 // Source: Box novel
-class SourceTwo extends Source {
+export class SourceTwo extends Source {
   constructor() {
     super();
     this.id = 2;
