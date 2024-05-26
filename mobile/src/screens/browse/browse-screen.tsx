@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useState } from 'react';
 import styles from './browse-screen.styles';
 import { Header, StackScreenProps } from "@react-navigation/stack"
-import { View, Text, Button, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 
 import { NovelListScreenName } from '../novel-list/novel-list-screen';
 import { NovelDetailScreenName } from '../novel-detail/novel-detail-screen';
@@ -14,34 +14,53 @@ import { NavigatorParamList } from "../../navigators/app-navigator"
 // Import the custom components
 import { Screen } from "../../components/screen/screen"
 import { Column } from '../../components/column/column';
-import { translate } from '../../i18n'
-const novel = {"cover": "https://allnovel.org/uploads/thumbs/hidden-marriage-f01a027382-cc9bf2a443c2b4f991d7b0910611187a.jpg"
-, "name": "Hidden Marriage"
-, "sourceId": 1
-, "url": "/hidden-marriage.html"}
+
+import { SourceList } from '../../components/source-list/source-list';
+import { FloatingButton } from '../../components/floating-button/floating-button';
+import { ImportSourceModal } from '../../components/import-source-modal/import-source-modal';
 
 // Import the models
-import { Source } from '../../models/source';
+import Source from '../../models/sources/source';
+
+import {SourceOne}  from '../../models/sources/source-one';
+import {SourceTwo} from '../../models/sources/source-two';
+
+
 
 export const BrowseScreen: FC<
     StackScreenProps<NavigatorParamList, typeof BrowseScreenName>
 > = observer(({ navigation, route }) => {
     const sourceOne = new SourceOne();
+    const sourceTwo = new SourceTwo();
 
     const [novelList, setNovelList] = useState([]);
     const [loading, setLoading] = useState(false);
     const [source, setSource] = useState<Source>();
 
 
+    const [novelDetail, setNovelDetail] = useState();
+    const [chapterList, setChapterList] = useState([]);
+    const [chapterContent, setChapterContent] = useState();
+
+    const [modalVisible, setModalVisible] = useState(false);
+
+
     const fetchNovelList = async () => {
         setLoading(true);
         // const novelList = await sourceOne.findNovelsByPage(1);
-        // console.log('--> novel list: ', novelList[0])
-        const novelDetail = await sourceOne.findNovelDetails(novel);
-        console.log(novelDetail)
-        console.log("asd")
+
+        //console.log('--> novel list: ', novelList)
         return novelList;
     }
+
+    // useEffect(() => {
+    //     fetchNovelList().then((novelList) => {
+    //         setNovelList(novelList);
+    //         setLoading(false);
+    //     }) 
+    //     setSource(sourceOne);
+
+    // },[])
 
     useEffect(() => {
         fetchNovelList().then((novelList) => {
@@ -56,6 +75,7 @@ export const BrowseScreen: FC<
             header: 'Novel List Screen Name',
             data: {
 
+                source: sourceOne
             }
         })
     }
@@ -65,6 +85,7 @@ export const BrowseScreen: FC<
             <View style={styles.HEADER}>
                 <Text style={[styles.TEXT, { alignSelf: 'center', fontWeight: 'bold' }]}>
                     Novel List
+                    Source One information
                 </Text>
                 <Text style={[styles.TEXT]}>
                     {`Source one's sourceId: ${source?.id}`}
@@ -88,6 +109,9 @@ export const BrowseScreen: FC<
     const renderBody = () => {
         return (
             <View style={[styles.BODY, { marginTop: 20 }]}>
+                <Text style={[styles.TEXT, { alignSelf: 'center', fontWeight: 'bold' }]}>
+                    Novel List
+                </Text>
                 <FlatList
                     data={novelList}
                     renderItem={({ item }) => (
@@ -116,12 +140,46 @@ export const BrowseScreen: FC<
         );
     };
 
+
+
+    const onFloatingButtonPress = () => {
+        setModalVisible(!modalVisible)
+    }
+
+    const renderModal = () => {
+        return (
+            <ImportSourceModal
+                isVisible={modalVisible}
+                onClosePress={onFloatingButtonPress}
+            />
+        )
+    }
+
+    const renderSourceList = () => {
+        return (
+            <SourceList />
+        )
+    }
+
+    const renderFloatingButton = () => {
+        return (
+            <FloatingButton
+                icon='add-sharp'
+                onPress={onFloatingButtonPress}
+            />
+        )
+    }
+
     return (
         <Screen style={styles.ROOT} preset='fixed' unsafe>
             {renderHeader()}
             {renderBody()}
             {renderFooter()}
             {loading && LoadingCircle()}
+            {loading && LoadingCircle()} */}
+            {renderModal()}
+            {renderSourceList()}
+            {renderFloatingButton()}
         </Screen>
     )
 })

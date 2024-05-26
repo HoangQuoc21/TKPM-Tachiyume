@@ -25,12 +25,7 @@
     "aboutDeveloperTeam": "About developer team"
   },
   "browseScreen": {
-    "header": "Browse",
-    "importModal":{
-      "title": "Import novel source",
-      "novelUrl": "Novel URL",
-      "import": "Import"
-    }
+    "header": "Browse"
   },
   "chapterScreen": {
     "header": "Chapter",
@@ -76,5 +71,16 @@
     "header": "Splash",
     "version": "Version: ",
     "developedBy": "Developed by: Chillin Chillies"
+
+  },
+  "sourceList":{
+    "title": "Sources",
+    "empty": "No source available",
+    "clear": "Clear sources"
+  },
+  "imporSourcetModal": {
+    "title": "Import novel source",
+    "novelUrl": "Novel URL",
+    "import": "Import"
   }
 }

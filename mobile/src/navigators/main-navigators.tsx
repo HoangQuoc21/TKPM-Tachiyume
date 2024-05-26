@@ -43,6 +43,8 @@ export function MainStack() {
                     backgroundColor: customColor.ligthTheme.secondary,
                     height: tabBarHeight,
                 },
+                // Add this to clear the remaining data when the screen is not focused
+                unmountOnBlur: true,
             }}
         >
             <Tab.Screen
