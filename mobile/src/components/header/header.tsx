@@ -16,7 +16,7 @@ import { iconSize } from '../../theme';
 import { goBack } from '../../navigators/navigation-utilities';
 
 
-export const Header = observer(function Header(props: HeaderProps) {
+export const Header = observer(function Logo(props: HeaderProps) {
     //Destructure the props
     const {
         preset = "default",

@@ -7,7 +7,6 @@ import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 import { NovelListScreenName } from '../novel-list/novel-list-screen';
 import { NovelDetailScreenName } from '../novel-detail/novel-detail-screen';
 import { ChapterScreenName } from '../chapter/chapter-screen';
-import SourceOne from '../../factory/SourceOne';
 import { MainStackName } from "../../navigators/main-navigators"
 import { NavigatorParamList } from "../../navigators/app-navigator"
 
@@ -48,10 +47,6 @@ export const BrowseScreen: FC<
     const fetchNovelList = async () => {
         setLoading(true);
         // const novelList = await sourceOne.findNovelsByPage(1);
-
-        // console.log('--> novel list: ', novelList[0])
-        const novelDetail = await sourceOne.findNovelDetails(novel);
-        console.log(novelDetail)
 
         return novelList;
     }
@@ -179,7 +174,7 @@ export const BrowseScreen: FC<
             {renderBody()}
             {renderFooter()}
             {loading && LoadingCircle()}
-            {loading && LoadingCircle()} */}
+            {loading && LoadingCircle()} 
             {renderModal()}
             {renderSourceList()}
             {renderFloatingButton()}
