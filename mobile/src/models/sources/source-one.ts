@@ -1,3 +1,5 @@
+import Chapter from '../chapter';
+import Novel from '../novel';
 import Source from './source';
 import {load} from 'cheerio'
 
@@ -5,15 +7,15 @@ function cleanContent(content: string) {
     return content.replace(/\n\n/g, "\n");
 }
 
-export const SourceOneImportURL = 'https://allnovel.org';
-
 // Source: ALL NOVEL
-export class SourceOne extends Source {
+export default class SourceOne extends Source {
+    static title = "All Novel";
+    static importURL = "https://allnovel.org";
     constructor () {
         super();
         this.id = 1;
+        this.sourceTitle = 'All Novel';
         this.baseUrl = 'https://allnovel.org';
-        this.sourceTitle = 'AllNovel';
         this.thumbnail = "https://allnovel.org/uploads/thumbs/logo-allnovel-2-1-ad7cde4de9-4a0ffbf5f789092106e8046d01d3c362.png";
         this.readLanguage = 'English';
     }
@@ -37,7 +39,7 @@ export class SourceOne extends Source {
                     const item = {
                         url,
                         sourceId: sourceId, // Assuming sourceId is defined elsewhere
-                        name: $(element).find('h3.truyen-title > a').text().trim(),
+                        title: $(element).find('h3.truyen-title > a').text().trim(),
                         cover: null,
                     };
                     try {
@@ -77,27 +79,37 @@ export class SourceOne extends Source {
     }
 
     // Novel details (get details from a novel in list of novels )
-    async findNovelsDetail(novel: any) {
+    async findNovelDetails(novel: Novel) {
         try {
             const response = await fetch(`${this.baseUrl}${novel.url}`);
             const html = await response.text();
             const $ = load(html);
 
             novel.sourceId = this.id; // Assuming `sourceId` is defined elsewhere in your code.
-            novel.name = $("div.books h3.title").text().trim();
-            novel.cover = `${this.id}${$("div.books img").attr("src").trim()}`;
-            novel.summary = $("div.desc-text > p").text().trim();
-            novel.rating = parseFloat($("input#rateVal").attr("value")) / 2;
-
+            novel.title = $("div.books h3.title").text().trim();
+            novel.thumbnail = `${this.id}${$("div.books img").attr("src").trim()}`;
+            novel.description = $("div.desc-text > p").text().trim();
+            const lastestChapters = [];
+            const chapterWrapHTML = $(".l-chapter .l-chapters");
+            const chapterListHTML = chapterWrapHTML.find("li");
+            chapterListHTML.each((index, element) => {
+                let chapter = {
+                    url: $(element).find('a').attr("href"),
+                    name: $(element).find('a').attr("title"),
+                    id: null,
+                }
+                lastestChapters.push(chapter)
+           })
+           novel.lastestChapters = lastestChapters
             $("div.info").each((index, element) => {
                 const el = $(element);
 
                 novel.authors = el.find("div:eq(0) > a").text().split(",").map(author => author.trim());
-                const genres = [];
+                const category = [];
                 el.find("div:eq(2) > a").each((idx, a) => {
-                    genres.push($(a).text());
+                    category.push($(a).text());
                 });
-                novel.genres = genres;
+                novel.category = category;
                 novel.status = el.find("div:eq(4) > a").text();
             });
 
@@ -108,7 +120,7 @@ export class SourceOne extends Source {
         }
     }
     // Get list of chapters from a novel
-    async findChaptersByNovel(novel: any) {
+    async findChaptersByNovel(novel: Novel) {
         try {
             let items = [];
 
@@ -141,15 +153,14 @@ export class SourceOne extends Source {
         }
     }
  
-
-    async findContentByChapter(chapter: any) {
+    // Get content from a chapter
+    async findContentByChapter(chapter: Chapter) {
         try {
             // Fetch the chapter page
             const response = await fetch(`${this.baseUrl}${chapter.url}`);
             const html = await response.text();
             const $ = load(html);
-
-            // Update the chapter URL to the absolute URL
+            // Update the chapter URL to the absolute URL   
             chapter.url = `${this.baseUrl}${chapter.url}`;
             chapter.content = "";
             // Remove all script tags within `div.chapter-c`
@@ -157,7 +168,6 @@ export class SourceOne extends Source {
             // Select paragraphs in 'div.chapter-c', append '::' to each, then replace '::' with '\n\n'
             $('div.chapter-c p').append('::');
             chapter.content = cleanContent($('div.chapter-c').text().replaceAll('::', '\n\n').trim());
-
             return chapter;
         } catch (error) {
             console.error('Failed to fetch chapter:', error);

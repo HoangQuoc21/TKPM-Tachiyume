@@ -18,8 +18,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Header } from "../components/header/header";
 import { translate } from "../i18n";
 
-import Source from "../models/sources/source"
-import { data } from "cheerio/lib/api/attributes";
+import { Source } from "../models/source";
 
 // Define the screen input parameters
 export type NavigatorParamList = {

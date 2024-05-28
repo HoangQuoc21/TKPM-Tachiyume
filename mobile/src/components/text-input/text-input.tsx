@@ -19,6 +19,7 @@ export const TextInput = observer(function TextInput(props: TextInputProps) {
         onChangeText,
         inputMode = 'text',
         onTextClear,
+        enableEdit = true
     } = props
 
     //Flatten the styles
@@ -34,6 +35,7 @@ export const TextInput = observer(function TextInput(props: TextInputProps) {
                 onChangeText={onChangeText}
                 inputMode={inputMode}
                 style={inputStyle}
+                editable={enableEdit}
             />
             {
                 value.length > 0 && (

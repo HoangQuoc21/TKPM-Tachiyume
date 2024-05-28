@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState, useContext, useRef } from 'react';
+import { useToast } from "react-native-toast-notifications";
 import { observer } from 'mobx-react-lite';
 import { flatten } from 'ramda';
 import { SourceListProps } from './source-list.props';
@@ -57,12 +58,11 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
 
     const [sourceList, setSourceList] = useContext(NovelSourceListContext);
 
-
-
-
     const [isSearch, setIsSearch] = useState(false);
     const [search, setSearch] = useState("");
     const [filteredData, setFilteredData] = useState(sourceList);
+
+    const toast = useToast();
 
     // Add this ref to clear focus on text input when press back button
     const textInputRef = useRef(null);
@@ -84,6 +84,7 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
             setIsEmpty(true)
         }
         else {
+            setFilteredData(sourceList)
             setIsEmpty(false)
         }
         setLoading(false)
@@ -129,13 +130,13 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
                             <VectorIcon
                                 name={"close-outline"}
                                 color={color.ligthTheme.accent}
-                                size={iconSize.small}
+                                size={iconSize.medium}
                             />
                         </TouchableOpacity>) :
                         (<VectorIcon
                             name={"search-outline"}
                             color={color.ligthTheme.accent}
-                            size={iconSize.small}
+                            size={iconSize.medium}
                         />)}
                 </Column>
             </Row>
@@ -153,8 +154,14 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
     }
 
     const onClearSourcesPress = () => {
+        if(sourceList.length == 0) {
+            toast.show(translate("error.noSource"), { type: 'warning' })
+            return;
+        }
         setSourceList([])
+        setFilteredData([])
         clearSourcesInStorage()
+        toast.show(translate("success.clearSource"), { type: 'success' })
     }
 
     const renderTitle = () => {

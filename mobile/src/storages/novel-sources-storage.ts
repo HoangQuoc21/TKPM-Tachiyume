@@ -29,5 +29,6 @@ export const removeSourceFromStorage = async (source: Source): Promise<void> => 
 };
 
 export const clearSourcesInStorage = async (): Promise<void> => {
+  console.log('--> clear Source called')
   await AsyncStorage.removeItem(NOVEL_SOURCES_KEY);
 };
