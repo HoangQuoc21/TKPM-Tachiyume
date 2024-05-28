@@ -34,7 +34,7 @@ export default class SourceTwo extends Source {
     this.readLanguage = "English";
   }
   // List of novels to show in one page
-  async findNovelsByPage(page: number): Promise<any[]> {
+  async findNovelsByPage(page: number): Promise<Novel[]> {
     const sourceId = this.id;
     const baseUrl = this.baseUrl;
 

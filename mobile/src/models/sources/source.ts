@@ -4,24 +4,24 @@ import Chapter from "../chapter";
 import Novel from "../novel";
 
 abstract class Source {
-    static importURL: string;
-    static title: string;
+  static importURL: string;
+  static title: string;
 
-    // Properties
-    id: number 
-    sourceTitle: string
-    baseUrl: string
-    thumbnail: string
-    readLanguage: string
+  // Properties
+  id: number;
+  sourceTitle: string;
+  baseUrl: string;
+  thumbnail: string;
+  readLanguage: string;
 
-    // Methods:
-    // Constructor
-    constructor() {
-        this.id = 0;
-        this.baseUrl = '';
-        this.thumbnail = '';
-        this.readLanguage = '';
-    }
+  // Methods:
+  // Constructor
+  constructor() {
+    this.id = 0;
+    this.baseUrl = "";
+    this.thumbnail = "";
+    this.readLanguage = "";
+  }
 
     // List of novels to show in on page
     abstract findNovelsByPage(page: number): Promise<any[]>
