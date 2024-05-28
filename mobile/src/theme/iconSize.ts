@@ -1,6 +1,5 @@
 export const iconSize = {
   small: 15,
-  medium: 30,
+  medium: 25,
   large: 50,
-  iconSearchBar: 24,
 };

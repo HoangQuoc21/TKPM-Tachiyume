@@ -5,12 +5,13 @@ import { BrowseScreen, BrowseScreenName } from "../screens/browse/browse-screen"
 import { FavoriteScreen, FavoriteScreenName } from "../screens/favorite/favorite-screen"
 import { HistoryScreen, HistoryScreenName } from "../screens/history/history-screen"
 import { NavigatorParamList } from './app-navigator'
+import { Animated, Dimensions } from 'react-native';
 
 // Import system components
 import { Text } from "react-native"
 
 // Import custom components
-import { color as customColor, radius, iconSize } from "../theme"
+import { color as customColor, radius, iconSize, spacing, shadow } from "../theme"
 import { VectorIcon } from "../components/vector-icon/vector-icon"
 import { Row } from "../components/row/row"
 import { Header } from "../components/header/header"
@@ -30,7 +31,9 @@ const icon = {
 }
 
 const labelSize = 13;
-const tabBarHeight = 60;
+const tabBarHeight = 55;
+
+const SCREEN_WIDTH = Dimensions.get('window').width
 
 export function MainStack() {
     return (
@@ -42,7 +45,17 @@ export function MainStack() {
                 tabBarStyle: {
                     backgroundColor: customColor.ligthTheme.secondary,
                     height: tabBarHeight,
+                    position: "absolute",
+                    left: spacing[3],
+                    right: spacing[3],
+                    borderTopLeftRadius: radius[5],
+                    borderTopRightRadius: radius[5],
+                    ...shadow.default,
                 },
+                // Add this to clear the remaining data when the screen is not focused
+                unmountOnBlur: true,
+                // Add this to hide the tab bar when the keyboard is open
+                tabBarHideOnKeyboard: true,
             }}
         >
             <Tab.Screen
@@ -54,7 +67,7 @@ export function MainStack() {
                         fontWeight: "bold",
                         fontSize: labelSize,
                     },
-                    header(){
+                    header() {
                         return <Header title={translate("mainTab.favorite")} />
                     },
                     tabBarIcon({ color, focused }) {
@@ -64,8 +77,8 @@ export function MainStack() {
                                 borderRadius: radius[5],
                                 height: icon.containerHeight,
                                 width: icon.containerWidth,
-                                justifyContent:"center",
-                                alignItems:"center"
+                                justifyContent: "center",
+                                alignItems: "center"
                             }}>
                                 <VectorIcon name={"heart"} color={color} size={icon.size} />
                             </Row> : <VectorIcon name={"heart"} color={color} size={icon.size} />

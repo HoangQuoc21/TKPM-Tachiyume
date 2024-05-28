@@ -39,8 +39,25 @@
 ***
 
 ## 3. Những lỗi có thể gặp phải và cách khắc phục:
+0. Trong trường hợp đường cùng:
+- Gỡ cài đặt app trên thiết bị (nếu đã build:android)
+- Xóa thư mục `.android` và `.node_modules` trong project.
+- Cài lại package, chạy lệnh: `npm install` hoặc `yarn`.
+- Nạp lại thư mục '.android', chạy lệnh: `npx expo prebuild`.
+- Chạy lệnh: `npx expo run:android`.
+
 1. Lỗi file tsconfig.json cứ báo error đỏ:
 - Bấm tổ hợp phím `Ctrl + Shift + P` và gõ `TypeScript: Restart TS server`.
+
+2. Lỗi không thể cài đặt app trên thiết bị:
+- Kiểm tra kết nối giữa thiết bị và máy tính.
+- Kiểm tra thiết bị có đang ở chế độ Developer Options và USB Debugging.
+- Kiểm tra thiết bị có đang ở chế độ Allow install apps via USB.
+- Kiểm tra thiết bị và laptop có đang kết nối cùng mạng wifi.
 ***
 
 ## 4. Build file .apk để cài trên thiết bị Android:
+- Chạy lệnh `eas login` để Đăng nhập vào tài khoản Expo trên máy tính, sử dụng tài khoản được thêm vào project trên Expo.
+- Chạy lệnh `eas build -p android --profile staging` để bắt đầu build file .apk.
+- Lên web https://expo.dev/accounts/tkpm-chillingchillies/projects/tachiyume/builds để xem trạng thái build.
+- Sau khi build xong có thể tải file .apk từ web expo trên về và cài trên thiết bị Android.

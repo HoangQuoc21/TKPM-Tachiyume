@@ -1,19 +1,23 @@
 // Source Novel Class
+import { Float } from "react-native/Libraries/Types/CodegenTypes"
 import Chapter from "./chapter"
 
 class Novel {
     //  Properties
+    url: string // url to the novel
     id: number
     title: string
     thumbnail: string
     sourceId: number
-    author: string
-    state: string
-    category: number[]
+    authors: string[] //Update the type of authors to string[] as there might be many authors
+    status: string
+    category: string[]
     description: string
     view: number
-    lastestChapter: Chapter
-    chapterList: Chapter[]
+    lastestChapters: Chapter[]
+    rating: Float
+    alternateNames: string[]
+    releaseYear: number
 }
 
 export default Novel;

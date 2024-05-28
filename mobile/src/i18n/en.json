@@ -7,11 +7,13 @@
     "cancel": "Cancel",
     "search": "Search"
   },
-  "errors": {
-   
+  "error": {
+    "sourceExisted": "Source existed",
+    "noSource": "No source available"
   },
   "success": {
-   
+   "importSource": "Import source success",
+    "clearSource": "Clear source success"
   },
   "mainTab": {
     "favorite": "Favorite",
@@ -25,12 +27,7 @@
     "aboutDeveloperTeam": "About developer team"
   },
   "browseScreen": {
-    "header": "Browse",
-    "importModal":{
-      "title": "Import novel source",
-      "novelUrl": "Novel URL",
-      "import": "Import"
-    }
+    "header": "Browse"
   },
   "chapterScreen": {
     "header": "Chapter",
@@ -69,6 +66,7 @@
   },
   "novelListScreen": {
     "header": "Novel List",
+    "empty": "No novel available",
     "popular": "Popular",
     "lastest": "Lastest"
   },
@@ -76,9 +74,17 @@
     "header": "Splash",
     "version": "Version: ",
     "developedBy": "Developed by: Chillin Chillies"
+
   },
   "sourceList":{
     "title": "Sources",
-    "empty": "No source available"
+    "empty": "No source available",
+    "clear": "Clear sources"
+  },
+  "imporSourcetModal": {
+    "title": "Import novel source",
+    "novelUrl": "Novel URL",
+    "import": "Import",
+    "chooseSource": "Choose a source"
   }
 }

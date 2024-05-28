@@ -9,7 +9,7 @@ import {
   shadow,
 } from "../../theme";
 
-export const SourceListPresets = {
+export const NovelListPresets = {
   default: "default",
 };
 
@@ -77,7 +77,7 @@ const DEFAULT_STYLE = {
 };
 
 export const stylePresets = {
-  [SourceListPresets.default]: { ...DEFAULT_STYLE },
+  [NovelListPresets.default]: { ...DEFAULT_STYLE },
 };
 
-export type ISourceListPresets = keyof typeof SourceListPresets;
+export type INovelListPresets = keyof typeof NovelListPresets;

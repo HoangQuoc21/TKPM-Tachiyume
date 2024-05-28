@@ -9,7 +9,7 @@ import { NavigatorParamList } from "../../navigators/app-navigator"
 // Import the custom components
 import { Screen } from "../../components/screen/screen"
 import { Column } from '../../components/column/column';
-import i18n from '../../i18n'
+import {translate} from '../../i18n'
 
 export const ChapterScreen: FC<
     StackScreenProps<NavigatorParamList, typeof ChapterScreenName>
