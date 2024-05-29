@@ -15,7 +15,7 @@ import { navigate } from "../../navigators/navigation-utilities";
 export const NovelListItem = observer(function NovelListItem(
   props: NovelListItemProps
 ) {
-  const { preset = "default", style: styleOverride, item: novel } = props;
+  const { preset = "default", style: styleOverride, novel: novel, source: source } = props;
 
   const containerStyles = flatten([
     stylePresets[preset].CONTAINER,
@@ -29,6 +29,7 @@ export const NovelListItem = observer(function NovelListItem(
     navigate(NovelDetailScreenName as never, {
       header: novel.title,
       data: {
+        source: source,
         novel: novel,
       },
     });

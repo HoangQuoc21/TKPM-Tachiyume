@@ -55,6 +55,7 @@ export type NavigatorParamList = {
   [NovelDetailScreenName]: {
     header: string;
     data: {
+      source: Source;
       novel: Novel;
     };
   };
@@ -104,6 +105,9 @@ function AppStack() {
       <Stack.Screen
         name={NovelDetailScreenName}
         component={NovelDetailScreen}
+        options={({ route }) => ({
+          header: () => <Header canGoBack />,
+        })}
       />
       <Stack.Screen
         name={ChapterScreenName}
