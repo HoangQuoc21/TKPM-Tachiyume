@@ -40,6 +40,7 @@ import { Header } from "../components/header/header";
 import { translate } from "../i18n";
 
 import Source from "../models/sources/source";
+import Novel from "../models/novel";
 
 // Define the screen input parameters
 export type NavigatorParamList = {
@@ -53,7 +54,9 @@ export type NavigatorParamList = {
   [HistoryScreenName]: undefined;
   [NovelDetailScreenName]: {
     header: string;
-    data: {};
+    data: {
+      novel: Novel;
+    };
   };
   [NovelListScreenName]: {
     header: string;

@@ -82,6 +82,7 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
     const novelSource = SourceFactory.createSource(source.id);
   
     await novelSource.findNovelsByPage(1).then((novels) => {
+      console.log(novels)
       
       const temp: Novel[] = novels.map((novel, index) => ({
         id: index + 1, // Assign an increasing id starting from 1

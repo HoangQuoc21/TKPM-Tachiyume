@@ -29,7 +29,7 @@ export const NovelListItem = observer(function NovelListItem(
     navigate(NovelDetailScreenName as never, {
       header: novel.title,
       data: {
-        source: novel,
+        novel: novel,
       },
     });
   };
