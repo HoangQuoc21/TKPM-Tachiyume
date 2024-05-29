@@ -11,6 +11,7 @@ function cleanContent(content: string) {
 export default class SourceOne extends Source {
   static title = "All Novel";
   static importURL = "https://allnovel.org";
+  static idToCreate = 1;
   constructor() {
     super();
     this.id = 1;
@@ -21,8 +22,12 @@ export default class SourceOne extends Source {
     this.readLanguage = "English";
   }
 
+  async getId(): Promise<number>{
+    return this.id;
+  }
+
   // List of novels to show in one page
-  async findNovelsByPage(page: number): Promise<any[]> {
+  async findNovelsByPage(page: number): Promise<Novel[]> {
     const sourceId = this.id;
     const sourceBaseUrl = this.baseUrl;
 

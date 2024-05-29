@@ -6,6 +6,7 @@ import Novel from "../novel";
 abstract class Source {
   static importURL: string;
   static title: string;
+  static idToCreate: number;
 
   // Properties
   id: number;
@@ -31,6 +32,8 @@ abstract class Source {
   abstract findChaptersByNovel(novel: Novel): Promise<any[]>;
   // Get content from a chapter
   abstract findContentByChapter(chapter: Chapter): Promise<any>;
+
+  abstract getId(): Promise<any>;
 }
 
 export default Source;

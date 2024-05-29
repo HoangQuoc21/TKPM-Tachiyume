@@ -25,9 +25,10 @@ import Novel from "../../models/novel";
 import { color, iconSize } from "../../theme";
 import { VectorIcon } from "../vector-icon/vector-icon";
 
+import { SourceFactory } from '../../factories/source-factory';
 import Source from "../../models/sources/source";
+import SourceOne from "../../models/sources/source-one";
 
-//import { clearSourcesInStorage } from "../../storages/novel-sources-storage";
 
 export const NovelList = observer(function NovelList(props: NovelListProps) {
   const { preset = "default", style: styleOverride, source, ...rest } = props;
@@ -49,23 +50,15 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
     stylePresets[preset].LOADING_CONTAINER,
   ]);
   const loadingStyles = flatten([stylePresets[preset].LOADING]);
-  const clearButtonStyles = flatten([stylePresets[preset].CLEAR_BUTTON]);
-  const clearButtonTextStyles = flatten([
-    stylePresets[preset].CLEAR_BUTTON_TEXT,
-  ]);
 
   const [isEmpty, setIsEmpty] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  //const [sourceList, setSourceList] = useContext(NovelSourceListContext);
-  //const [novelList, setNovelList] = useContext(NovelListContext);
   const [novelList, setNovelList] = useState<Novel[]>([]);
-
+  
   const [isSearch, setIsSearch] = useState(false);
   const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState(novelList);
-
-  const toast = useToast();
 
   // Add this ref to clear focus on text input when press back button
   const textInputRef = useRef(null);
@@ -83,7 +76,41 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
     return () => backHandler.remove();
   }, []);
 
- 
+  const initNovelList = async (source) => {
+    console.log(`Source ID: ${source.id}`); 
+    
+    const novelSource = SourceFactory.createSource(source.id);
+  
+    await novelSource.findNovelsByPage(1).then((novels) => {
+      
+      const temp: Novel[] = novels.map((novel, index) => ({
+        id: index + 1, // Assign an increasing id starting from 1
+        title: novel.title,
+        thumbnail: novel.cover,
+        url: novel.url,
+        sourceId: novel.sourceId,
+        authors: [], // Initialize with an empty array or get from novel if available
+        status: "", // Initialize with an empty string or get from novel if available
+        category: [], // Initialize with an empty array or get from novel if available
+        description: "", // Initialize with an empty string or get from novel if available
+        view: 0, // Initialize with 0 or get from novel if available
+        lastestChapters: [], // Initialize with an empty array or get from novel if available
+        rating: 0, // Initialize with 0 or get from novel if available
+        alternateNames: [], // Initialize with an empty array or get from novel if available
+        releaseYear: 0 // Initialize with 0 or get from novel if available
+      }));
+
+      setNovelList(temp);
+
+    }).catch((error) => {
+      console.error('Error finding novels by page:', error);
+    });
+  };
+
+  useEffect(() => {
+    initNovelList(source);
+    
+  }, [source]);
 
   useEffect(() => {
     if (novelList.length == 0) {
@@ -94,24 +121,6 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
     }
     setLoading(false);
   }, [novelList]);
-
-  useEffect(() => {
-    
-    initNovelList(source);
-  }, []);
-
-  const initNovelList = async (source: Source) => {
-    //const novelList = await source.findNovelsByPage(1);
-    console.log(`Source ID: ${source.id}`); 
-    source.findNovelsByPage(1).then((novels: Novel[]) => {
-      console.log('Novels on page 1:', novels);
-      console.log(`Source Name: ${source.sourceTitle}`); 
-      setNovelList(novels);
-    }).catch((error) => {
-      console.error('Error finding novels by page:', error);
-    });
-    
-  };
 
   const handleSearch = (text: string) => {
     setSearch(text);
@@ -179,6 +188,7 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
  
 
   const renderItem = (item: Novel) => {
+    
     return <NovelListItem item={item} />;
   };
 
@@ -197,7 +207,8 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
     return (
       <Column style={listContainerStyles}>
         
-        {isEmpty ? renderEmpty() : renderNovelList()}
+        {isEmpty ? LoadingCircle() : renderNovelList()}
+      
       </Column>
     );
   };

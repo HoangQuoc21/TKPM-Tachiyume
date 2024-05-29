@@ -10,6 +10,7 @@ function cleanContent(content: string) {
 export default class SourceThree extends Source {
   static title = "Light Novel Heaven";
   static importURL = "https://lightnovelheaven.com";
+  static idToCreate = 3;
   constructor() {
     super();
     this.id = 3;
@@ -18,6 +19,10 @@ export default class SourceThree extends Source {
     this.thumbnail =
       "https://lightnovelheaven.com/wp-content/uploads/2020/07/cropped-mid-2-192x192.png";
     this.readLanguage = "English";
+  }
+
+  async getId(): Promise<number>{
+    return this.id;
   }
   // List of novels to show in one page
   async findNovelsByPage(page: number): Promise<Novel[]> {
