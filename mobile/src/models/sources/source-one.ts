@@ -27,7 +27,7 @@ export default class SourceOne extends Source {
   }
 
   // List of novels to show in one page
-  async findNovelsByPage(page: number): Promise<Novel[]> {
+  async findNovelsByPage(page: number): Promise<any[]> {
     const sourceId = this.id;
     const sourceBaseUrl = this.baseUrl;
 
@@ -49,18 +49,20 @@ export default class SourceOne extends Source {
             title: $(element).find("h3.truyen-title > a").text().trim(),
             thumbnail: null,
           };
-          try {
-            const response = await fetch(`${sourceBaseUrl}${url}`);
-            const responseData = await response.text();
-            const $img = load(responseData);
+          const thumbnail = $(element).find("div.col-xs-3 img").attr("src") 
+          item.thumbnail = thumbnail;
+          // try {
+          //   const response = await fetch(`${sourceBaseUrl}${url}`);
+          //   const responseData = await response.text();
+          //   const $img = load(responseData);
 
-            item.thumbnail = `${sourceBaseUrl}${$img("div.books img").attr("src")}`;
+          //   item.thumbnail = `${sourceBaseUrl}${$img("div.books img").attr("src")}`;
 
-            //console.log(item)
-            items.push(item);
-          } catch (e) {
-            throw e;
-          }
+          //   //console.log(item)
+          //   items.push(item);
+          // } catch (e) {
+          //   throw e;
+          // }
         }
       }
       return items;
