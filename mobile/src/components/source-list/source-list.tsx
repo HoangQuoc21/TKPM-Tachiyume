@@ -15,10 +15,10 @@ import {
     BackHandler
 } from 'react-native';
 
-import { Column } from '../column/column';
-import { Row } from '../row/row';
-import { SourceListItem } from '../source-list-item/source-list-item';
-import { translate } from '../../i18n'
+import { Column } from "../column/column";
+import { Row } from "../row/row";
+import { SourceListItem } from "../source-list-item/source-list-item";
+import { translate } from "../../i18n";
 
 // Import the models
 import Source from '../../models/sources/source';
@@ -33,11 +33,7 @@ import { clearSourcesInStorage } from '../../storages/novel-sources-storage';
 
 
 export const SourceList = observer(function SourceList(props: SourceListProps) {
-    const {
-        preset = "default",
-        style: styleOverride,
-        ...rest
-    } = props;
+  const { preset = "default", style: styleOverride, ...rest } = props;
 
     const containerStyles = flatten([stylePresets[preset].CONTAINER, styleOverride])
     const searchBarContainerStyles = flatten([stylePresets[preset].SEARCH_BAR_CONTAINER])
@@ -218,12 +214,11 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
         );
     };
 
-
-    return (
-        <Column style={containerStyles}>
-            {renderHeader()}
-            {renderBody()}
-            {loading && <LoadingCircle />}
-        </Column>
-    )
-})
+  return (
+    <Column style={containerStyles}>
+      {renderHeader()}
+      {renderBody()}
+      {loading && <LoadingCircle />}
+    </Column>
+  );
+});

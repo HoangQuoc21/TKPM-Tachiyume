@@ -9,7 +9,7 @@
   },
   "error": {
     "sourceExisted": "Source existed",
-    "noSource": "No source available",
+    "noSource": "No source available"
   },
   "success": {
    "importSource": "Import source success",
@@ -66,6 +66,7 @@
   },
   "novelListScreen": {
     "header": "Novel List",
+    "empty": "No novel available",
     "popular": "Popular",
     "lastest": "Lastest"
   },
