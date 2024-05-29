@@ -83,24 +83,14 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
   
     await novelSource.findNovelsByPage(1).then((novels) => {
       
-      const temp: Novel[] = novels.map((novel, index) => ({
-        id: index + 1, // Assign an increasing id starting from 1
-        title: novel.title,
-        thumbnail: novel.cover,
-        url: novel.url,
-        sourceId: novel.sourceId,
-        authors: [], // Initialize with an empty array or get from novel if available
-        status: "", // Initialize with an empty string or get from novel if available
-        category: [], // Initialize with an empty array or get from novel if available
-        description: "", // Initialize with an empty string or get from novel if available
-        view: 0, // Initialize with 0 or get from novel if available
-        lastestChapters: [], // Initialize with an empty array or get from novel if available
-        rating: 0, // Initialize with 0 or get from novel if available
-        alternateNames: [], // Initialize with an empty array or get from novel if available
-        releaseYear: 0 // Initialize with 0 or get from novel if available
-      }));
+    
+      
+      novels.forEach((novel, index) => {
+        novel.id = index + 1; //Add an id to the novel
+        setNovelList((previousList) => [...previousList, novel]);
 
-      setNovelList(temp);
+      })
+
 
     }).catch((error) => {
       console.error('Error finding novels by page:', error);

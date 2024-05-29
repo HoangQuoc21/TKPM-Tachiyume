@@ -57,8 +57,8 @@ export default class SourceTwo extends Source {
           const item = {
             url: url,
             sourceId: sourceId,
-            name: $(element).find(".h5 > a").text().trim(),
-            cover: cleanContent(
+            title: $(element).find(".h5 > a").text().trim(),
+            thumbnail: cleanContent(
               $(element).find("img").attr("data-src")?.trim() || ""
             ),
           };
@@ -83,7 +83,7 @@ export default class SourceTwo extends Source {
       const html = await response.text();
       const novelsFromSource = await parse(html);
       //
-      console.log("Novels from source 2", novelsFromSource);
+      // console.log("Novels from source 2", novelsFromSource);
       return novelsFromSource;
     } catch (error) {
       console.log("Failed to fetch novels: " + error.message);

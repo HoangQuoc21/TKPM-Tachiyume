@@ -36,6 +36,7 @@ abstract class Source {
   // Search novels by name or author
   abstract searchNovels(query: string): Promise<any[]>
 
+  
   abstract getId(): Promise<any>;
 
 }

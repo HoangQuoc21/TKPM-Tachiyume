@@ -41,8 +41,8 @@ export default class SourceThree extends Source {
           const item = {
             url,
             sourceId: this.id,
-            name: $(element).find(".h5 > a").text().trim(),
-            cover: $(element).find("img").attr("data-src")?.trim() || "",
+            title: $(element).find(".h5 > a").text().trim(),
+            thumbnail: $(element).find("img").attr("data-src")?.trim() || "",
           };
           items.push(item);
         }
@@ -168,6 +168,9 @@ export default class SourceThree extends Source {
   }
 
   async findNovelDetails(novel: any): Promise<any> {}
+  async searchNovels(query: string): Promise<any[]> {
+    return [];
+  }
 }
 
 // export default SourceThree;
