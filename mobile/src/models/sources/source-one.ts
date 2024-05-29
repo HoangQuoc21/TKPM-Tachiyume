@@ -92,7 +92,7 @@ export default class SourceOne extends Source {
 
       novel.sourceId = this.id; // Assuming `sourceId` is defined elsewhere in your code.
       novel.title = $("div.books h3.title").text().trim();
-      novel.thumbnail = `${this.id}${$("div.books img").attr("src").trim()}`;
+      novel.thumbnail = `${$("div.books img").attr("src").trim()}`;
       novel.description = $("div.desc-text > p").text().trim();
       const lastestChapters = [];
       const chapterWrapHTML = $(".l-chapter .l-chapters");
