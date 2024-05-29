@@ -14,12 +14,15 @@ import { NovelList } from "../../components/novel-list/novel-list";
 
 import { useRoute } from "@react-navigation/native";
 import Source from "../../models/sources/source";
+import SourceOne from "../../models/sources/source-one";
 
 export const NovelListScreen: FC<
   StackScreenProps<NavigatorParamList, typeof NovelListScreenName>
 > = observer(({ navigation, route }) => {
   const { header, data } = route.params;
   const { source } = data;
+
+
 
   const renderNovelList = () => {
     return <NovelList source={source} />;

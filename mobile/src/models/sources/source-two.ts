@@ -23,6 +23,7 @@ export default class SourceTwo extends Source {
   }
   static title = "Box Novel";
   static importURL = "https://boxnovel.com";
+  static idToCreate = 2;
 
   constructor() {
     super();
@@ -32,6 +33,10 @@ export default class SourceTwo extends Source {
     this.thumbnail =
       "https://boxnovel.com/wp-content/uploads/2018/04/box-icon-250x250.png";
     this.readLanguage = "English";
+  }
+
+  async getId(): Promise<number>{
+    return this.id;
   }
   // List of novels to show in one page
   async findNovelsByPage(page: number): Promise<Novel[]> {
@@ -52,8 +57,8 @@ export default class SourceTwo extends Source {
           const item = {
             url: url,
             sourceId: sourceId,
-            name: $(element).find(".h5 > a").text().trim(),
-            cover: cleanContent(
+            title: $(element).find(".h5 > a").text().trim(),
+            thumbnail: cleanContent(
               $(element).find("img").attr("data-src")?.trim() || ""
             ),
           };
@@ -78,7 +83,7 @@ export default class SourceTwo extends Source {
       const html = await response.text();
       const novelsFromSource = await parse(html);
       //
-      console.log("Novels from source 2", novelsFromSource);
+      // console.log("Novels from source 2", novelsFromSource);
       return novelsFromSource;
     } catch (error) {
       console.log("Failed to fetch novels: " + error.message);

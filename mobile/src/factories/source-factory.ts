@@ -12,12 +12,14 @@ export const sourceImportURLs = [
     {label: SourceThree.title, value: SourceThree.importURL},
 ]
 
+
 // Source factory class
 export class SourceFactory {
     // Get source by import URL
     static getSource(SourceImportURL: string): Source {
         switch (SourceImportURL) {
             case SourceOne.importURL:
+                console.log('Tao source One')
                 return new SourceOne();
             case SourceTwo.importURL:
                 return new SourceTwo();
@@ -27,4 +29,18 @@ export class SourceFactory {
                 return null;
         }
     }
+
+    static createSource(idSource: number): Source {
+        switch (idSource) {
+            case SourceOne.idToCreate:
+                return new SourceOne();
+            case SourceTwo.idToCreate:
+                return new SourceTwo();
+            case SourceThree.idToCreate:
+                return new SourceThree();
+            default:
+                return null;
+        }
+    }
+    
 }

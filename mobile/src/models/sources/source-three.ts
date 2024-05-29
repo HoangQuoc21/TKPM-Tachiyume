@@ -10,6 +10,7 @@ function cleanContent(content: string) {
 export default class SourceThree extends Source {
   static title = "Light Novel Heaven";
   static importURL = "https://lightnovelheaven.com";
+  static idToCreate = 3;
   constructor() {
     super();
     this.id = 3;
@@ -18,6 +19,10 @@ export default class SourceThree extends Source {
     this.thumbnail =
       "https://lightnovelheaven.com/wp-content/uploads/2020/07/cropped-mid-2-192x192.png";
     this.readLanguage = "English";
+  }
+
+  async getId(): Promise<number>{
+    return this.id;
   }
   // List of novels to show in one page
   async findNovelsByPage(page: number): Promise<Novel[]> {
@@ -36,8 +41,8 @@ export default class SourceThree extends Source {
           const item = {
             url,
             sourceId: this.id,
-            name: $(element).find(".h5 > a").text().trim(),
-            cover: $(element).find("img").attr("data-src")?.trim() || "",
+            title: $(element).find(".h5 > a").text().trim(),
+            thumbnail: $(element).find("img").attr("data-src")?.trim() || "",
           };
           items.push(item);
         }
@@ -163,6 +168,9 @@ export default class SourceThree extends Source {
   }
 
   async findNovelDetails(novel: any): Promise<any> {}
+  async searchNovels(query: string): Promise<any[]> {
+    return [];
+  }
 }
 
 // export default SourceThree;
