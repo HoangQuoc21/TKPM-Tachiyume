@@ -47,14 +47,14 @@ export default class SourceOne extends Source {
             url,
             sourceId: sourceId, // Assuming sourceId is defined elsewhere
             title: $(element).find("h3.truyen-title > a").text().trim(),
-            cover: null,
+            thumbnail: null,
           };
           try {
             const response = await fetch(`${sourceBaseUrl}${url}`);
             const responseData = await response.text();
             const $img = load(responseData);
 
-            item.cover = `${sourceBaseUrl}${$img("div.books img").attr("src")}`;
+            item.thumbnail = `${sourceBaseUrl}${$img("div.books img").attr("src")}`;
 
             //console.log(item)
             items.push(item);
@@ -184,5 +184,8 @@ export default class SourceOne extends Source {
       console.error("Failed to fetch chapter:", error);
       throw error;
     }
+  }
+  async searchNovels(query: string) {
+    return [];
   }
 }
