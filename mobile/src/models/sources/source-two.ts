@@ -188,4 +188,55 @@ export default class SourceTwo extends Source {
       throw error;
     }
   }
+
+  async searchNovels(query: string) {
+    let queryByNovelName = `${this.baseUrl}/?s=${query}&post_type=wp-manga`;
+    let queryByAuthor = `${this.baseUrl}/?s=&post_type=wp-manga&author=${query}`;
+
+    async function queryNovels(url) {
+      try {
+        const response = await axios.get(url);
+        const html = response.data;
+        const $ = load(html);
+
+        const novels = [];
+        if ($(".not-found-content").length > 0) {
+          return null;
+        }
+        $(".c-tabs-item__content").each((index, element) => {
+          const item = {
+            url: $(element).find("a").attr("href").trim(),
+            title: $(element).find("a").attr("tittle").trim(),
+            thumbnail: $(element).find("img").attr("data-src").trim(),
+            sourceId: this.id,
+            authors: $(element)
+              .find(".mg_author > summary-content > a")
+              .text()
+              .trim(),
+            category: $(element)
+              .find(".mg_genres > summary-content > a")
+              .text()
+              .trim(),
+            status: $(element)
+              .find(".mg_status > summary-content > a")
+              .text()
+              .trim(),
+          };
+          novels.push(item);
+        });
+
+        return novels;
+      } catch (error) {
+        console.error("Failed to fetch search results:", error);
+        throw error;
+      }
+    }
+    let novels = await queryNovels(queryByNovelName);
+    if (!novels || novels.length === 0) {
+      novels = await queryNovels(queryByAuthor);
+    }
+
+    return novels;
+  }
+
 }

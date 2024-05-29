@@ -32,8 +32,12 @@ abstract class Source {
   abstract findChaptersByNovel(novel: Novel): Promise<any[]>;
   // Get content from a chapter
   abstract findContentByChapter(chapter: Chapter): Promise<any>;
+  
+  // Search novels by name or author
+  abstract searchNovels(query: string): Promise<any[]>
 
   abstract getId(): Promise<any>;
+
 }
 
 export default Source;
