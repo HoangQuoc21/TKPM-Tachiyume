@@ -6,4 +6,5 @@ export interface NovelListItemProps {
   style?: StyleProp<ViewStyle>;
   preset?: NovelListItemPresets;
   item: Novel;
+  favorite?: boolean 
 }

@@ -30,6 +30,7 @@ const BASE_STYLE = {
     backgroundColor: color.ligthTheme.primary,
     flex: 1,
     height: "100%",
+    paddingBottom: 60,
   } as ViewStyle,
   INNER: {
     justifyContent: "flex-start",

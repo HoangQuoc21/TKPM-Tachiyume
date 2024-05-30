@@ -21,7 +21,7 @@ const DEFAULT_STYLE = {
     borderRadius: radius[4],
     alignContent: "center",
     backgroundColor: color.ligthTheme.third,
-
+    height: 100,
     // shadow
     shadowColor: "black",
     shadowOpacity: 0.3,
@@ -43,11 +43,15 @@ const DEFAULT_STYLE = {
     borderStartWidth: 1,
   } as ViewStyle,
   TEXT: {
-    ...typography.labelSmall,
+    ...typography.bodySmall,
     fontWeight: "bold",
-    paddingVertical: spacing[6],
     paddingHorizontal: spacing[4],
   } as TextStyle,
+  FAVORITE_ICON: {
+    flex: 10,
+    alignSelf: 'center',
+    paddingRight: spacing[3],
+  }
 };
 
 export const stylePresets = {

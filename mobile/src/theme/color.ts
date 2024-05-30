@@ -9,6 +9,7 @@ export const color = {
     white: 'white',
     blue: 'blue',
     red: 'red',
+    pink: "#FF6086",
 
     // Transparent color
     transparent: 'rgba(0,0,0,0)',
