@@ -92,7 +92,7 @@ export default class SourceOne extends Source {
 
       novel.sourceId = this.id; // Assuming `sourceId` is defined elsewhere in your code.
       novel.title = $("div.books h3.title").text().trim();
-      novel.thumbnail = `${$("div.books img").attr("src").trim()}`;
+      novel.thumbnail = this.baseUrl + `${$("div.books img").attr("src").trim()}`;
       novel.description = $("div.desc-text > p").text().trim();
       const lastestChapters = [];
       const chapterWrapHTML = $(".l-chapter .l-chapters");
@@ -149,7 +149,7 @@ export default class SourceOne extends Source {
       $("select option").each((index, element) => {
         let chapter = {
           url: $(element).attr("value").trim(),
-          name: $(element).text().trim(),
+          title: $(element).text().trim(),
           id: parseFloat($(element).text().trim()), // Assuming the name contains a float number
         };
         items.push(chapter);

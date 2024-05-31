@@ -10,6 +10,8 @@ import { NavigatorParamList } from "../../navigators/app-navigator";
 import { Screen } from "../../components/screen/screen";
 import { Column } from "../../components/column/column";
 import { NovelDetail } from "../../components/novel-detail/novel-detail";
+import { ChapterList } from "../../components/chapter-list/chapter-list";
+import { ScrollView } from "react-native-gesture-handler";
 //import i18n from '../../i18n'
 
 export const NovelDetailScreen: FC<
@@ -24,11 +26,18 @@ export const NovelDetailScreen: FC<
   const renderNovelDetail = () => {
     return <NovelDetail source={source} novel={novel}/>;
   };
+
   
+  const renderChapterList = () => {
+    return <ChapterList source={source} novel={novel}/>;
+  };
 
   return (
     <Screen style={styles.ROOT} preset="fixed" unsafe>
+      
       {renderNovelDetail()}
+      {/* {renderChapterList()} */}
+      
     </Screen>
   );
 });

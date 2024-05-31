@@ -62,7 +62,8 @@
     },
     "download": "Download",
     "read": "Read",
-    "addToFavorite": "Add to Favorite"
+    "addToFavorite": "Add to Favorite",
+    "chapters": "Chapters"
   },
   "novelListScreen": {
     "header": "Novel List",

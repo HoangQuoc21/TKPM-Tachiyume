@@ -17,16 +17,17 @@ import {
 } from "react-native";
 
 import { Column } from "../column/column";
-import { Row } from "../row/row";
 
 import { translate } from "../../i18n";
 
 // Import the models
 import Novel from "../../models/novel";
 import { color, iconSize } from "../../theme";
-import { VectorIcon } from "../vector-icon/vector-icon";
 
 import { SourceFactory } from '../../factories/source-factory';
+import { ChapterList } from "../chapter-list/chapter-list";
+import { ScrollView } from "react-native-gesture-handler";
+//import { LinearGradient } from 'expo-linear-gradient';
 
 export const NovelDetail = observer(function NovelDetail(props: NovelDetailProps) {
   const { preset = "default", style: styleOverride, source, novel, ...rest } = props;
@@ -39,8 +40,8 @@ export const NovelDetail = observer(function NovelDetail(props: NovelDetailProps
   const loadingContainerStyles = flatten([
     stylePresets[preset].LOADING_CONTAINER,
   ]);
-  const loadingStyles = flatten([stylePresets[preset].LOADING]);
 
+  //Styles Details
   const containerDetailsStyles = flatten([stylePresets[preset].CONTAINER_DETAILS]);
   const thumbnailStyles = flatten([stylePresets[preset].THUMBNAIL]);
   const detailsStyles = flatten([stylePresets[preset].DETAILS]);
@@ -48,8 +49,22 @@ export const NovelDetail = observer(function NovelDetail(props: NovelDetailProps
   const authorsStyles = flatten([stylePresets[preset].AUTHORS]);
   const statusStyles = flatten([stylePresets[preset].STATUS]);
 
+  //Styles Description
+  const descriptionContainerStyles = flatten([stylePresets[preset].DESCRIPTION_CONTAINER]);
+  const descriptionStyles = flatten([stylePresets[preset].DESCRIPTION]);
+  const gradientStyles = flatten([stylePresets[preset].GRADIENT]);
+  const toggleButtonTextStyles = flatten([stylePresets[preset].TOGGLE_BUTTON_TEXT]);
+
+  //Styles Categories
+  const categoriesContainerStyles = flatten([stylePresets[preset].CATEGORIES_CONTAINER]);
+  const categoryLabelStyles = flatten([stylePresets[preset].CATEGORY_LABEL]);
+  const categoryTextStyles = flatten([stylePresets[preset].CATEGORY_TEXT]);
+
+  
+
   const [isEmpty, setIsEmpty] = useState(false);
-  const [novelDetail, setNovelDetail] = useState<Novel>();
+  const [novelDetail, setNovelDetail] = useState<Novel | null>(null);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   // Add this ref to clear focus on text input when press back button
   const textInputRef = useRef(null);
@@ -76,7 +91,7 @@ export const NovelDetail = observer(function NovelDetail(props: NovelDetailProps
   
     await novelSource.findNovelDetails(novel).then((detail) => {
         
-     //console.log(detail);
+      //console.log(detail);
       setNovelDetail(detail);
       //console.log(novelDetail);
 
@@ -91,19 +106,16 @@ export const NovelDetail = observer(function NovelDetail(props: NovelDetailProps
   }, [source]);
 
   useEffect(() => {
-    if (!novelDetail) {
-      setIsEmpty(true);
-    } else {
-      setIsEmpty(false);
-    }
-    //setLoading(false);
+    setIsEmpty(!novelDetail);
   }, [novelDetail]);
   
   const renderDetails = () => {
+    if (!novelDetail) {
+      return null;
+    }
     return (
     <View style={containerDetailsStyles}>
       <Image  source={{ uri: novelDetail.thumbnail }} style={thumbnailStyles} resizeMode="contain" />
-      
       <View style={detailsStyles}>
         <Text style={titleStyles}>{novelDetail.title}</Text>
         <Text style={authorsStyles}>{novelDetail.authors.join(', ')}</Text>
@@ -111,6 +123,53 @@ export const NovelDetail = observer(function NovelDetail(props: NovelDetailProps
       </View>
     </View>
     );
+  };
+
+  const toggleExpand = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  const renderDescription = () => {
+    if (!novelDetail) {
+      return null;
+    }
+    return (
+    
+      <View style={descriptionContainerStyles}>
+      
+        <Text
+          numberOfLines={isExpanded ? undefined : 4}
+          style={descriptionStyles}
+        >
+          {novelDetail.description}
+        </Text>
+        <TouchableOpacity onPress={toggleExpand} style={gradientStyles}>
+          <Text style={toggleButtonTextStyles}>
+            {isExpanded ? 'Show Less' : 'Show More'}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    
+    );
+  };
+
+  const renderCategories = () => {
+    if (!novelDetail || !novelDetail.category || novelDetail.category.length === 0) {
+      return null;
+    }
+    return (
+      <View style={categoriesContainerStyles}>
+        {novelDetail.category.map((category, index) => (
+          <View key={index} style={categoryLabelStyles}>
+            <Text style={categoryTextStyles}>{category}</Text>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderChapterList = () => {
+    return <ChapterList source={source} novel={novel}/>;
   };
 
 
@@ -126,7 +185,14 @@ export const NovelDetail = observer(function NovelDetail(props: NovelDetailProps
     return (
       <Column>
         
-        {isEmpty ? LoadingCircle() : renderDetails()}
+        {isEmpty ? LoadingCircle() : (
+          <View>
+            {renderDetails()}
+            {renderDescription()}
+            {renderCategories()}
+            {renderChapterList()}
+          </View>
+        )}
       
       </Column>
     );
@@ -135,12 +201,7 @@ export const NovelDetail = observer(function NovelDetail(props: NovelDetailProps
 
   return (
     <Column style={containerStyles}>
-      
-      {/* {isEmpty ? LoadingCircle() : renderDetails()} */}
-
       {renderCard()}
-      
-      {/* {loading && <LoadingCircle />} */}
     </Column>
   );
 });
