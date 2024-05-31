@@ -36,17 +36,11 @@ const DEFAULT_STYLE = {
     TITLE_WITH_SUBTITLE:{
         ...typography.titleLarge,
         fontWeight: 'bold', 
-        //maxWidth: '100%',
-        numberOfLines: 1, 
-        //textOverflow: 'ellipsis',
-        //whiteSpace: 'nowrap',
+        
     } as TextStyle,
     SUBTITLE:{
-        ...typography.titleSmall,
-        //maxWidth: '100%',
-        numberOfLines: 1, 
-        //textOverflow: 'ellipsis',
-        //whiteSpace: 'nowrap',
+        ...typography.bodySmall,
+        
     } as TextStyle,
 }
 //Other presets for the logo component go down here

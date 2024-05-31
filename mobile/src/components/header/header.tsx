@@ -66,11 +66,11 @@ export const Header = observer(function Logo(props: HeaderProps) {
     const renderContent = () => {
         return (
             <Column style={contentContainerStyles}>
-                <Text style={titleStyles}>
+                <Text style={titleStyles} numberOfLines={1}>
                     {title}
                 </Text>
                 {subtitle &&
-                    <Text style={subtitleStyles}>
+                    <Text style={subtitleStyles} numberOfLines={1}>
                         {subtitle}
                     </Text>
                 }
