@@ -22,6 +22,7 @@ const DEFAULT_STYLE = {
     alignContent: "center",
     backgroundColor: color.ligthTheme.third,
     height: 100,
+
     // shadow
     shadowColor: "black",
     shadowOpacity: 0.3,
@@ -29,15 +30,16 @@ const DEFAULT_STYLE = {
     elevation: 5,
   } as ViewStyle,
   IMAGE: {
-    flex: 25,
+    flex: 30,
     width: "100%",
     height: "100%",
+    justifyContent: "center",
     backgroundColor: color.common.white,
     borderBottomLeftRadius: radius[4],
     borderTopLeftRadius: radius[4],
   } as ImageStyle,
   TEXT_CONTAINER: {
-    flex: 75,
+    flex: 70,
     justifyContent: "center",
     borderColor: color.ligthTheme.fourth,
     borderStartWidth: 1,

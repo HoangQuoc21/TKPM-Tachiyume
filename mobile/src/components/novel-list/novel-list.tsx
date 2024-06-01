@@ -82,8 +82,7 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
     const novelSource = SourceFactory.createSource(source.id);
   
     await novelSource.findNovelsByPage(1).then((novels) => {
-      
-    
+        
       
       novels.forEach((novel, index) => {
         novel.id = index + 1; //Add an id to the novel
@@ -177,9 +176,9 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
 
  
 
-  const renderItem = (item: Novel) => {
+  const renderItem = (novel: Novel) => {
     
-    return <NovelListItem item={item} />;
+    return <NovelListItem novel={novel} source={source}/>;
   };
 
   const renderNovelList = () => {

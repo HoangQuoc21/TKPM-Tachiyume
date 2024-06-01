@@ -40,20 +40,30 @@ import { Header } from "../components/header/header";
 import { translate } from "../i18n";
 
 import Source from "../models/sources/source";
+import Novel from "../models/novel";
+import Chapter from "../models/chapter";
 
 // Define the screen input parameters
 export type NavigatorParamList = {
   [AboutScreenName]: undefined;
   [BrowseScreenName]: undefined;
   [ChapterScreenName]: {
-    header: string;
-    data: {};
+    title: string;
+    subTitle: string;
+    data: {
+      source: Source;
+      novel: Novel;
+      chapter: Chapter;
+    };
   };
   [FavoriteScreenName]: undefined;
   [HistoryScreenName]: undefined;
   [NovelDetailScreenName]: {
     header: string;
-    data: {};
+    data: {
+      source: Source;
+      novel: Novel;
+    };
   };
   [NovelListScreenName]: {
     header: string;
@@ -101,13 +111,16 @@ function AppStack() {
       <Stack.Screen
         name={NovelDetailScreenName}
         component={NovelDetailScreen}
+        options={({ route }) => ({
+          header: () => <Header canGoBack />,
+        })}
       />
       <Stack.Screen
         name={ChapterScreenName}
         component={ChapterScreen}
-        options={{
-          header: () => <Header title={"Chapter"} canGoBack />,
-        }}
+        options={({ route }) => ({
+          header: () => <Header title={route.params.title} subtitle={route.params.subTitle} canGoBack />,
+        })}
       />
     </Stack.Navigator>
   );

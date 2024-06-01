@@ -17,12 +17,7 @@ import { color, iconSize, spacing } from "../../theme";
 export const NovelListItem = observer(function NovelListItem(
   props: NovelListItemProps
 ) {
-  const { 
-    preset = "default", 
-    style: styleOverride, 
-    item: novel,
-    favorite = false,
-  } = props;
+  const { preset = "default", style: styleOverride, novel: novel, source: source, favorite } = props;
 
   const containerStyles = flatten([
     stylePresets[preset].CONTAINER,
@@ -37,7 +32,8 @@ export const NovelListItem = observer(function NovelListItem(
     navigate(NovelDetailScreenName as never, {
       header: novel.title,
       data: {
-        source: novel,
+        source: source,
+        novel: novel,
       },
     });
   };

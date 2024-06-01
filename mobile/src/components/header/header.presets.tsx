@@ -36,9 +36,11 @@ const DEFAULT_STYLE = {
     TITLE_WITH_SUBTITLE:{
         ...typography.titleLarge,
         fontWeight: 'bold', 
+        
     } as TextStyle,
     SUBTITLE:{
-        ...typography.titleSmall,
+        ...typography.bodySmall,
+        
     } as TextStyle,
 }
 //Other presets for the logo component go down here
