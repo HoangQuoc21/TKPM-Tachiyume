@@ -46,7 +46,8 @@
     }
   },
   "favoriteScreen": {
-    "header": "Favorite"
+    "header": "Favorite",
+    "empty": "No favorite novel"
   },
   "historyScreen": {
     "header": "History"

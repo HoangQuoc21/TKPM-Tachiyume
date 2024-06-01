@@ -11,8 +11,11 @@ export function NovelSourceListProvider({ children }) {
         getSourcesFromStorage().then(fetchedSources => {
             setSourceList(fetchedSources);
         });
-        //console.log('--> sourceList from storage:', sourceList);
     }, []);
+
+    // useEffect(() => {
+    //     console.log('--> sourceList from storage:', sourceList);
+    // }, [sourceList]);
 
     return (
         <NovelSourceListContext.Provider value={[sourceList, setSourceList]}>
