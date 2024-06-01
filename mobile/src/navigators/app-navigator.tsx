@@ -52,6 +52,7 @@ export type NavigatorParamList = {
     subTitle: string;
     data: {
       source: Source;
+      novel: Novel;
       chapter: Chapter;
     };
   };

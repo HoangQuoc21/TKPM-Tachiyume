@@ -31,6 +31,7 @@ export const ChapterListItem = observer(function ChapterListItem(
       data: {
         source: source,
         chapter: chapter,
+        novel: novel,
       },
     });
   };
