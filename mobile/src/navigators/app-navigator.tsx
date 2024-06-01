@@ -128,9 +128,11 @@ function AppStack() {
 
 export function AppNavigator() {
   return (
-    <NavigationContainer ref={navigationRef}>
-      <AppStack />
-    </NavigationContainer>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <NavigationContainer ref={navigationRef}>
+        <AppStack />
+      </NavigationContainer>  
+    </GestureHandlerRootView>
   );
 }
 
