@@ -1,38 +1,47 @@
 import { createContext, useState, useEffect } from "react";
 import Novel from "../models/novel";
-import { getFavoriteNovelsFromStorage, saveFavoriteNovelsToStorage } from "../storages/favorite-novel-storage";
-import SourceTwo from "../models/sources/source-two";
+import { getFavoriteNovels, addFavoriteNovel, removeFavoriteNovel, clearFavoriteNovelsInStorage } from "../storages/favorite-novel-storage";
 
 export const FavoriteNovelListContext = createContext([]);
 
-export function FavoriteNovelListProvider({ children }) {
-    const [favoriteNovelList, setFavoriteNovelList] = useState<Novel[]>([]);
+// Save the type consist of Novel and Source object
+type FavoriteNovelType = { novel: Novel, source: any };
 
-    // For testing
-    const setSampleFavoriteNovelList = async () => {
-        const sourceTwo = new SourceTwo();
-        const favoriteSampleNovels = await sourceTwo.findNovelsByPage(1);
-        saveFavoriteNovelsToStorage(favoriteSampleNovels)
+export function FavoriteNovelListProvider({ children }) {
+    const [favoriteNovelList, setFavoriteNovelList] = useState<FavoriteNovelType[]>([]);
+
+    const getFavoriteNovelsFromStorage = async () => {
+        const fetchedNovels = await getFavoriteNovels();
+        setFavoriteNovelList(fetchedNovels);
     }
 
-    // For testing
-    useEffect(()=>{
-        setSampleFavoriteNovelList()
-    }, [favoriteNovelList])
+    const addFavoriteNovelToStorage = async (novel: Novel, source: any) => {
+        const newNovelList = [...favoriteNovelList, {novel, source}];
+        setFavoriteNovelList(newNovelList);
+        await addFavoriteNovel(novel, source);
+    }
 
-    // For testing
+    const removeFavoriteNovelFromStorage = async (novel: Novel) => {
+        const newNovelList = favoriteNovelList.filter(n => n.novel.title !== novel.title);
+        setFavoriteNovelList(newNovelList);
+        await removeFavoriteNovel(novel);
+    }
+
+    const clearFavoriteNovelsFromStorage = async () => {
+        setFavoriteNovelList([]);
+        await clearFavoriteNovelsInStorage();
+    }
+
     useEffect(() => {
-        getFavoriteNovelsFromStorage().then((fetchedNovels) => {
-            setFavoriteNovelList(fetchedNovels);
-        });
+        getFavoriteNovelsFromStorage();
     }, []);
 
-    // useEffect(() => {
-    //     console.log('--> favorite novelList from storage:', favoriteNovelList);
-    // }, [favoriteNovelList]);
+    useEffect(() => {
+        console.log('--> favorite novelList from storage:', favoriteNovelList);
+    }, [favoriteNovelList]);
 
     return (
-        <FavoriteNovelListContext.Provider value={[favoriteNovelList, setFavoriteNovelList]}>
+        <FavoriteNovelListContext.Provider value={[favoriteNovelList, addFavoriteNovelToStorage]}>
             {children}
         </FavoriteNovelListContext.Provider>
     );

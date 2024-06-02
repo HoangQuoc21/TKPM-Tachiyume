@@ -19,7 +19,7 @@ export class SourceFactory {
     static getSource(SourceImportURL: string): Source {
         switch (SourceImportURL) {
             case SourceOne.importURL:
-                console.log('Tao source One')
+                //console.log('Tao source One')
                 return new SourceOne();
             case SourceTwo.importURL:
                 return new SourceTwo();
