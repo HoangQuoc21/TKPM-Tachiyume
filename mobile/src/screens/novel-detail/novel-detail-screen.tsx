@@ -24,20 +24,12 @@ export const NovelDetailScreen: FC<
 
 
   const renderNovelDetail = () => {
-    return <NovelDetail source={source} novel={novel}/>;
-  };
-
-  
-  const renderChapterList = () => {
-    return <ChapterList source={source} novel={novel}/>;
+    return <NovelDetail source={source} novel={novel} />;
   };
 
   return (
     <Screen style={styles.ROOT} preset="fixed" unsafe>
-      
       {renderNovelDetail()}
-      {/* {renderChapterList()} */}
-      
     </Screen>
   );
 });

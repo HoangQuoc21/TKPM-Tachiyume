@@ -12,9 +12,7 @@ import { ChapterScreenName } from "../../screens/chapter/chapter-screen";
 
 import { navigate } from "../../navigators/navigation-utilities";
 
-export const ChapterListItem = observer(function ChapterListItem(
-  props: ChapterListItemProps
-) {
+export const ChapterListItem = observer(function ChapterListItem(props: ChapterListItemProps) {
   const { preset = "default", style: styleOverride, chapter: chapter, novel: novel, source: source } = props;
 
   const containerStyles = flatten([
@@ -25,7 +23,7 @@ export const ChapterListItem = observer(function ChapterListItem(
   const textStyles = flatten([stylePresets[preset].TEXT]);
 
   const handlePress = () => {
-    navigate(ChapterScreenName as never, {
+    navigate(ChapterScreenName, {
       title: novel.title,
       subTitle: chapter.title,
       data: {

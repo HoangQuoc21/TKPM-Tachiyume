@@ -32,12 +32,12 @@ import SourceOne from "../../models/sources/source-one";
 
 export const ChapterList = observer(function ChapterList(props: ChapterListProps) {
   const { preset = "default", style: styleOverride, source, novel, ...rest } = props;
-  
+
   const containerStyles = flatten([
     stylePresets[preset].CONTAINER,
     styleOverride,
   ]);
- 
+
   const listContainerStyles = flatten([stylePresets[preset].LIST_CONTAINER]);
   const titleContainerStyles = flatten([stylePresets[preset].TITLE_CONTAINER]);
   const titleStyles = flatten([stylePresets[preset].TITLE]);
@@ -51,8 +51,8 @@ export const ChapterList = observer(function ChapterList(props: ChapterListProps
   const [loading, setLoading] = useState(false);
 
   const [chapterList, setChapterList] = useState<Chapter[]>([]);
-  
-  
+
+
   const [filteredData, setFilteredData] = useState(chapterList);
 
   // Add this ref to clear focus on text input when press back button
@@ -72,12 +72,12 @@ export const ChapterList = observer(function ChapterList(props: ChapterListProps
   }, []);
 
   const initChapterList = async (source) => {
-    console.log(`Source ID in Chapter List: ${source.id}`); 
-    
+    console.log(`Source ID in Chapter List: ${source.id}`);
+
     const chapterSource = SourceFactory.createSource(source.id);
-  
+
     await chapterSource.findChaptersByNovel(novel).then((chapters) => {
-      
+
       const tempChapterList = [];
       chapters.slice().reverse().forEach((chapter, index) => {
         tempChapterList.push({
@@ -105,11 +105,10 @@ export const ChapterList = observer(function ChapterList(props: ChapterListProps
       setIsEmpty(false);
     }
     setLoading(false);
-  }, [chapterList]); 
+  }, [chapterList]);
 
   const renderItem = (chapter: Chapter) => {
-    
-    return <ChapterListItem chapter={chapter} novel={novel} source={source}/>;
+    return <ChapterListItem chapter={chapter} novel={novel} source={source} />;
   };
 
   const renderChapterList = () => {
@@ -128,16 +127,14 @@ export const ChapterList = observer(function ChapterList(props: ChapterListProps
           showsVerticalScrollIndicator={true}
         />
       </View>
-      
+
     );
   };
 
   const renderBody = () => {
     return (
       <Column style={listContainerStyles}>
-        
         {isEmpty ? LoadingCircle() : renderChapterList()}
-      
       </Column>
     );
   };
@@ -151,11 +148,9 @@ export const ChapterList = observer(function ChapterList(props: ChapterListProps
   };
 
   return (
-    //<Column style={containerStyles}>
     <View>
       {renderBody()}
       {loading && <LoadingCircle />}
     </View>
-    //</Column>
   );
 });

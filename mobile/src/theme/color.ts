@@ -59,7 +59,7 @@ export const color = {
     secondary: 'light',
 
     // Text and text-related color
-    text: 'light',
+    text: '#fff',
     textSecondary: 'light',
     placeHolder: 'light',
 

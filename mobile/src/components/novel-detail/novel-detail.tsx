@@ -136,7 +136,6 @@ export const NovelDetail = observer(function NovelDetail(props: NovelDetailProps
     return (
     
       <View style={descriptionContainerStyles}>
-      
         <Text
           numberOfLines={isExpanded ? undefined : 4}
           style={descriptionStyles}

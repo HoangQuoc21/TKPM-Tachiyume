@@ -19,7 +19,6 @@ import {
 //import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // For icons
 import BottomSheet from '@gorhom/bottom-sheet';
-import Slider from '@react-native-community/slider';
 
 import { Column } from "../column/column";
 import { Row } from "../row/row";
@@ -28,44 +27,19 @@ import { translate } from "../../i18n";
 
 // Import the models
 import Chapter from "../../models/chapter";
-import { color, iconSize, spacing } from "../../theme";
+import { color, iconSize} from "../../theme";
 import { VectorIcon } from "../vector-icon/vector-icon";
 
 import { SourceFactory } from '../../factories/source-factory';
-import Source from "../../models/sources/source";
-import SourceOne from "../../models/sources/source-one";
 import { ScrollView } from "react-native-gesture-handler";
-import CustomSlider from "../slider/slider";
+import { Slider } from "../slider/slider";
 
 
 export const ChapterContent = observer(function ChapterContent(props: ChapterContentProps) {
   const { preset = "default", style: styleOverride, source, novel, chapter, ...rest } = props;
-  
-  const containerStyles = flatten([
-    stylePresets[preset].CONTAINER,
-    styleOverride,
-  ]);
- 
-  const contentContainerStyles = flatten([stylePresets[preset].CONTENT_CONTAINER]);
-  
-  const loadingContainerStyles = flatten([
-    stylePresets[preset].LOADING_CONTAINER,
-  ]);
-  const loadingStyles = flatten([stylePresets[preset].LOADING]);
-  const darkModeStyles = flatten([stylePresets[preset].DARK_MODE]);
-  const lightModeStyles = flatten([stylePresets[preset].LIGHT_MODE]);
-  const contentStyles = flatten([stylePresets[preset].CONTENT]);
-  const footerStyles = flatten([stylePresets[preset].FOOTER]);
-  const sheetContainerStyles = flatten([stylePresets[preset].SHEET_CONTAINER]);
-  const sheetContentStyles = flatten([stylePresets[preset].SHEET_CONTENT]);
-  const buttonContainerStyles = flatten([stylePresets[preset].BUTTON_CONTAINER]);
-  const fontButtonStyles = flatten([stylePresets[preset].FONT_BUTTON]);
-  const titleStyles = flatten([stylePresets[preset].TITLE]);
-
 
   const [isEmpty, setIsEmpty] = useState(false);
   const [loading, setLoading] = useState(false);
-
   const [chapterContent, setChapterContent] = useState<Chapter | null>(null);
   const [fontSize, setFontSize] = useState(15);
   const [fontFamily, setFontFamily] = useState('Roboto');
@@ -73,43 +47,38 @@ export const ChapterContent = observer(function ChapterContent(props: ChapterCon
   const [darkMode, setDarkMode] = useState(false);
   const [showChapterList, setShowChapterList] = useState(false);
 
+
+  const containerStyles = flatten([stylePresets[preset].CONTAINER, styleOverride,]);
+  const loadingContainerStyles = flatten([stylePresets[preset].LOADING_CONTAINER,]);
+  const loadingStyles = flatten([stylePresets[preset].LOADING]);
+
+  const styleTheme = darkMode ? stylePresets[preset].DARK_THEME : stylePresets[preset].LIGHT_THEME;
+  const contentContainerStyles = flatten([styleTheme.CONTENT_CONTAINER]);
+  const contentStyles = flatten([styleTheme.CONTENT]);
+  const footerStyles = flatten([styleTheme.FOOTER]);
+  const sheetContainerStyles = flatten([styleTheme.SHEET_CONTAINER]);
+  const sheetContentStyles = flatten([styleTheme.SHEET_CONTENT]);
+  const buttonContainerStyles = flatten([styleTheme.BUTTON_CONTAINER]);
+  const fontButtonStyles = flatten([styleTheme.FONT_BUTTON]);
+  const titleStyles = flatten([styleTheme.TITLE]);
+  const iconStyles = flatten([styleTheme.ICON]);
+
   const settingsSheetRef = useRef(null);
   const chapterListSheetRef = useRef(null);
 
   const toggleDarkMode = () => setDarkMode(!darkMode);
+  const toggleShownSettings = () => settingsSheetRef.current?.expand();
   const toggleShowChapterList = () => chapterListSheetRef.current?.expand();
 
   const handleFontSizeChange = (value) => setFontSize(value);
   const handleFontFamilyChange = (family) => setFontFamily(family);
   const handleLineHeightChange = (value) => setLineHeight(value);
 
-  const themeStyles = darkMode ? darkModeStyles : lightModeStyles;
-
-  // Add this ref to clear focus on text input when press back button
-  const textInputRef = useRef(null);
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      () => {
-        if (textInputRef.current && textInputRef.current.isFocused()) {
-          textInputRef.current.blur();
-          return true; // prevent default behavior (exit app)
-        }
-        return false; // allow default behavior
-      }
-    );
-    return () => backHandler.remove();
-  }, []);
-
   const initChapterContent = async (source) => {
-    console.log(`Source ID in Chapter Content: ${source.id}`); 
-    
+    //console.log(`Source ID in Chapter Content: ${source.id}`); 
     const chapterSource = SourceFactory.createSource(source.id);
-  
     await chapterSource.findContentByChapter(chapter).then((chapter) => {
-      
       setChapterContent(chapter.content);
-
     }).catch((error) => {
       console.error('Error finding chapters by page:', error);
     });
@@ -143,7 +112,7 @@ export const ChapterContent = observer(function ChapterContent(props: ChapterCon
   //         showsVerticalScrollIndicator={true}
   //       />
   //     </View>
-      
+
   //   );
   // };
 
@@ -165,17 +134,17 @@ export const ChapterContent = observer(function ChapterContent(props: ChapterCon
 
   const renderFooter = () => {
     return (
-      <View style={footerStyles}>
-        <TouchableOpacity onPress={() => settingsSheetRef.current?.expand()}>
-          <VectorIcon name="settings-outline" size={iconSize.medium} color={color.ligthTheme.accent} />
+      <Row style={footerStyles}>
+        <TouchableOpacity onPress={toggleShownSettings}>
+          <VectorIcon name="settings-outline" size={iconSize.medium} style={iconStyles} />
         </TouchableOpacity>
         <TouchableOpacity onPress={toggleShowChapterList}>
-          <VectorIcon name="list-outline" size={iconSize.medium} color={color.ligthTheme.accent} />
+          <VectorIcon name="list-outline" size={iconSize.medium} style={iconStyles} />
         </TouchableOpacity>
         <TouchableOpacity onPress={toggleDarkMode}>
-          <VectorIcon name={darkMode ? "moon" : "sunny"} size={iconSize.medium} color={color.ligthTheme.accent} />
+          <VectorIcon name={darkMode ? "moon" : "sunny"} size={iconSize.medium} style={iconStyles} />
         </TouchableOpacity>
-      </View>
+      </Row>
     );
   };
 
@@ -184,18 +153,7 @@ export const ChapterContent = observer(function ChapterContent(props: ChapterCon
       <BottomSheet style={sheetContainerStyles} ref={settingsSheetRef} index={-1} snapPoints={['40%']} enablePanDownToClose={true}>
         <View style={sheetContentStyles}>
           <Text style={titleStyles}>Font Size</Text>
-          {/* <Slider
-            minimumValue={10}
-            maximumValue={20}
-            value={fontSize}
-            onValueChange={handleFontSizeChange}
-          /> */}
-          <CustomSlider
-            minimumValue={10}
-            maximumValue={20}
-            value={fontSize}
-            onValueChange={handleFontSizeChange}
-          />
+          <Slider value={fontSize} onValueChange={handleFontSizeChange} minimumValue={10} maximumValue={20} />
           <Text style={titleStyles}>Font Family</Text>
           <View style={buttonContainerStyles}>
             <TouchableOpacity onPress={() => handleFontFamilyChange('Roboto')} style={fontButtonStyles}>
@@ -210,22 +168,16 @@ export const ChapterContent = observer(function ChapterContent(props: ChapterCon
           </View>
           <Text style={titleStyles}>Line Spacing</Text>
           <View style={buttonContainerStyles}>
-            <TouchableOpacity onPress={() => handleLineHeightChange(fontSize*1.5)} style={fontButtonStyles}>
+            <TouchableOpacity onPress={() => handleLineHeightChange(fontSize * 1.5)} style={fontButtonStyles}>
               <Text>  0.5  </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleLineHeightChange(fontSize*2)} style={fontButtonStyles}>
+            <TouchableOpacity onPress={() => handleLineHeightChange(fontSize * 2)} style={fontButtonStyles}>
               <Text>  1.0  </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleLineHeightChange(fontSize*2.5)} style={fontButtonStyles}>
+            <TouchableOpacity onPress={() => handleLineHeightChange(fontSize * 2.5)} style={fontButtonStyles}>
               <Text>  1.5  </Text>
             </TouchableOpacity>
           </View>
-          {/* <Slider
-            minimumValue={0.5}
-            maximumValue={1.5}
-            value={letterSpacing}
-            onValueChange={handleLetterSpacingChange}
-          /> */}
         </View>
       </BottomSheet>
     );
@@ -236,14 +188,13 @@ export const ChapterContent = observer(function ChapterContent(props: ChapterCon
       <BottomSheet style={sheetContainerStyles} ref={chapterListSheetRef} index={-1} snapPoints={['50%']} enablePanDownToClose={true}>
         <View style={sheetContentStyles}>
           <Text style={titleStyles}>Chapter List</Text>
-          {/* Render the list of chapters here */}
         </View>
       </BottomSheet>
     );
   };
 
   return (
-    <View style={[containerStyles, themeStyles]}>
+    <View style={[containerStyles]}>
       {renderContent()}
       {renderFooter()}
       {renderSettings()}
