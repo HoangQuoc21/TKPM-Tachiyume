@@ -24,6 +24,9 @@ const DEFAULT_STYLE = {
     bottom: 0,
   } as ViewStyle,
   LOADING: {} as TextStyle,
+  SHEET_CONTENT: {
+    padding: spacing[4],
+  } as ViewStyle,
 
   LIGHT_THEME:{
     TITLE_CONTAINER: {
@@ -55,9 +58,7 @@ const DEFAULT_STYLE = {
       borderWidth: 1,
       borderColor: color.ligthTheme.boder,
     },
-    SHEET_CONTENT: {
-      padding: spacing[4],
-    },
+   
     BUTTON_CONTAINER: {
       flexDirection: 'row',
       justifyContent: 'space-around',

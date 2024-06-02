@@ -6,7 +6,6 @@ import { flatten } from "ramda";
 import { ChapterContentProps } from "./chapter-content.props";
 import { stylePresets } from "./chapter-content.presets";
 import {
-  FlatList,
   Text,
   View,
   ActivityIndicator,
@@ -18,7 +17,8 @@ import {
 //import React, { useState, useRef } from 'react';
 //import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // For icons
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
+import { FlatList } from "react-native-gesture-handler";
 
 import { Column } from "../column/column";
 import { Row } from "../row/row";
@@ -27,7 +27,7 @@ import { translate } from "../../i18n";
 
 // Import the models
 import Chapter from "../../models/chapter";
-import { color, iconSize} from "../../theme";
+import { color, iconSize, spacing, typography } from "../../theme";
 import { VectorIcon } from "../vector-icon/vector-icon";
 
 import { SourceFactory } from '../../factories/source-factory';
@@ -45,19 +45,20 @@ export const ChapterContent = observer(function ChapterContent(props: ChapterCon
   const [fontFamily, setFontFamily] = useState('Roboto');
   const [lineHeight, setLineHeight] = useState(30);
   const [darkMode, setDarkMode] = useState(false);
+  const [chapterList, setChapterList] = useState<Chapter[]>([]);
   const [showChapterList, setShowChapterList] = useState(false);
 
 
   const containerStyles = flatten([stylePresets[preset].CONTAINER, styleOverride,]);
   const loadingContainerStyles = flatten([stylePresets[preset].LOADING_CONTAINER,]);
   const loadingStyles = flatten([stylePresets[preset].LOADING]);
+  const sheetContentStyles = flatten([stylePresets[preset].SHEET_CONTENT]);
 
   const styleTheme = darkMode ? stylePresets[preset].DARK_THEME : stylePresets[preset].LIGHT_THEME;
   const contentContainerStyles = flatten([styleTheme.CONTENT_CONTAINER]);
   const contentStyles = flatten([styleTheme.CONTENT]);
   const footerStyles = flatten([styleTheme.FOOTER]);
   const sheetContainerStyles = flatten([styleTheme.SHEET_CONTAINER]);
-  const sheetContentStyles = flatten([styleTheme.SHEET_CONTENT]);
   const buttonContainerStyles = flatten([styleTheme.BUTTON_CONTAINER]);
   const fontButtonStyles = flatten([styleTheme.FONT_BUTTON]);
   const titleStyles = flatten([styleTheme.TITLE]);
@@ -84,37 +85,51 @@ export const ChapterContent = observer(function ChapterContent(props: ChapterCon
     });
   };
 
+  const initChapterList = async (source) => {
+    const chapterSource = SourceFactory.createSource(source.id);
+    await chapterSource.findChaptersByNovel(novel).then((chapters) => {
+      const fetchChapterList = [];
+      chapters.slice().reverse().forEach((chapter, index) => {
+        fetchChapterList.push({
+          ...chapter,
+          id: chapters.length - index
+        });
+      });
+      setChapterList(fetchChapterList);
+    }).catch((error) => {
+      console.error('Error finding chapters by page:', error);
+    });
+  };
+
   useEffect(() => {
     initChapterContent(source);
-  }, [source]);
+    initChapterList(source);
+  }, [source, chapter]);
+
+
 
   useEffect(() => {
     setIsEmpty(!chapterContent);
   }, [chapterContent]);
 
-  // const renderItem = (chapter: Chapter) => {
-  //   return <ChapterListItem chapter={chapter} novel={novel} source={source}/>;
-  // };
-
-  // const renderChapterList = () => {
-  //   return (
-  //     <View>
-  //       <Row style={titleContainerStyles}>
-  //         <Column style={{ flex: 4, borderColor: color.ligthTheme.fourth, borderBottomWidth: 1 }}>
-  //           <Text style={titleStyles}>{chapterList.length} {translate("novelDetailScreen.chapters")}</Text>
-  //         </Column>
-  //         <Column style={{ flex: 6 }} />
-  //       </Row>
-  //       <FlatList
-  //         data={filteredData}
-  //         renderItem={({ item }) => renderItem(item)}
-  //         keyExtractor={(item) => item.id.toString()}
-  //         showsVerticalScrollIndicator={true}
-  //       />
-  //     </View>
-
-  //   );
-  // };
+  const renderChapterList = () => {
+    return (
+      <Column style={{alignItems: 'center', gap: spacing[2], padding: spacing[4]}}>
+        <Text style={{
+          ...typography.labelLarge,
+          fontWeight: 'bold',
+        }}>
+          {"Chapter List"}
+        </Text>
+        <FlatList
+          data={chapterList}
+          renderItem={({ item }) => <ChapterListItem chapter={item} novel={novel} source={source} preset={"simple"} />}
+          keyExtractor={(item) => item.id.toString()}
+          showsVerticalScrollIndicator={true}
+        />
+      </Column>
+    );
+  }
 
   const LoadingCircle = () => {
     return (
@@ -183,12 +198,10 @@ export const ChapterContent = observer(function ChapterContent(props: ChapterCon
     );
   };
 
-  const renderChapterList = () => {
+  const renderChapterListShortcut = () => {
     return (
       <BottomSheet style={sheetContainerStyles} ref={chapterListSheetRef} index={-1} snapPoints={['50%']} enablePanDownToClose={true}>
-        <View style={sheetContentStyles}>
-          <Text style={titleStyles}>Chapter List</Text>
-        </View>
+        {renderChapterList()}
       </BottomSheet>
     );
   };
@@ -198,7 +211,7 @@ export const ChapterContent = observer(function ChapterContent(props: ChapterCon
       {renderContent()}
       {renderFooter()}
       {renderSettings()}
-      {renderChapterList()}
+      {renderChapterListShortcut()}
     </View>
   );
 });
