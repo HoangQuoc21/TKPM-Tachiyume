@@ -18,9 +18,7 @@ function getSummaryImage($) {
 
 // Source: Box novel
 export default class SourceTwo extends Source {
-  findNovelDetails(novel: Novel): Promise<any> {
-    throw new Error("Method not implemented.");
-  }
+  
   static title = "Box Novel";
   static importURL = "https://boxnovel.com";
   static idToCreate = 2;
@@ -92,20 +90,21 @@ export default class SourceTwo extends Source {
   }
 
   // Novel details (get details from a novel in list of novels )
-  async findNovelsDetail(novel: Novel) {
+  async findNovelDetails(novel: Novel) {
     try {
       // fetch the detail page of the novel
-      const reponse = await fetch(`${this.baseUrl}${novel.url}`);
+      const reponse = await fetch(`${novel.url}`);
       const html = await reponse.text();
       const $ = load(html);
 
       // Get the details of the novel
-      novel.id = 1; //assuming the id is 1
+      // novel.id = 1; //assuming the id is 1
 
       novel.sourceId = this.id;
-      novel.title = $("post-title > h1").text().trim();
+      novel.title = $(".post-title > h1").text().trim();
+      console.log('Novel title is:', novel.title);
       novel.thumbnail = getSummaryImage($);
-      novel.description = $("div.summary__content")
+      novel.description = $("div.summary__content > div")
         .text()
         .replace(/\n/g, "\n\n")
         .trim();
@@ -131,7 +130,6 @@ export default class SourceTwo extends Source {
           novel.status = content;
         }
       });
-
       return novel;
     } catch (error) {
       throw new Error("Failed to get novel detail: " + error.message);
