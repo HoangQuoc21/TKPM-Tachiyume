@@ -24,7 +24,7 @@ import { sourceImportURLs, SourceFactory } from '../../factories/source-factory'
 // Import the contexts
 import { NovelSourceListContext } from '../../providers/novel-source-list-provider';
 
-import { addSourceToStorage } from '../../storages/novel-sources-storage';
+//import { addSource as addSourceToStorage } from '../../storages/novel-sources-storage';
 import { color, radius, spacing } from '../../theme';
 
 export const ImportSourceModal = observer(function ImportSourceModal(props: ImportSourceModalProps) {
@@ -47,7 +47,8 @@ export const ImportSourceModal = observer(function ImportSourceModal(props: Impo
     const [importURL, setImportURL] = useState('')
 
     //Get the source list from the context
-    const [sourceList, setSourceList] = useContext(NovelSourceListContext);
+    //Go to the NovelSourceListProvider to know all the methods available
+    const [sourceList, addSourceToStorage, removeSourceFromStorage, clearSourcesFromStorage] = useContext(NovelSourceListContext);
 
     const toast = useToast();
 
@@ -77,8 +78,6 @@ export const ImportSourceModal = observer(function ImportSourceModal(props: Impo
     }
 
     const addSource = async (importSource: Source) => {
-        const newSourceList = [...sourceList, importSource];
-        setSourceList(newSourceList);
         await addSourceToStorage(importSource);
     };
 
@@ -88,6 +87,11 @@ export const ImportSourceModal = observer(function ImportSourceModal(props: Impo
     }
 
     const onImportPress = () => {
+        if (importURL === '') {
+            toast.show(translate("error.noSouceChoose"), { type: 'warning' })
+            return
+        }
+
         const importSource = SourceFactory.getSource(importURL)
         if (!isSourceInList(importSource)) {
             addSource(importSource)
@@ -145,7 +149,6 @@ export const ImportSourceModal = observer(function ImportSourceModal(props: Impo
             <Column style={overlayContainerStyle}>
                 <Column style={modalContainerStyle}>
                     {renderTitle()}
-                    {/* {renderInput()} */}
                     {renderPicker()}
                     {renderButtons()}
                 </Column>

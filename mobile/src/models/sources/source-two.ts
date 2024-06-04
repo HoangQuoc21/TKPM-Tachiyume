@@ -188,7 +188,6 @@ export default class SourceTwo extends Source {
       throw error;
     }
   }
-
   async searchNovels(query: string) {
     let queryByNovelName = `${this.baseUrl}/?s=${query}&post_type=wp-manga`;
     let queryByAuthor = `${this.baseUrl}/?s=&post_type=wp-manga&author=${query}`;
@@ -238,5 +237,4 @@ export default class SourceTwo extends Source {
 
     return novels;
   }
-
 }

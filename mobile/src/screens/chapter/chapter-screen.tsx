@@ -1,5 +1,5 @@
-import {observer} from 'mobx-react-lite';
-import React, {FC, useEffect, useState} from 'react';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useEffect, useState } from 'react';
 import styles from './chapter-screen.styles';
 import { StackScreenProps } from "@react-navigation/stack"
 import { View, Text } from 'react-native';
@@ -9,47 +9,25 @@ import { NavigatorParamList } from "../../navigators/app-navigator"
 // Import the custom components
 import { Screen } from "../../components/screen/screen"
 import { Column } from '../../components/column/column';
-import {translate} from '../../i18n'
+import { translate } from '../../i18n'
+import { ChapterContent } from '../../components/chapter-content/chapter-content';
 
 export const ChapterScreen: FC<
     StackScreenProps<NavigatorParamList, typeof ChapterScreenName>
 > = observer(({ navigation, route }) => {
 
-    const renderHeader = () => {
-        return (
-            <View style={styles.HEADER}>
-                <Text style={styles.TEXT}>
-                    This is the header of the chapter screen
-                </Text>
-            </View>
-        )
-    }
+    const { title, subTitle, data } = route.params;
+    const source = data.source;
+    const chapter = data.chapter;
+    const novel = data.novel;
 
-    const renderBody = () => {
-        return (
-            <View style={styles.BODY}>
-                <Text style={styles.TEXT}>
-                    This is the body of the chapter screen
-                </Text>
-            </View>
-        )
-    }
-
-    const renderFooter = () => {
-        return (
-            <View style={styles.FOOTER}>
-                <Text style={styles.TEXT}>
-                    This is the footer of the chapter screen
-                </Text>
-            </View>
-        )
-    }
+    const renderChapterContent = () => {
+        return <ChapterContent source={source} novel={novel} chapter={chapter} />;
+    };
 
     return (
         <Screen style={styles.ROOT} preset='fixed' unsafe>
-            {renderHeader()}
-            {renderBody()}
-            {renderFooter()}
+            {renderChapterContent()}
         </Screen>
     )
 })

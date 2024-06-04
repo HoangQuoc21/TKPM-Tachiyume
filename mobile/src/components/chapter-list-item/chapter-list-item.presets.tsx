@@ -9,8 +9,9 @@ import {
   shadow,
 } from "../../theme";
 
-export const NovelListItemPresets = {
+export const ChapterListItemPresets = {
   default: "default",
+  simple: "simple",
 };
 
 const DEFAULT_STYLE = {
@@ -21,7 +22,7 @@ const DEFAULT_STYLE = {
     borderRadius: radius[4],
     alignContent: "center",
     backgroundColor: color.ligthTheme.third,
-    height: 100,
+    height: 60,
 
     // shadow
     shadowColor: "black",
@@ -29,37 +30,40 @@ const DEFAULT_STYLE = {
     shadowRadius: radius[5],
     elevation: 5,
   } as ViewStyle,
-  IMAGE: {
-    flex: 30,
-    width: "100%",
-    height: "100%",
+  TEXT: {
+    ...typography.labelSmall,
     justifyContent: "center",
-    backgroundColor: color.common.white,
-    borderBottomLeftRadius: radius[4],
-    borderTopLeftRadius: radius[4],
-  } as ImageStyle,
-  TEXT_CONTAINER: {
-    flex: 70,
-    justifyContent: "center",
-    borderColor: color.ligthTheme.fourth,
-    borderStartWidth: 1,
+    fontWeight: "normal",
+
+    paddingLeft: spacing[2],
+    fontSize: typography.bodySmall.fontSize,
+  } as TextStyle,
+};
+
+const SIMPLE_STYLE = {
+  CONTAINER: {
+    flexDirection: "row",
+    marginHorizontal: spacing[1],
+    marginVertical: spacing[2],
+    borderRadius: radius[4],
+    alignContent: "center",
   } as ViewStyle,
   TEXT: {
-    ...typography.bodySmall,
-    fontWeight: "bold",
-    paddingHorizontal: spacing[4],
+    ...typography.labelSmall,
+    justifyContent: "center",
+    fontWeight: "normal",
+    paddingLeft: spacing[2],
+    fontSize: typography.bodySmall.fontSize,
   } as TextStyle,
-  FAVORITE_ICON: {
-    flex: 10,
-    alignSelf: 'center',
-    paddingRight: spacing[3],
-  }
 };
 
 export const stylePresets = {
   default: {
     ...DEFAULT_STYLE,
   },
+  simple: {
+    ...SIMPLE_STYLE,
+  },
 };
 
-export type NovelListItemPresets = keyof typeof stylePresets;
+export type ChapterListItemPresets = keyof typeof stylePresets;
