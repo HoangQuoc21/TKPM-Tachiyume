@@ -36,7 +36,7 @@ export const NovelDetail = observer(function NovelDetail(props: NovelDetailProps
     stylePresets[preset].CONTAINER,
     styleOverride,
   ]);
-  
+
   const loadingContainerStyles = flatten([
     stylePresets[preset].LOADING_CONTAINER,
   ]);
@@ -60,7 +60,7 @@ export const NovelDetail = observer(function NovelDetail(props: NovelDetailProps
   const categoryLabelStyles = flatten([stylePresets[preset].CATEGORY_LABEL]);
   const categoryTextStyles = flatten([stylePresets[preset].CATEGORY_TEXT]);
 
-  
+
 
   const [isEmpty, setIsEmpty] = useState(false);
   const [novelDetail, setNovelDetail] = useState<Novel | null>(null);
@@ -83,14 +83,14 @@ export const NovelDetail = observer(function NovelDetail(props: NovelDetailProps
   }, []);
 
   const initNovel = async (source) => {
-    console.log(`Source ID in Novel-Detail: ${source.id}`); 
-    
+    console.log(`Source ID in Novel-Detail: ${source.id}`);
+
     const novelSource = SourceFactory.createSource(source.id);
 
-    console.log(`Novel Name in Novel-Detail: ${novel.title}`); 
-  
+    console.log(`Novel Name in Novel-Detail: ${novel.title}`);
+
     await novelSource.findNovelDetails(novel).then((detail) => {
-        
+
       //console.log(detail);
       setNovelDetail(detail);
       //console.log(novelDetail);
@@ -102,26 +102,26 @@ export const NovelDetail = observer(function NovelDetail(props: NovelDetailProps
 
   useEffect(() => {
     initNovel(source);
-    
+
   }, [source]);
 
   useEffect(() => {
     setIsEmpty(!novelDetail);
   }, [novelDetail]);
-  
+
   const renderDetails = () => {
     if (!novelDetail) {
       return null;
     }
     return (
-    <View style={containerDetailsStyles}>
-      <Image  source={{ uri: novelDetail.thumbnail }} style={thumbnailStyles} resizeMode="contain" />
-      <View style={detailsStyles}>
-        <Text style={titleStyles}>{novelDetail.title}</Text>
-        <Text style={authorsStyles}>{novelDetail.authors.join(', ')}</Text>
-        <Text style={statusStyles}>{novelDetail.status}</Text>
+      <View style={containerDetailsStyles}>
+        <Image source={{ uri: novelDetail.thumbnail }} style={thumbnailStyles} resizeMode="contain" />
+        <View style={detailsStyles}>
+          <Text style={titleStyles}>{novelDetail.title}</Text>
+          <Text style={authorsStyles}>{novelDetail.authors.join(', ')}</Text>
+          <Text style={statusStyles}>{novelDetail.status}</Text>
+        </View>
       </View>
-    </View>
     );
   };
 
@@ -134,21 +134,22 @@ export const NovelDetail = observer(function NovelDetail(props: NovelDetailProps
       return null;
     }
     return (
-    
+
       <View style={descriptionContainerStyles}>
-        <Text
-          numberOfLines={isExpanded ? undefined : 4}
-          style={descriptionStyles}
-        >
-          {novelDetail.description}
-        </Text>
-        <TouchableOpacity onPress={toggleExpand} style={gradientStyles}>
-          <Text style={toggleButtonTextStyles}>
-            {isExpanded ? 'Show Less' : 'Show More'}
+          <Text
+            numberOfLines={isExpanded ? 20 : 4}
+            style={descriptionStyles}
+          >
+            {novelDetail.description}
           </Text>
-        </TouchableOpacity>
+          <TouchableOpacity onPress={toggleExpand} style={gradientStyles}>
+            <Text style={toggleButtonTextStyles}>
+              {isExpanded ? 'Show Less' : 'Show More'}
+            </Text>
+          </TouchableOpacity>
+
       </View>
-    
+
     );
   };
 
@@ -168,7 +169,7 @@ export const NovelDetail = observer(function NovelDetail(props: NovelDetailProps
   };
 
   const renderChapterList = () => {
-    return <ChapterList source={source} novel={novel}/>;
+    return <ChapterList source={source} novel={novel} />;
   };
 
 
@@ -183,7 +184,7 @@ export const NovelDetail = observer(function NovelDetail(props: NovelDetailProps
   const renderCard = () => {
     return (
       <Column>
-        
+
         {isEmpty ? LoadingCircle() : (
           <View>
             {renderDetails()}
@@ -192,11 +193,11 @@ export const NovelDetail = observer(function NovelDetail(props: NovelDetailProps
             {renderChapterList()}
           </View>
         )}
-      
+
       </Column>
     );
   };
-  
+
 
   return (
     <Column style={containerStyles}>
