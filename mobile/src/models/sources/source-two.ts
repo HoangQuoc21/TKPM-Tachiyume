@@ -104,7 +104,7 @@ export default class SourceTwo extends Source {
       novel.title = $(".post-title > h1").text().trim();
       console.log('Novel title is:', novel.title);
       novel.thumbnail = getSummaryImage($);
-      novel.description = $("div.summary__content > div")
+      novel.description = $("div.summary__content > div > p")
         .text()
         .replace(/\n/g, "\n\n")
         .trim();
@@ -113,7 +113,7 @@ export default class SourceTwo extends Source {
         .map((i, el) => $(el).text().trim())
         .get();
 
-      novel.view = 1000; // Assuming the view count is 1000
+      // novel.view = 1000; // Assuming the view count is 1000
 
       const genres = [];
       $(".genres-content > a").each((i, el) => {
@@ -154,7 +154,7 @@ export default class SourceTwo extends Source {
             .text()
             .trim(),
         };
-        chapters.push(item);
+        chapters.unshift(item);
       });
 
       return chapters;
