@@ -22,9 +22,6 @@ const DEFAULT_STYLE = {
   CONTAINER_DETAILS:{
     flexDirection: 'row',
     paddingHorizontal: spacing[4],
-    alignItems: 'center',
-    
-    
   } as ViewStyle, 
   THUMBNAIL:{
     flex: 30,
@@ -38,20 +35,23 @@ const DEFAULT_STYLE = {
   },
   DETAILS:{
     flex: 70,
-  },
+  } as ViewStyle,
   TITLE:{
-    fontSize: typography.bodyLarge.fontSize,
+    ...typography.titleMedium,
     fontWeight: 'bold',
     color: color.ligthTheme.text,
-  },
+    paddingBottom: spacing[2],
+  } as ViewStyle,
   AUTHORS:{
     fontSize: typography.bodySmall.fontSize,
     color: color.ligthTheme.text,
-  },
+    fontWeight: 'bold',
+  } as TextStyle,
   STATUS:{
     fontSize: typography.bodySmall.fontSize,
     color: color.ligthTheme.text,
-  },
+    fontWeight: 'bold',
+  } as TextStyle,
   DESCRIPTION_CONTAINER:{
     flexDirection: 'row',
     paddingHorizontal: spacing[4],
