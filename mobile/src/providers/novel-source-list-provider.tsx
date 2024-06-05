@@ -34,11 +34,11 @@ export function NovelSourceListProvider({ children }) {
     }, []);
 
     useEffect(() => {
-        console.log('--> sourceList from storage:', sourceList);
+        console.log('--> sourceList number from storage:', sourceList.length);
     }, [sourceList]);
 
     return (
-        <NovelSourceListContext.Provider value={[sourceList, addSourceToStorage]}>
+        <NovelSourceListContext.Provider value={[sourceList, addSourceToStorage, removeSourceFromStorage, clearSourcesFromStorage]}>
             {children}
         </NovelSourceListContext.Provider>
     );

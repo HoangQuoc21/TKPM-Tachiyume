@@ -72,7 +72,7 @@ export const ChapterList = observer(function ChapterList(props: ChapterListProps
   }, []);
 
   const initChapterList = async (source) => {
-    console.log(`Source ID in Chapter List: ${source.id}`);
+    //console.log(`Source ID in Chapter List: ${source.id}`);
 
     const chapterSource = SourceFactory.createSource(source.id);
 

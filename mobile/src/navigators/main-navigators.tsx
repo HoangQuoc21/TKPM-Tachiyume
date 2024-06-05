@@ -44,11 +44,9 @@ export function MainStack() {
                 tabBarInactiveTintColor: customColor.ligthTheme.inactive,
                 tabBarStyle: {
                     backgroundColor: customColor.ligthTheme.secondary,
-                    position: "absolute",
                     height: tabBarHeight,
-                    marginHorizontal: spacing[3],
-                    marginBottom: spacing[2],
-                    borderRadius: radius[7],
+                    borderTopRightRadius: radius[7],
+                    borderTopLeftRadius: radius[7],
                     elevation: 2,
                 },
                 // Add this to clear the remaining data when the screen is not focused
