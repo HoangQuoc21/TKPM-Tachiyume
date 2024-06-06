@@ -170,7 +170,35 @@ export default class SourceThree extends Source {
 
   // async findNovelDetails(novel: any): Promise<any> {}
   async searchNovels(query: string): Promise<any[]> {
-    return [];
+    let queryByNovelName = `${this.baseUrl}/?s=${query}&post_type=wp-manga`
+    async function queryNovels(url) {
+      try {
+        const response = await axios.get(url);
+        const html = response.data;
+        const $ = load(html);
+
+        const novels = [];
+        if ($(".not-found-content").length > 0) {
+          return null;
+        }
+        $(".c-tabs-item__content").each((index, element) => {
+          const item = {
+            url: $(element).find(".tab-thumb > a").attr("href").trim(),
+            title: $(element).find(".post-title > h3 > a").text().trim(),
+            thumbnail: $(element).find("img.img-responsive").attr("data-src").trim(),
+            sourceId: this.id,
+          };
+          novels.push(item);
+        });
+
+        return novels;
+      } catch (error) {
+        console.error("Failed to fetch search results:", error);
+        throw error;
+      }
+    }
+    let novels = await queryNovels(queryByNovelName);
+    return novels
   }
 }
 
