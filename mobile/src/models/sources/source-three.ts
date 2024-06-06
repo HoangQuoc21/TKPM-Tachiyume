@@ -68,13 +68,15 @@ export default class SourceThree extends Source {
   }
 
   // Novel details (get details from a novel in list of novels )
-  async findNovelsDetail(novel: Novel) {
+  async findNovelDetails(novel: Novel) {
     try {
-      const response = await axios.get(`${novel.url}`);
-      const $ = load(response.data);
+      const response = await fetch(`${novel.url}`);
+      const html = await response.text();
+      const $ = load(html);
 
       novel.sourceId = this.id;
       novel.title = $(".post-title > h1").text().trim();
+      console.log('Novel title is:', novel.title);
       novel.thumbnail =
         $(".summary_image > a > img").attr("data-src")?.trim() || "";
       novel.description = $(".summary__content > p")
@@ -105,7 +107,6 @@ export default class SourceThree extends Source {
           novel.releaseYear = parseInt(content, 10);
         }
       });
-
       return novel;
     } catch (error) {
       console.error("Failed to fetch novel details:", error);
@@ -113,24 +114,24 @@ export default class SourceThree extends Source {
     }
   }
   // Get list of chapters from a novel
-  async findChaptersByNovel(novel: any) {
+  async findChaptersByNovel(novel: Novel) {
     try {
       let items = [];
 
       // Fetch the novel page to get the novel ID
       const web = `${novel.url}ajax/chapters`;
-      const response = await axios.get(web);
+      const response = await axios.post(web);
       const $ = load(response.data);
 
       // Iterate over each option element and extract chapter details
       $(".wp-manga-chapter").each((index, element) => {
         const chapter = {
-          url: $(element).find("a").attr("href")?.trim() || "",
-          name: $(element).find("a").text().trim(),
-          id: parseFloat($(element).find("a").text().trim()) || 0,
-          updated: $(element).find("span.chapter-release-date").text().trim(),
+          url: $(element).find("a").attr("href").trim(),
+          title: $(element).find("a").text().trim(),
+          id: parseFloat($(element).find("a").text().trim()),
+          uploadDate: $(element).find("span.chapter-release-date").text().trim(),
         };
-        items.push(chapter);
+        items.unshift(chapter);
       });
 
       return items;
@@ -167,7 +168,7 @@ export default class SourceThree extends Source {
     }
   }
 
-  async findNovelDetails(novel: any): Promise<any> {}
+  // async findNovelDetails(novel: any): Promise<any> {}
   async searchNovels(query: string): Promise<any[]> {
     return [];
   }
