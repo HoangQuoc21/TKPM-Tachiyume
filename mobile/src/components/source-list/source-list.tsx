@@ -28,9 +28,6 @@ import { VectorIcon } from "../vector-icon/vector-icon";
 // Import the context
 import { NovelSourceListContext } from '../../providers/novel-source-list-provider';
 
-import { clearSourcesInStorage } from '../../storages/novel-sources-storage';
-
-
 
 export const SourceList = observer(function SourceList(props: SourceListProps) {
   const { preset = "default", style: styleOverride, ...rest } = props;
@@ -52,7 +49,8 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
     const [loading, setLoading] = useState(false)
 
 
-    const [sourceList, setSourceList] = useContext(NovelSourceListContext);
+    //Go to the NovelSourceListProvider to know all the methods available
+    const [sourceList, addSourceToStorage, removeSourceFromStorage, clearSourcesFromStorage] = useContext(NovelSourceListContext);
 
     const [isSearch, setIsSearch] = useState(false);
     const [search, setSearch] = useState("");
@@ -154,9 +152,7 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
             toast.show(translate("error.noSource"), { type: 'warning' })
             return;
         }
-        setSourceList([])
-        setFilteredData([])
-        clearSourcesInStorage()
+        clearSourcesFromStorage();
         toast.show(translate("success.clearSource"), { type: 'success' })
     }
 
@@ -191,7 +187,7 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
             <FlatList
                 data={filteredData}
                 renderItem={({ item }) => (renderItem(item))}
-                keyExtractor={(item) => item.id.toString()}
+                keyExtractor={(item) => item.id}
                 showsVerticalScrollIndicator={true}
             />
         )

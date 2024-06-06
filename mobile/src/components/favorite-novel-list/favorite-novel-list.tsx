@@ -3,8 +3,8 @@ import { useEffect, useState, useContext, useRef } from "react";
 import { useToast } from "react-native-toast-notifications";
 import { observer } from "mobx-react-lite";
 import { flatten } from "ramda";
-import { NovelListProps } from "./novel-list.props";
-import { stylePresets } from "./novel-list.presets";
+import { FavoriteNovelListProps } from "./favorite-novel-list.props";
+import { stylePresets } from "./favorite-novel-list.presets";
 import {
   FlatList,
   Text,
@@ -25,13 +25,14 @@ import Novel from "../../models/novel";
 import { color, iconSize } from "../../theme";
 import { VectorIcon } from "../vector-icon/vector-icon";
 
-import { SourceFactory } from '../../factories/source-factory';
-import Source from "../../models/sources/source";
-import SourceOne from "../../models/sources/source-one";
+// Import the type
+import { FavoriteNovelSaveType } from "../../types";
 
+// Import the context
+import { FavoriteNovelListContext } from "../../providers/favorite-novel-list-provider";
 
-export const NovelList = observer(function NovelList(props: NovelListProps) {
-  const { preset = "default", style: styleOverride, source, ...rest } = props;
+export const FavoriteNovelList = observer(function NovelList(props: FavoriteNovelListProps) {
+  const { preset = "default", style: styleOverride, ...rest } = props;
 
   const containerStyles = flatten([
     stylePresets[preset].CONTAINER,
@@ -53,12 +54,12 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
 
   const [isEmpty, setIsEmpty] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const [novelList, setNovelList] = useState<Novel[]>([]);
   
   const [isSearch, setIsSearch] = useState(false);
   const [search, setSearch] = useState("");
-  const [filteredData, setFilteredData] = useState(novelList);
+  const [filteredData, setFilteredData] = useState<FavoriteNovelSaveType[]>([]);
+
+  const [favoriteNovelList, addFavoriteNovelToStorage, removeFavoriteNovelFromStorage] = useContext(FavoriteNovelListContext);
 
   // Add this ref to clear focus on text input when press back button
   const textInputRef = useRef(null);
@@ -76,60 +77,35 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
     return () => backHandler.remove();
   }, []);
 
-  const initNovelList = async (source) => {
-    //console.log(`Source ID: ${source.id}`); 
-    
-    const novelSource = SourceFactory.createSource(source.id);
-  
-    await novelSource.findNovelsByPage(1).then((novels) => {
-        
-      
-      novels.forEach((novel, index) => {
-        novel.id = index + 1; //Add an id to the novel
-        setNovelList((previousList) => [...previousList, novel]);
-
-      })
-
-
-    }).catch((error) => {
-      console.error('Error finding novels by page:', error);
-    });
-  };
-
   useEffect(() => {
-    initNovelList(source);
-    
-  }, [source]);
-
-  useEffect(() => {
-    if (novelList.length == 0) {
+    if (favoriteNovelList.length == 0) {
       setIsEmpty(true);
     } else {
-      setFilteredData(novelList);
+      setFilteredData(favoriteNovelList);
       setIsEmpty(false);
     }
     setLoading(false);
-  }, [novelList]);
+  }, [favoriteNovelList]);
 
   const handleSearch = (text: string) => {
     setSearch(text);
     setIsSearch(true);
     if (text) {
-      const filterNovelList = novelList.filter((item: Novel) => {
-        const itemData = item.title.toUpperCase();
+      const filterNovelList = favoriteNovelList.filter((item: FavoriteNovelSaveType) => {
+        const itemData = item.novel.title.toUpperCase();
         const textData = text.toUpperCase();
         return itemData.indexOf(textData) > -1;
       });
       setFilteredData(filterNovelList);
     } else {
       setIsSearch(false);
-      setFilteredData(novelList);
+      setFilteredData(favoriteNovelList);
     }
   };
 
   const clearSearch = () => {
     setSearch("");
-    setFilteredData(novelList);
+    setFilteredData(favoriteNovelList);
     setIsSearch(false);
   };
 
@@ -176,8 +152,8 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
 
  
 
-  const renderItem = (novel: Novel) => {
-    return <NovelListItem novel={novel} source={source} favorite={novel.isFavorite}/>;
+  const renderItem = (item: FavoriteNovelSaveType) => {
+    return <NovelListItem novel={item.novel} source={item.source} favorite={true}/>;
   };
 
   const renderNovelList = () => {
@@ -185,7 +161,7 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
       <FlatList
         data={filteredData}
         renderItem={({ item }) => renderItem(item)}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.novel.id.toString()}
         showsVerticalScrollIndicator={true}
       />
     );

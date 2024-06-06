@@ -3,8 +3,8 @@ import { useEffect, useState, useContext, useRef } from "react";
 import { useToast } from "react-native-toast-notifications";
 import { observer } from "mobx-react-lite";
 import { flatten } from "ramda";
-import { NovelListProps } from "./novel-list.props";
-import { stylePresets } from "./novel-list.presets";
+import { HistoryChapterListProps } from "./history-chapter-list.props";
+import { stylePresets } from "./history-chapter-list.presets";
 import {
   FlatList,
   Text,
@@ -17,21 +17,23 @@ import {
 
 import { Column } from "../column/column";
 import { Row } from "../row/row";
-import { NovelListItem } from "../novel-list-item/novel-list-item";
+import { HistoryChapterListItem } from "../history-chapter-list-item/history-chapter-list-item";
 import { translate } from "../../i18n";
 
 // Import the models
 import Novel from "../../models/novel";
+import Chapter from "../../models/chapter";
 import { color, iconSize } from "../../theme";
 import { VectorIcon } from "../vector-icon/vector-icon";
 
-import { SourceFactory } from '../../factories/source-factory';
-import Source from "../../models/sources/source";
-import SourceOne from "../../models/sources/source-one";
+// Import the type
+import { HistoryChapterListSaveType } from "../../types";
 
+// Import the context
+import { HistoryChapterListContext } from "../../providers/history-chapter-list-provider";
 
-export const NovelList = observer(function NovelList(props: NovelListProps) {
-  const { preset = "default", style: styleOverride, source, ...rest } = props;
+export const HistoryChapterList = observer(function NovelList(props: HistoryChapterListProps) {
+  const { preset = "default", style: styleOverride, ...rest } = props;
 
   const containerStyles = flatten([
     stylePresets[preset].CONTAINER,
@@ -53,12 +55,12 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
 
   const [isEmpty, setIsEmpty] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const [novelList, setNovelList] = useState<Novel[]>([]);
   
   const [isSearch, setIsSearch] = useState(false);
   const [search, setSearch] = useState("");
-  const [filteredData, setFilteredData] = useState(novelList);
+  const [filteredData, setFilteredData] = useState<HistoryChapterListSaveType[]>([]);
+
+  const [historyChapterList, addHistoryChapterToStorage] = useContext(HistoryChapterListContext);
 
   // Add this ref to clear focus on text input when press back button
   const textInputRef = useRef(null);
@@ -76,60 +78,35 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
     return () => backHandler.remove();
   }, []);
 
-  const initNovelList = async (source) => {
-    //console.log(`Source ID: ${source.id}`); 
-    
-    const novelSource = SourceFactory.createSource(source.id);
-  
-    await novelSource.findNovelsByPage(1).then((novels) => {
-        
-      
-      novels.forEach((novel, index) => {
-        novel.id = index + 1; //Add an id to the novel
-        setNovelList((previousList) => [...previousList, novel]);
-
-      })
-
-
-    }).catch((error) => {
-      console.error('Error finding novels by page:', error);
-    });
-  };
-
   useEffect(() => {
-    initNovelList(source);
-    
-  }, [source]);
-
-  useEffect(() => {
-    if (novelList.length == 0) {
+    if (historyChapterList.length == 0) {
       setIsEmpty(true);
     } else {
-      setFilteredData(novelList);
+      setFilteredData(historyChapterList);
       setIsEmpty(false);
     }
     setLoading(false);
-  }, [novelList]);
+  }, [historyChapterList]);
 
   const handleSearch = (text: string) => {
     setSearch(text);
     setIsSearch(true);
     if (text) {
-      const filterNovelList = novelList.filter((item: Novel) => {
-        const itemData = item.title.toUpperCase();
+      const filterChapterList = historyChapterList.filter((item: HistoryChapterListSaveType) => {
+        const itemData = item.chapter.title.toUpperCase();
         const textData = text.toUpperCase();
         return itemData.indexOf(textData) > -1;
       });
-      setFilteredData(filterNovelList);
+      setFilteredData(filterChapterList);
     } else {
       setIsSearch(false);
-      setFilteredData(novelList);
+      setFilteredData(historyChapterList);
     }
   };
 
   const clearSearch = () => {
     setSearch("");
-    setFilteredData(novelList);
+    setFilteredData(historyChapterList);
     setIsSearch(false);
   };
 
@@ -176,16 +153,16 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
 
  
 
-  const renderItem = (novel: Novel) => {
-    return <NovelListItem novel={novel} source={source} favorite={novel.isFavorite}/>;
+  const renderItem = (item: HistoryChapterListSaveType) => {
+    return <HistoryChapterListItem chapter={item.chapter} novel={item.novel} source={item.source}/>;
   };
 
-  const renderNovelList = () => {
+  const renderHistoryList = () => {
     return (
       <FlatList
         data={filteredData}
         renderItem={({ item }) => renderItem(item)}
-        keyExtractor={(item) => item.id.toString()}
+        //keyExtractor={(item) => item.chapter.id.toString()}
         showsVerticalScrollIndicator={true}
       />
     );
@@ -194,9 +171,7 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
   const renderBody = () => {
     return (
       <Column style={listContainerStyles}>
-        
-        {isEmpty ? LoadingCircle() : renderNovelList()}
-      
+        {isEmpty ? LoadingCircle() : renderHistoryList()}
       </Column>
     );
   };

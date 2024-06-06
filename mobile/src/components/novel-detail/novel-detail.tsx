@@ -6,19 +6,18 @@ import { flatten } from "ramda";
 import { NovelDetailProps } from "./novel-detail.props";
 import { stylePresets } from "./novel-detail.presets";
 import {
-  FlatList,
   Text,
   View,
   ActivityIndicator,
   TouchableOpacity,
-  TextInput,
-  BackHandler,
   Image,
 } from "react-native";
 
 import { Column } from "../column/column";
 
 import { translate } from "../../i18n";
+
+import { FavoriteIcon } from "../favorite-icon/favorite-icon";
 
 // Import the models
 import Novel from "../../models/novel";
@@ -27,11 +26,15 @@ import { color, iconSize } from "../../theme";
 import { SourceFactory } from '../../factories/source-factory';
 import { ChapterList } from "../chapter-list/chapter-list";
 import { ScrollView } from "react-native-gesture-handler";
+import { Row } from "../row/row";
 //import { LinearGradient } from 'expo-linear-gradient';
+
+import { FavoriteNovelListContext } from "../../providers/favorite-novel-list-provider";
 
 export const NovelDetail = observer(function NovelDetail(props: NovelDetailProps) {
   const { preset = "default", style: styleOverride, source, novel, ...rest } = props;
 
+  const toast = useToast();
   const containerStyles = flatten([
     stylePresets[preset].CONTAINER,
     styleOverride,
@@ -60,41 +63,17 @@ export const NovelDetail = observer(function NovelDetail(props: NovelDetailProps
   const categoryLabelStyles = flatten([stylePresets[preset].CATEGORY_LABEL]);
   const categoryTextStyles = flatten([stylePresets[preset].CATEGORY_TEXT]);
 
-
-
   const [isEmpty, setIsEmpty] = useState(false);
   const [novelDetail, setNovelDetail] = useState<Novel | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // Add this ref to clear focus on text input when press back button
-  const textInputRef = useRef(null);
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      () => {
-        if (textInputRef.current && textInputRef.current.isFocused()) {
-          textInputRef.current.blur();
-          return true; // prevent default behavior (exit app)
-        }
-        return false; // allow default behavior
-      }
-    );
-    return () => backHandler.remove();
-  }, []);
+  const [favoriteNovelList, addFavoriteNovelToStorage, removeFavoriteNovelFromStorage] = useContext(FavoriteNovelListContext);
 
   const initNovel = async (source) => {
-    console.log(`Source ID in Novel-Detail: ${source.id}`);
-
     const novelSource = SourceFactory.createSource(source.id);
 
-    console.log(`Novel Name in Novel-Detail: ${novel.title}`);
-
     await novelSource.findNovelDetails(novel).then((detail) => {
-
-      //console.log(detail);
       setNovelDetail(detail);
-      //console.log(novelDetail);
-
     }).catch((error) => {
       console.error('Error finding novels by page:', error);
     });
@@ -109,6 +88,18 @@ export const NovelDetail = observer(function NovelDetail(props: NovelDetailProps
     setIsEmpty(!novelDetail);
   }, [novelDetail]);
 
+  const [isFavorite, setIsFavorite] = useState(novel.isFavorite);
+
+  const onFavoriteIconPress = async () => {
+    setIsFavorite(!isFavorite)
+    if (!isFavorite) {
+      addFavoriteNovelToStorage(novel, source);
+    } else {
+      removeFavoriteNovelFromStorage(novel);
+    }
+    toast.show(!isFavorite ? "Add to favorite" : "Remove from favorite", { type: "success" });
+  }
+
   const renderDetails = () => {
     if (!novelDetail) {
       return null;
@@ -118,8 +109,15 @@ export const NovelDetail = observer(function NovelDetail(props: NovelDetailProps
         <Image source={{ uri: novelDetail.thumbnail }} style={thumbnailStyles} resizeMode="contain" />
         <View style={detailsStyles}>
           <Text style={titleStyles}>{novelDetail.title}</Text>
-          <Text style={authorsStyles}>{novelDetail.authors.join(', ')}</Text>
-          <Text style={statusStyles}>{novelDetail.status}</Text>
+          <Row alignItems="center">
+            <Text style={authorsStyles}>{`${"Author: "}`}</Text>
+            <Text>{`${novelDetail.authors.join(', ')}`}</Text>
+          </Row>
+          <Row alignItems="center">
+            <Text style={authorsStyles}>{`${"Status: "}`}</Text>
+            <Text>{`${novelDetail.status}`}</Text>
+          </Row>
+          <FavoriteIcon value={isFavorite} onPress={onFavoriteIconPress} />
         </View>
       </View>
     );
