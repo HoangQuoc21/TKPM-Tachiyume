@@ -55,11 +55,14 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
   const [loading, setLoading] = useState(false);
 
   const [novelList, setNovelList] = useState<Novel[]>([]);
-  
-  const [isSearch, setIsSearch] = useState(false);
-  const [search, setSearch] = useState("");
-  const [filteredData, setFilteredData] = useState(novelList);
 
+  const [isSearch, setIsSearch] = useState(false);
+  const [foundNovels, setFoundNovels] = useState(true);
+  const [search, setSearch] = useState("");
+  const [searchedNovelList, setSearchedNovelList] = useState([]);
+
+  // Temporary save the source id here
+  const [sourceId, setSourceId] = useState(0);
   // Add this ref to clear focus on text input when press back button
   const textInputRef = useRef(null);
   useEffect(() => {
@@ -77,59 +80,68 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
   }, []);
 
   const initNovelList = async (source) => {
-    //console.log(`Source ID: ${source.id}`); 
-    
-    const novelSource = SourceFactory.createSource(source.id);
-  
-    await novelSource.findNovelsByPage(1).then((novels) => {
-        
-      
-      novels.forEach((novel, index) => {
-        novel.id = index + 1; //Add an id to the novel
-        setNovelList((previousList) => [...previousList, novel]);
+    try {
+      const novelSource = SourceFactory.createSource(source.id);
+      setSourceId(source.id);
 
-      })
+      const novels = await novelSource.findNovelsByPage(1);
+      novels.map((novel, index) => {
+        novel.id = `${source.id}-${index + 1}`; // Generate a unique key combining source id and index
+      });
 
-
-    }).catch((error) => {
+      setNovelList(novels);
+    } catch (error) {
       console.error('Error finding novels by page:', error);
-    });
+    }
   };
 
   useEffect(() => {
     initNovelList(source);
-    
+
   }, [source]);
 
   useEffect(() => {
     if (novelList.length == 0) {
       setIsEmpty(true);
     } else {
-      setFilteredData(novelList);
+      setSearchedNovelList(novelList);
       setIsEmpty(false);
     }
     setLoading(false);
   }, [novelList]);
 
-  const handleSearch = (text: string) => {
-    setSearch(text);
+  const handleSearch = async () => {
+    const novelSource = SourceFactory.createSource(sourceId);
+    const searchQuery = search;
+
     setIsSearch(true);
-    if (text) {
-      const filterNovelList = novelList.filter((item: Novel) => {
-        const itemData = item.title.toUpperCase();
-        const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
-      });
-      setFilteredData(filterNovelList);
+    if (searchQuery) {
+
+      const searchNovels = await novelSource.searchNovels(searchQuery);
+      if (!searchNovels) {
+        setIsEmpty(true);
+        setFoundNovels(false);
+        setSearchedNovelList([]);
+      } else {
+        setFoundNovels(true);
+        // Append new id to novels
+        searchNovels.map((novel, index) => {
+
+          novel.id = `s-${sourceId}-${index + 1}`; // Generate a unique key combining source id and index
+        });
+
+        setSearchedNovelList(searchNovels);
+      }
+
     } else {
       setIsSearch(false);
-      setFilteredData(novelList);
+      setSearchedNovelList(novelList);
     }
   };
 
   const clearSearch = () => {
     setSearch("");
-    setFilteredData(novelList);
+    setSearchedNovelList(novelList);
     setIsSearch(false);
   };
 
@@ -142,7 +154,8 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
             style={searchBarStyles}
             placeholder="Search"
             value={search}
-            onChangeText={(text) => handleSearch(text)}
+            onChangeText={(text) => setSearch(text)}
+            onSubmitEditing={handleSearch}
           />
         </Column>
         <Column style={{ flex: 1 }}>
@@ -174,16 +187,17 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
     );
   };
 
- 
+
+
 
   const renderItem = (novel: Novel) => {
-    return <NovelListItem novel={novel} source={source} favorite={novel.isFavorite}/>;
+    return <NovelListItem novel={novel} source={source} favorite={novel.isFavorite} />;
   };
 
   const renderNovelList = () => {
     return (
       <FlatList
-        data={filteredData}
+        data={searchedNovelList}
         renderItem={({ item }) => renderItem(item)}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={true}
@@ -194,9 +208,9 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
   const renderBody = () => {
     return (
       <Column style={listContainerStyles}>
-        
-        {isEmpty ? LoadingCircle() : renderNovelList()}
-      
+        {isEmpty && !foundNovels ? renderEmpty() : null}
+        {isEmpty && foundNovels ? LoadingCircle() : renderNovelList()}
+
       </Column>
     );
   };
