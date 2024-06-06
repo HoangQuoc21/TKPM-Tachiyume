@@ -26,12 +26,14 @@ const DEFAULT_STYLE = {
     paddingHorizontal: spacing[2],
     marginBottom: spacing[1],
     alignItems: "center",
+    //height: 58,
   } as ViewStyle,
   SEARCH_BAR: {
     marginHorizontal: spacing[1],
     alignContent: "center",
     paddingHorizontal: spacing[2],
     fontSize: typography.bodySmall.fontSize,
+    //height: 58,
   } as TextStyle,
   SEARCH_BAR_ITEM: {
     padding: spacing[3],

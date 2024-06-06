@@ -77,13 +77,12 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
   }, []);
 
   const initNovelList = async (source) => {
-    console.log(`Source ID: ${source.id}`); 
+    //console.log(`Source ID: ${source.id}`); 
     
     const novelSource = SourceFactory.createSource(source.id);
   
     await novelSource.findNovelsByPage(1).then((novels) => {
-      
-    
+        
       
       novels.forEach((novel, index) => {
         novel.id = index + 1; //Add an id to the novel
@@ -177,9 +176,8 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
 
  
 
-  const renderItem = (item: Novel) => {
-    
-    return <NovelListItem item={item} />;
+  const renderItem = (novel: Novel) => {
+    return <NovelListItem novel={novel} source={source} favorite={novel.isFavorite}/>;
   };
 
   const renderNovelList = () => {

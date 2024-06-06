@@ -18,6 +18,7 @@ class Novel {
     rating: Float
     alternateNames: string[]
     releaseYear: number
+    isFavorite: boolean
 }
 
 export default Novel;

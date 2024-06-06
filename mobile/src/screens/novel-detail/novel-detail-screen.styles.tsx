@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
     ROOT:{
-
+        flex: 1,
     },
 
     HEADER:{

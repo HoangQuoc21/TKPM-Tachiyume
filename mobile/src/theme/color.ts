@@ -9,6 +9,7 @@ export const color = {
     white: 'white',
     blue: 'blue',
     red: 'red',
+    pink: "#FF6086",
 
     // Transparent color
     transparent: 'rgba(0,0,0,0)',
@@ -58,7 +59,7 @@ export const color = {
     secondary: 'light',
 
     // Text and text-related color
-    text: 'light',
+    text: '#fff',
     textSecondary: 'light',
     placeHolder: 'light',
 
