@@ -18,7 +18,6 @@ function getSummaryImage($) {
 
 // Source: Box novel
 export default class SourceTwo extends Source {
-  
   static title = "Box Novel";
   static importURL = "https://boxnovel.com";
   static idToCreate = 2;
@@ -33,7 +32,7 @@ export default class SourceTwo extends Source {
     this.readLanguage = "English";
   }
 
-  async getId(): Promise<number>{
+  async getId(): Promise<number> {
     return this.id;
   }
   // List of novels to show in one page
@@ -102,7 +101,7 @@ export default class SourceTwo extends Source {
 
       novel.sourceId = this.id;
       novel.title = $(".post-title > h1").text().trim();
-      console.log('Novel title is:', novel.title);
+      console.log("Novel title is:", novel.title);
       novel.thumbnail = getSummaryImage($);
       novel.description = $("div.summary__content > div > p")
         .text()
@@ -200,24 +199,34 @@ export default class SourceTwo extends Source {
         if ($(".not-found-content").length > 0) {
           return null;
         }
-        $(".c-tabs-item__content").each((index, element) => {
+
+        $(".row .c-tabs-item__content").each((index, element) => {
+          const url = $(element).find("a").attr("href")?.trim();
+          const title = $(element).find(".post-title a").text()?.trim();
+          const thumbnail = $(element).find("img").attr("data-src")?.trim();
+          const authors = $(element)
+            .find(".mg_author .summary-content a")
+            .map((i, el) => $(el).text().trim())
+            .get()
+            .join(", ");
+          const categories = $(element)
+            .find(".mg_genres .summary-content a")
+            .map((i, el) => $(el).text().trim())
+            .get()
+            .join(", ");
+          const status = $(element)
+            .find(".mg_status .summary-content")
+            .text()
+            ?.trim();
+
           const item = {
-            url: $(element).find("a").attr("href").trim(),
-            title: $(element).find("a").attr("tittle").trim(),
-            thumbnail: $(element).find("img").attr("data-src").trim(),
+            url,
+            title,
+            thumbnail,
             sourceId: this.id,
-            authors: $(element)
-              .find(".mg_author > summary-content > a")
-              .text()
-              .trim(),
-            category: $(element)
-              .find(".mg_genres > summary-content > a")
-              .text()
-              .trim(),
-            status: $(element)
-              .find(".mg_status > summary-content > a")
-              .text()
-              .trim(),
+            authors,
+            categories,
+            status,
           };
           novels.push(item);
         });
@@ -228,7 +237,9 @@ export default class SourceTwo extends Source {
         throw error;
       }
     }
+
     let novels = await queryNovels(queryByNovelName);
+    // console.log("-->Got novels", novels);
     if (!novels || novels.length === 0) {
       novels = await queryNovels(queryByAuthor);
     }
