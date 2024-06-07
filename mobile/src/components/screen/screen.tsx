@@ -21,7 +21,7 @@ export const Screen = (props: ScreenProps) => {
     backgroundColor,
     style: styleOverride,
     unsafe,
-    statusBar= { style:"auto", backgroundColor: color.ligthTheme.primary},
+    statusBar= { style:"auto", backgroundColor: color.lightTheme.primary},
   } = props
 
   const insets = useSafeAreaInsets()

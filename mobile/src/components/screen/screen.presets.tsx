@@ -27,7 +27,7 @@ export type KeyboardOffsets = keyof typeof offsets
  */
 const BASE_STYLE = {
   OUTER: {
-    backgroundColor: color.ligthTheme.primary,
+    backgroundColor: color.lightTheme.primary,
     flex: 1,
     height: "100%",
   } as ViewStyle,
@@ -38,7 +38,7 @@ const BASE_STYLE = {
     width: "100%",
   } as ViewStyle,
   INNER_CONTAINER: {
-    backgroundColor: color.ligthTheme.primary,
+    backgroundColor: color.lightTheme.primary,
     flex: 1,
     height: "100%",
   } as ViewStyle,
@@ -57,7 +57,7 @@ export const stylePresets = {
   [ScreenPresets.scroll]: {
     ...BASE_STYLE,
     OUTER: {
-      backgroundColor: color.ligthTheme.primary,
+      backgroundColor: color.lightTheme.primary,
       flex: 1,
       height: "100%",
     } as ViewStyle,

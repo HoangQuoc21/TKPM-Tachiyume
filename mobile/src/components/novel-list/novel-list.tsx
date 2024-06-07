@@ -46,6 +46,9 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
   const titleStyles = flatten([stylePresets[preset].TITLE]);
   const emptyContainerStyles = flatten([stylePresets[preset].EMPTY_CONTAINER]);
   const emptyTextStyles = flatten([stylePresets[preset].EMPTY_TEXT]);
+  const filterButtonStyles = flatten([stylePresets[preset].FILTER_BUTTON]);
+  const selectFilterButtonStyles = flatten([stylePresets[preset].SELECTED_FILTER_BUTTON]);
+  const filterTextStyles = flatten([stylePresets[preset].FILTER_BUTTON_TEXT]);
   const loadingContainerStyles = flatten([
     stylePresets[preset].LOADING_CONTAINER,
   ]);
@@ -63,6 +66,10 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
 
   // Temporary save the source id here
   const [sourceId, setSourceId] = useState(0);
+
+  // Change color for filter
+  const [selectedFilter, setSelectedFilter] = useState(null);
+
   // Add this ref to clear focus on text input when press back button
   const textInputRef = useRef(null);
   useEffect(() => {
@@ -163,21 +170,71 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
             <TouchableOpacity onPress={clearSearch}>
               <VectorIcon
                 name={"close-outline"}
-                color={color.ligthTheme.accent}
+                color={color.lightTheme.accent}
                 size={iconSize.medium}
               />
             </TouchableOpacity>
           ) : (
             <VectorIcon
               name={"search-outline"}
-              color={color.ligthTheme.accent}
+              color={color.lightTheme.accent}
               size={iconSize.medium}
             />
           )}
         </Column>
       </Row>
+
     );
   };
+  const renderFilterButtons = () => {
+
+    const filters = [
+      "filterNovels.popular",
+      "filterNovels.trending",
+      "filterNovels.latest",
+      "filterNovels.A-Z",
+      "filterNovels.More"
+    ];
+
+    const handleFilterNovels = async (filter) => {
+      let filteredNovels = [];
+      // Temporary set page number here
+      let page = 1;
+      const novelSource = SourceFactory.createSource(sourceId);
+      // Pass the bland filter to the source 
+      filteredNovels = await novelSource.findNovelsByFilter(filter, page);
+
+      // Append new id to novels
+      filteredNovels.map((novel, index) => {
+        novel.id = `f-${sourceId}-${index + 1}`; // Generate a unique key combining source id and index
+      });
+
+      setSearchedNovelList(filteredNovels);
+      setSelectedFilter(filter); // Set the selected filter
+
+    };
+
+    return (
+      <Row style={titleContainerStyles}>
+        {filters.map((filter, index) => (
+          <TouchableOpacity
+            key={filter}
+            onPress={() => handleFilterNovels(filter)}
+            style={[
+              filterButtonStyles,
+              index === 0 && { marginLeft: 20 },
+              selectedFilter === filter && selectFilterButtonStyles
+            ]}
+          >
+            <Text style={filterTextStyles}>
+              {translate(filter)}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </Row>
+    );
+  };
+
 
   const renderEmpty = () => {
     return (
@@ -226,6 +283,7 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
   return (
     <Column style={containerStyles}>
       {renderHeader()}
+      {renderFilterButtons()}
       {renderBody()}
       {loading && <LoadingCircle />}
     </Column>

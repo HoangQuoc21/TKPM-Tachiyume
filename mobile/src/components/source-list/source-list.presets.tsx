@@ -22,7 +22,7 @@ const DEFAULT_STYLE = {
     marginHorizontal: spacing[4],
     marginVertical: spacing[2],
     borderRadius: radius[7],
-    backgroundColor: color.ligthTheme.fourth,
+    backgroundColor: color.lightTheme.fourth,
     paddingHorizontal: spacing[2],
     marginBottom: spacing[1],
     alignItems: "center",
@@ -66,7 +66,7 @@ const DEFAULT_STYLE = {
   } as ViewStyle,
   LOADING: {} as TextStyle,
   CLEAR_BUTTON: {
-    backgroundColor: color.ligthTheme.accentSecondary,
+    backgroundColor: color.lightTheme.accentSecondary,
     padding: spacing[3],
     borderRadius: radius[3],
     ...shadow.default,

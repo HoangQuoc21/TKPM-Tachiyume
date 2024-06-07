@@ -14,14 +14,14 @@ const DEFAULT_STYLE = {
         backgroundColor: color.common.overlay, // This creates the overlay effect
     } as ViewStyle,
     MODAL_CONTAINER: {
-        backgroundColor: color.ligthTheme.third,
+        backgroundColor: color.lightTheme.third,
         borderRadius: radius[7],
         width: '85%',
         padding: spacing[5],
         gap: spacing[3],
     } as ViewStyle,
     TITLE: {
-        color: color.ligthTheme.text,
+        color: color.lightTheme.text,
         ...typography.titleLarge
     } as TextStyle,
     BUTTON_CONTAINER: {
@@ -33,7 +33,7 @@ const DEFAULT_STYLE = {
     } as ViewStyle,
     BUTTON_TEXT: {
         ...typography.bodyLarge,
-        color: color.ligthTheme.accentThird,
+        color: color.lightTheme.accentThird,
         fontWeight: 'bold',
     } as TextStyle,
 }

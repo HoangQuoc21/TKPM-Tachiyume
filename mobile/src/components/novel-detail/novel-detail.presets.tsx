@@ -30,7 +30,7 @@ const DEFAULT_STYLE = {
     resizeMode: 'cover',
     marginRight: spacing[3],
     borderRadius: radius[4],
-    borderColor: color.ligthTheme.secondary,
+    borderColor: color.lightTheme.secondary,
     borderWidth: 2, // Thêm border width
   },
   DETAILS:{
@@ -39,17 +39,17 @@ const DEFAULT_STYLE = {
   TITLE:{
     ...typography.titleMedium,
     fontWeight: 'bold',
-    color: color.ligthTheme.text,
+    color: color.lightTheme.text,
     paddingBottom: spacing[2],
   } as ViewStyle,
   AUTHORS:{
     fontSize: typography.bodySmall.fontSize,
-    color: color.ligthTheme.text,
+    color: color.lightTheme.text,
     fontWeight: 'bold',
   } as TextStyle,
   STATUS:{
     fontSize: typography.bodySmall.fontSize,
-    color: color.ligthTheme.text,
+    color: color.lightTheme.text,
     fontWeight: 'bold',
   } as TextStyle,
   DESCRIPTION_CONTAINER:{
@@ -59,14 +59,14 @@ const DEFAULT_STYLE = {
     alignItems: 'center',
     marginTop: 10,
     position: 'relative', // To allow gradient overlay
-    backgroundColor: color.ligthTheme.third,
+    backgroundColor: color.lightTheme.third,
     borderRadius: radius[3],
     //marginHorizontal: spacing[4],
   },
   DESCRIPTION:{
     paddingVertical: spacing[3],
     fontSize: 14,
-    color: color.ligthTheme.text,
+    color: color.lightTheme.text,
   },
   GRADIENT:{
     position: 'absolute',
@@ -84,7 +84,7 @@ const DEFAULT_STYLE = {
   TOGGLE_BUTTON_TEXT:{
     fontSize: 14,
     fontWeight: 'bold',
-    color: color.ligthTheme.text,
+    color: color.lightTheme.text,
   },
   LOADING_CONTAINER: {
     alignSelf: "center",
@@ -104,14 +104,14 @@ const DEFAULT_STYLE = {
   },
   CATEGORY_LABEL:{
     borderWidth: 1.2,
-    borderColor: color.ligthTheme.boder,
+    borderColor: color.lightTheme.boder,
     borderRadius: 5,
     padding: 5,
     margin: 5,
   },
   CATEGORY_TEXT:{
     fontSize: 12,
-    color: color.ligthTheme.text,
+    color: color.lightTheme.text,
   },
   LOADING: {} as TextStyle,
 };

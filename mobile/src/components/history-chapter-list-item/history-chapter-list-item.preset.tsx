@@ -20,7 +20,7 @@ const DEFAULT_STYLE = {
     marginVertical: spacing[2],
     borderRadius: radius[4],
     alignContent: "center",
-    backgroundColor: color.ligthTheme.third,
+    backgroundColor: color.lightTheme.third,
     flex: 1,
 
     // shadow

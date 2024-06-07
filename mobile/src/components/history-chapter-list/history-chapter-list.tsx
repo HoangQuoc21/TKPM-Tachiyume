@@ -127,14 +127,14 @@ export const HistoryChapterList = observer(function NovelList(props: HistoryChap
             <TouchableOpacity onPress={clearSearch}>
               <VectorIcon
                 name={"close-outline"}
-                color={color.ligthTheme.accent}
+                color={color.lightTheme.accent}
                 size={iconSize.medium}
               />
             </TouchableOpacity>
           ) : (
             <VectorIcon
               name={"search-outline"}
-              color={color.ligthTheme.accent}
+              color={color.lightTheme.accent}
               size={iconSize.medium}
             />
           )}
