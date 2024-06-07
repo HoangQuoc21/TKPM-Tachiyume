@@ -76,6 +76,23 @@ const DEFAULT_STYLE = {
   CLEAR_BUTTON_TEXT: {
     fontWeight: "bold",
   } as TextStyle,
+  FILTER_BUTTON: {
+    backgroundColor: color.lightTheme.third,
+  
+    padding: spacing[3],
+    margin: spacing[1],
+    borderRadius: radius[3],
+  } as ViewStyle,
+  SELECTED_FILTER_BUTTON: {
+    backgroundColor: color.lightTheme.accentSecondary,
+    
+    padding: spacing[3],
+    margin: spacing[1],
+    borderRadius: radius[3],
+  } as ViewStyle,
+  FILTER_BUTTON_TEXT: {
+
+  } as TextStyle,
 };
 
 export const stylePresets = {

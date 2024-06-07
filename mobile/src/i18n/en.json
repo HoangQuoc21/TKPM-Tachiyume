@@ -88,5 +88,12 @@
     "novelUrl": "Novel URL",
     "import": "Import",
     "chooseSource": "Choose a source"
+  },
+  "filterNovels": {
+    "trending": "Trending",
+    "popular": "Popular",
+    "latest": "Latest",
+    "A-Z": "A-Z",
+    "More": "More" 
   }
 }
