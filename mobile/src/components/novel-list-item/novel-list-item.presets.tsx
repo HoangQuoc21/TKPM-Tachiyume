@@ -20,7 +20,7 @@ const DEFAULT_STYLE = {
     marginVertical: spacing[2],
     borderRadius: radius[4],
     alignContent: "center",
-    backgroundColor: color.ligthTheme.third,
+    backgroundColor: color.lightTheme.third,
     height: 100,
 
     // shadow
@@ -41,7 +41,7 @@ const DEFAULT_STYLE = {
   TEXT_CONTAINER: {
     flex: 70,
     justifyContent: "center",
-    borderColor: color.ligthTheme.fourth,
+    borderColor: color.lightTheme.fourth,
     borderStartWidth: 1,
   } as ViewStyle,
   TEXT: {

@@ -33,7 +33,7 @@ export const stylePresets = {
  * All VectorIcon will start off having this. Replace [PropsType] with corresponding type.
  */
 const BASE_PROPS = {
-  color: color.ligthTheme.text,
+  color: color.lightTheme.text,
   ...typography.bodyMedium,
 }
 

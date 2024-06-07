@@ -126,14 +126,14 @@ export const FavoriteNovelList = observer(function NovelList(props: FavoriteNove
             <TouchableOpacity onPress={clearSearch}>
               <VectorIcon
                 name={"close-outline"}
-                color={color.ligthTheme.accent}
+                color={color.lightTheme.accent}
                 size={iconSize.medium}
               />
             </TouchableOpacity>
           ) : (
             <VectorIcon
               name={"search-outline"}
-              color={color.ligthTheme.accent}
+              color={color.lightTheme.accent}
               size={iconSize.medium}
             />
           )}

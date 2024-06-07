@@ -163,21 +163,29 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
             <TouchableOpacity onPress={clearSearch}>
               <VectorIcon
                 name={"close-outline"}
-                color={color.ligthTheme.accent}
+                color={color.lightTheme.accent}
                 size={iconSize.medium}
               />
             </TouchableOpacity>
           ) : (
             <VectorIcon
               name={"search-outline"}
-              color={color.ligthTheme.accent}
+              color={color.lightTheme.accent}
               size={iconSize.medium}
             />
           )}
         </Column>
       </Row>
+      
     );
   };
+  const renderFilterButtons = () => {
+    return (
+      <Row style={titleContainerStyles}>
+        <Text style={titleStyles}>{translate("novelListScreen.title")}</Text>
+      </Row>
+    );
+  }
 
   const renderEmpty = () => {
     return (
