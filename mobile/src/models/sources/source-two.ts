@@ -35,6 +35,80 @@ export default class SourceTwo extends Source {
   async getId(): Promise<number> {
     return this.id;
   }
+  // List of novels shown by filter
+  async findNovelsByFilter(filter: string, page: number): Promise<Novel[]> {
+    // Get the appropriate url for the filter
+    switch (filter) {
+      case "filterNovels.popular":
+        filter = "popular";
+        break;
+      case "filterNovels.trending":
+        filter = "trending";
+        break;
+      case "filterNovels.latest":
+        filter = "latest";
+        break;
+      case "filterNovels.A-Z":
+        filter = "alphabet";
+        break;
+      default:
+        filter = "latest";
+        break;
+    }
+
+
+    const sourceId = this.id;
+    const baseUrl = this.baseUrl;
+
+    // function to parse the body reposonse from the fetch
+    async function parse(body: string) {
+      const items = [];
+      const $ = load(body);
+
+      // Check if the page has the class .page-item-detail
+      $(".page-item-detail").each((index, element) => {
+        // Get the url of the novel (right after the h5 tag)
+        const url = $(element).find(".h5 > a").attr("href")?.trim() || "";
+        // If that url is not empty, then we can get the name and cover
+        if (url.length > 0) {
+          const item = {
+            url: url,
+            sourceId: sourceId,
+            title: $(element).find(".h5 > a").text().trim(),
+            thumbnail: cleanContent(
+              $(element).find("img").attr("data-src")?.trim() || ""
+            ),
+          };
+          items.push(item);
+        }
+      });
+
+      return items;
+    }
+
+    try {
+      const pageUrl = `${baseUrl}/novel/page/${page}/?m_orderby=${filter}`;
+
+      // Fetch the page
+      const response = await fetch(pageUrl, {
+        method: "GET",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      // Get the body of the page
+      const html = await response.text();
+      const novelsFromSource = await parse(html);
+      //
+      // console.log("Novels from source 2", novelsFromSource);
+      return novelsFromSource;
+    } catch (error) {
+      console.log("Failed to fetch novels: " + error.message);
+      throw new Error("Failed to fetch novels: " + error.message);
+    }
+  }
+
+
   // List of novels to show in one page
   async findNovelsByPage(page: number): Promise<Novel[]> {
     const sourceId = this.id;
