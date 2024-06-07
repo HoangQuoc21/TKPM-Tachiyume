@@ -86,13 +86,15 @@ export const ImportSourceModal = observer(function ImportSourceModal(props: Impo
         return sourceList.some((source: Source) => source.id === importSource.id);
     }
 
-    const onImportPress = () => {
+    const onImportPress = async () => {
         if (importURL === '') {
-            toast.show(translate("error.noSouceChoose"), { type: 'warning' })
-            return
+            // toast.show(translate("error.noSouceChoose"), { type: 'warning' })
+            // return
+            setImportURL("test")
         }
 
-        const importSource = SourceFactory.getSource(importURL)
+        const importSource = await SourceFactory.getSource(importURL)
+        console.log(importSource)
         if (!isSourceInList(importSource)) {
             addSource(importSource)
             toast.show(translate("success.importSource"), { type: 'success' })
