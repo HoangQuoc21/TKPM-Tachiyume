@@ -8,6 +8,9 @@ function cleanContent(content: string) {
 }
 
 export default class SourceThree extends Source {
+  getTotalPage(): number {
+    throw new Error("Method not implemented.");
+  }
   static title = "Light Novel Heaven";
   static importURL = "https://lightnovelheaven.com";
   static idToCreate = 3;
