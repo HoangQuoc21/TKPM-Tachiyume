@@ -18,6 +18,9 @@ function getSummaryImage($) {
 
 // Source: Box novel
 export default class SourceTwo extends Source {
+  getTotalPage(): number {
+    throw new Error("Method not implemented.");
+  }
   
   static title = "Box Novel";
   static importURL = "https://boxnovel.com";

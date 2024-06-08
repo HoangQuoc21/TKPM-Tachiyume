@@ -9,6 +9,9 @@ function cleanContent(content: string) {
 
 // Source: ALL NOVEL
 export default class SourceOne extends Source {
+  getTotalPage(): number {
+    throw new Error("Method not implemented.");
+  }
   static title = "All Novel";
   static importURL = "https://allnovel.org";
   static idToCreate = 1;
