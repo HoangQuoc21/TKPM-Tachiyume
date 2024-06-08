@@ -1,3 +1,4 @@
+import { string } from "mobx-state-tree/dist/internal";
 import Chapter from "../chapter";
 import Novel from "../novel";
 import Source from "./source";
@@ -9,9 +10,8 @@ function cleanContent(content: string) {
 
 // Source: ALL NOVEL
 export default class SourceOne extends Source {
-  getTotalPage(): number {
-    throw new Error("Method not implemented.");
-  }
+
+ 
   static title = "All Novel";
   static importURL = "https://allnovel.org";
   static idToCreate = 1;
@@ -29,47 +29,92 @@ export default class SourceOne extends Source {
     return this.id;
   }
 
+  // Individual method of sourceOne
+  async parse(body: string) {
+    const items = [];
+    const $ = load(body);
+    const doc = $("div.col-truyen-main.archive").first();
+    // console.log(doc)
+    if (!doc) return items;
+    const rows = doc.find("div.row").toArray();
+    for (let [index, element] of rows.entries()) {
+      // ES6
+      //console.log(index)
+      const url = $(element).find("h3.truyen-title > a").attr("href").trim();
+      if (url.length > 0) {
+        const item = {
+          url,
+          sourceId: this.id, // Assuming sourceId is defined elsewhere
+          title: $(element).find("h3.truyen-title > a").text().trim(),
+          thumbnail: null,
+        };
+        const thumbnail = $(element).find("div.col-xs-3 img").attr("src") 
+        item.thumbnail = `${this.baseUrl}${thumbnail}`;
+        items.push(item);
+        // try {
+        //   const response = await fetch(`${sourceBaseUrl}${url}`);
+        //   const responseData = await response.text();
+        //   const $img = load(responseData);
+
+        //   item.thumbnail = `${sourceBaseUrl}${$img("div.books img").attr("src")}`;
+
+        //   //console.log(item)
+        //   items.push(item);
+        // } catch (e) {
+        //   throw e;
+        // }
+      }
+    }
+    return items;
+  }
+
+
+  async findNovelsByFilter(filter: string, page: number): Promise<any[]> {
+    switch (filter) {
+      case "filterNovels.popular":
+        filter = "most-popular";
+        break;
+      case "filterNovels.trending":
+        filter = "hot-novel";
+        break;
+      case "filterNovels.latest":
+        filter = "latest-release-novel";
+        break;
+      case "filterNovels.completed":
+        filter = "completed-novel";
+        break;
+      default:
+        filter = "most-popular";
+        break;
+    }
+
+    const sourceId = this.id;
+    const sourceBaseUrl = this.baseUrl;
+
+    
+
+    try {
+      // Update with your base URL
+      const web = `${sourceBaseUrl}/${filter}?page=${page}`;
+      const response = await fetch(web, {
+        method: "GET",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      const html = await response.text();
+      const data = await this.parse(html);
+      return data;
+    } catch (error) {
+      throw new Error("Failed to fetch novels: " + error.message);
+    }
+
+  }
+
   // List of novels to show in one page
   async findNovelsByPage(page: number): Promise<any[]> {
     const sourceId = this.id;
     const sourceBaseUrl = this.baseUrl;
-
-    async function parse(body: string) {
-      const items = [];
-      const $ = load(body);
-      const doc = $("div.col-truyen-main.archive").first();
-      // console.log(doc)
-      if (!doc) return items;
-      const rows = doc.find("div.row").toArray();
-      for (let [index, element] of rows.entries()) {
-        // ES6
-        //console.log(index)
-        const url = $(element).find("h3.truyen-title > a").attr("href").trim();
-        if (url.length > 0) {
-          const item = {
-            url,
-            sourceId: sourceId, // Assuming sourceId is defined elsewhere
-            title: $(element).find("h3.truyen-title > a").text().trim(),
-            thumbnail: null,
-          };
-          const thumbnail = $(element).find("div.col-xs-3 img").attr("src") 
-          item.thumbnail = thumbnail;
-          // try {
-          //   const response = await fetch(`${sourceBaseUrl}${url}`);
-          //   const responseData = await response.text();
-          //   const $img = load(responseData);
-
-          //   item.thumbnail = `${sourceBaseUrl}${$img("div.books img").attr("src")}`;
-
-          //   //console.log(item)
-          //   items.push(item);
-          // } catch (e) {
-          //   throw e;
-          // }
-        }
-      }
-      return items;
-    }
 
     try {
       // Update with your base URL
@@ -81,7 +126,7 @@ export default class SourceOne extends Source {
         },
       });
       const html = await response.text();
-      const data = await parse(html);
+      const data = await this.parse(html);
       return data;
     } catch (error) {
       throw new Error("Failed to fetch novels: " + error.message);
@@ -191,6 +236,27 @@ export default class SourceOne extends Source {
     }
   }
   async searchNovels(query: string) {
-    return [];
+    const queryByKeyword: string = query;
+    const toTitleCase = (str: string) => {
+      return str.split(' ').map(word => {
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+      }).join(' ');
+    }
+    const queryByGenre: string = toTitleCase(query);
+    try {
+      const responseByKeyword = await fetch(`${this.baseUrl}/search?keyword=${queryByKeyword}`);
+      let html = await responseByKeyword.text();
+      const novelListByKeyword = await this.parse(html);
+      const responseByGenre = await fetch(`${this.baseUrl}/genre/${queryByGenre}`);
+      html = await responseByGenre.text();
+      const novelListByGenre = await this.parse(html);
+      // Combine two lists the return to client
+      const data = novelListByKeyword.concat(novelListByGenre)
+      return data;
+      
+    } catch(error) {
+      console.error("Failed to fetch chapter:", error);
+      throw error;
+    }
   }
 }

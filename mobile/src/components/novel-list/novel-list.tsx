@@ -192,7 +192,7 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
       "filterNovels.popular",
       "filterNovels.trending",
       "filterNovels.latest",
-      "filterNovels.A-Z",
+      "filterNovels.completed",
       "filterNovels.More"
     ];
 
