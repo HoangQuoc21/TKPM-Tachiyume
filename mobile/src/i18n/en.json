@@ -10,10 +10,10 @@
   "error": {
     "sourceExisted": "Source existed",
     "noSource": "No source available",
-    "noSouceChoose": "Please choose a source"
+    "noSourceChose": "Please choose a source"
   },
   "success": {
-   "importSource": "Import source success",
+    "importSource": "Import source success",
     "clearSource": "Clear source success"
   },
   "mainTab": {
@@ -38,7 +38,7 @@
       "light": "Light",
       "dark": "Dark"
     },
-    "settingPopup":{
+    "settingPopup": {
       "fontSize": "Font Size",
       "min": "min",
       "Max": "Max",
@@ -77,9 +77,8 @@
     "header": "Splash",
     "version": "Version: ",
     "developedBy": "Developed by: Chillin Chillies"
-
   },
-  "sourceList":{
+  "sourceList": {
     "title": "Sources",
     "empty": "No source available",
     "clear": "Clear sources"
@@ -89,5 +88,12 @@
     "novelUrl": "Novel URL",
     "import": "Import",
     "chooseSource": "Choose a source"
+  },
+  "filterNovels": {
+    "trending": "Trending",
+    "popular": "Popular",
+    "latest": "Latest",
+    "completed": "Completed",
+    "More": "More" 
   }
 }

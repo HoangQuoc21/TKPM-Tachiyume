@@ -40,10 +40,10 @@ export function MainStack() {
         <Tab.Navigator
             initialRouteName={BrowseScreenName}
             screenOptions={{
-                tabBarActiveTintColor: customColor.ligthTheme.accent,
-                tabBarInactiveTintColor: customColor.ligthTheme.inactive,
+                tabBarActiveTintColor: customColor.lightTheme.accent,
+                tabBarInactiveTintColor: customColor.lightTheme.inactive,
                 tabBarStyle: {
-                    backgroundColor: customColor.ligthTheme.secondary,
+                    backgroundColor: customColor.lightTheme.secondary,
                     height: tabBarHeight,
                     borderTopRightRadius: radius[7],
                     borderTopLeftRadius: radius[7],
@@ -70,7 +70,7 @@ export function MainStack() {
                     tabBarIcon({ color, focused }) {
                         return (
                             focused ? <Row style={{
-                                backgroundColor: customColor.ligthTheme.accentSecondary,
+                                backgroundColor: customColor.lightTheme.accentSecondary,
                                 borderRadius: radius[5],
                                 height: icon.containerHeight,
                                 width: icon.containerWidth,
@@ -98,7 +98,7 @@ export function MainStack() {
                     tabBarIcon({ color, focused }) {
                         return (
                             focused ? <Row style={{
-                                backgroundColor: customColor.ligthTheme.accentSecondary,
+                                backgroundColor: customColor.lightTheme.accentSecondary,
                                 borderRadius: radius[5],
                                 height: icon.containerHeight,
                                 width: icon.containerWidth,
@@ -126,7 +126,7 @@ export function MainStack() {
                     tabBarIcon({ color, focused }) {
                         return (
                             focused ? <Row style={{
-                                backgroundColor: customColor.ligthTheme.accentSecondary,
+                                backgroundColor: customColor.lightTheme.accentSecondary,
                                 borderRadius: radius[5],
                                 height: icon.containerHeight,
                                 width: icon.containerWidth,
@@ -154,7 +154,7 @@ export function MainStack() {
                     tabBarIcon({ color, focused }) {
                         return (
                             focused ? <Row style={{
-                                backgroundColor: customColor.ligthTheme.accentSecondary,
+                                backgroundColor: customColor.lightTheme.accentSecondary,
                                 borderRadius: radius[5],
                                 height: icon.containerHeight,
                                 width: icon.containerWidth,

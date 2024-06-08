@@ -18,7 +18,8 @@ function getSummaryImage($) {
 
 // Source: Box novel
 export default class SourceTwo extends Source {
-  
+
+
   static title = "Box Novel";
   static importURL = "https://boxnovel.com";
   static idToCreate = 2;
@@ -33,9 +34,83 @@ export default class SourceTwo extends Source {
     this.readLanguage = "English";
   }
 
-  async getId(): Promise<number>{
+  async getId(): Promise<number> {
     return this.id;
   }
+  // List of novels shown by filter
+  async findNovelsByFilter(filter: string, page: number): Promise<Novel[]> {
+    // Get the appropriate url for the filter
+    switch (filter) {
+      case "filterNovels.popular":
+        filter = "popular";
+        break;
+      case "filterNovels.trending":
+        filter = "trending";
+        break;
+      case "filterNovels.latest":
+        filter = "latest";
+        break;
+      case "filterNovels.A-Z":
+        filter = "alphabet";
+        break;
+      default:
+        filter = "latest";
+        break;
+    }
+
+
+    const sourceId = this.id;
+    const baseUrl = this.baseUrl;
+
+    // function to parse the body reposonse from the fetch
+    async function parse(body: string) {
+      const items = [];
+      const $ = load(body);
+
+      // Check if the page has the class .page-item-detail
+      $(".page-item-detail").each((index, element) => {
+        // Get the url of the novel (right after the h5 tag)
+        const url = $(element).find(".h5 > a").attr("href")?.trim() || "";
+        // If that url is not empty, then we can get the name and cover
+        if (url.length > 0) {
+          const item = {
+            url: url,
+            sourceId: sourceId,
+            title: $(element).find(".h5 > a").text().trim(),
+            thumbnail: cleanContent(
+              $(element).find("img").attr("data-src")?.trim() || ""
+            ),
+          };
+          items.push(item);
+        }
+      });
+
+      return items;
+    }
+
+    try {
+      const pageUrl = `${baseUrl}/novel/page/${page}/?m_orderby=${filter}`;
+
+      // Fetch the page
+      const response = await fetch(pageUrl, {
+        method: "GET",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      // Get the body of the page
+      const html = await response.text();
+      const novelsFromSource = await parse(html);
+      //
+      // console.log("Novels from source 2", novelsFromSource);
+      return novelsFromSource;
+    } catch (error) {
+      console.log("Failed to fetch novels: " + error.message);
+      throw new Error("Failed to fetch novels: " + error.message);
+    }
+  }
+
+
   // List of novels to show in one page
   async findNovelsByPage(page: number): Promise<Novel[]> {
     const sourceId = this.id;
@@ -102,7 +177,7 @@ export default class SourceTwo extends Source {
 
       novel.sourceId = this.id;
       novel.title = $(".post-title > h1").text().trim();
-      console.log('Novel title is:', novel.title);
+      console.log("Novel title is:", novel.title);
       novel.thumbnail = getSummaryImage($);
       novel.description = $("div.summary__content > div > p")
         .text()
@@ -200,24 +275,34 @@ export default class SourceTwo extends Source {
         if ($(".not-found-content").length > 0) {
           return null;
         }
-        $(".c-tabs-item__content").each((index, element) => {
+
+        $(".row .c-tabs-item__content").each((index, element) => {
+          const url = $(element).find("a").attr("href")?.trim();
+          const title = $(element).find(".post-title a").text()?.trim();
+          const thumbnail = $(element).find("img").attr("data-src")?.trim();
+          const authors = $(element)
+            .find(".mg_author .summary-content a")
+            .map((i, el) => $(el).text().trim())
+            .get()
+            .join(", ");
+          const categories = $(element)
+            .find(".mg_genres .summary-content a")
+            .map((i, el) => $(el).text().trim())
+            .get()
+            .join(", ");
+          const status = $(element)
+            .find(".mg_status .summary-content")
+            .text()
+            ?.trim();
+
           const item = {
-            url: $(element).find("a").attr("href").trim(),
-            title: $(element).find("a").attr("tittle").trim(),
-            thumbnail: $(element).find("img").attr("data-src").trim(),
+            url,
+            title,
+            thumbnail,
             sourceId: this.id,
-            authors: $(element)
-              .find(".mg_author > summary-content > a")
-              .text()
-              .trim(),
-            category: $(element)
-              .find(".mg_genres > summary-content > a")
-              .text()
-              .trim(),
-            status: $(element)
-              .find(".mg_status > summary-content > a")
-              .text()
-              .trim(),
+            authors,
+            categories,
+            status,
           };
           novels.push(item);
         });
@@ -228,7 +313,9 @@ export default class SourceTwo extends Source {
         throw error;
       }
     }
+
     let novels = await queryNovels(queryByNovelName);
+    // console.log("-->Got novels", novels);
     if (!novels || novels.length === 0) {
       novels = await queryNovels(queryByAuthor);
     }

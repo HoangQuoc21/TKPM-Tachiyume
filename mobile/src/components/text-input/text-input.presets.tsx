@@ -8,12 +8,12 @@ export const TextInputPresets = {
 const DEFAULT_STYLE = {
     INPUT_CONTAINER: {
         height: 50,
-        backgroundColor: color.ligthTheme.primary,
-        borderColor: color.ligthTheme.boder,
+        backgroundColor: color.lightTheme.primary,
+        borderColor: color.lightTheme.boder,
         borderWidth: 1,
         borderRadius: radius[6],
         paddingHorizontal: spacing[3],
-        color: color.ligthTheme.text,
+        color: color.lightTheme.text,
         alignItems: 'center',
         gap: spacing[1],
     } as ViewStyle,

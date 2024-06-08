@@ -89,9 +89,8 @@ export const ImportSourceModal = observer(function ImportSourceModal(props: Impo
 
     const onImportPress = async () => {
         if (importURL === '') {
-            // toast.show(translate("error.noSouceChoose"), { type: 'warning' })
-            // return
-            setImportURL("test")
+            toast.show(translate("error.noSourceChose"), { type: 'warning' })
+            return
         }
 
         const importSource = await SourceFactory.getSource(importURL)

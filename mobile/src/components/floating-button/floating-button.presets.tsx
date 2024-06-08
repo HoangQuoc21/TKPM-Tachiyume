@@ -11,7 +11,7 @@ const DEFAULT_STYLE = {
     CONTAINER:{
         width: 60,
         height: 60,
-        backgroundColor: color.ligthTheme.accentSecondary,
+        backgroundColor: color.lightTheme.accentSecondary,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: radius[4],
