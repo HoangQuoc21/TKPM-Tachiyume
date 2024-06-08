@@ -5,6 +5,7 @@ import Source from "../models/sources/source";
 import SourceOne from "../models/sources/source-one";
 import SourceTwo from "../models/sources/source-two";
 import SourceThree from '../models/sources/source-three'
+import { Platform } from "react-native";
 import RNFS from 'react-native-fs';
 // import path from 'path';
 
@@ -16,22 +17,34 @@ export const sourceImportURLs = [
 
 const configPath = './source-config.json'
 
+// Đường dẫn tới thư mục chứa file source-config.json
+const directoryPath = RNFS.DownloadDirectoryPath;
+const sourceConfigFilePath = `${directoryPath}/source-config.json`;
+
+// Dữ liệu mẫu cho file source-config.json
+const sampleConfigData = {
+  sources: [
+  ]
+};
+
+// const writeSourceConfigFile = async (configData) => {
+//     const configFileContent = JSON.stringify(configData, null, 2);
+//     try {
+//       await RNFS.writeFile(sourceConfigFilePath, configFileContent, 'utf8');
+//       console.log('source-config.json created successfully!');
+//     } catch (error) {
+//       console.error('Error creating source-config.json:', error);
+//     }
+//   };
+  
 // Source factory class
 export class SourceFactory {
     static async ImportSource(SourceImportURL: string): Promise<Source> {
-        const configPath = RNFS.DownloadDirectoryPath + '/source-config.json'
-        const configContent: string = await RNFS.readFile(configPath, 'utf8');
-        const config = JSON.parse(configContent)
-        const newSource = {
-            type: 'source-two',
-            tittle: 'Source Two',
-            importURL: SourceImportURL
-        };
-        config.sources.push(newSource);
-        RNFS.writeFile(configPath, JSON.stringify(config, null, 2), 'utf8')
         try {
-            // const modulePath = path.join(__dirname, SourceImportURL);
-            const SourceModule = await import("../models/sources/source-two");
+            const fileContent = await RNFS.readFile(SourceImportURL, 'base64')
+            // console.log(fileContent)
+            const path = `../models/sources/${fileContent}`
+            const SourceModule = await import(`../models/sources/source-three`);
             console.log("Test Dynamic Import")
             console.log(SourceModule)
             return new SourceModule.default();
@@ -44,20 +57,8 @@ export class SourceFactory {
     // Get source by import URL
     static async getSource(SourceImportURL: string): Promise<Source> {
         switch (SourceImportURL) {
-            case SourceOne.importURL:
-                //console.log('Tao source One')
-                return new SourceOne();
-            case SourceTwo.importURL:
-                return new SourceTwo();
-            case SourceThree.importURL:
-                return new SourceThree();
-            case "":
-            {
-                console.log("Test Dynamic Import")
-                return await this.ImportSource(SourceImportURL);
-            }
             default:
-                return null;
+                return await this.ImportSource(SourceImportURL);
         }
     }
 

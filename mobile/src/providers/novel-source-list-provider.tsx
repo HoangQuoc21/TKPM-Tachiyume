@@ -30,7 +30,8 @@ export function NovelSourceListProvider({ children }) {
     }
 
     useEffect(() => {
-       getSourcesFromStorage();
+        getSourcesFromStorage();
+        // clearSourcesFromStorage()
     }, []);
 
     useEffect(() => {

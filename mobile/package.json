@@ -32,6 +32,7 @@
     "ramda": "^0.30.0",
     "react": "18.2.0",
     "react-native": "0.73.6",
+    "react-native-document-picker": "^9.3.0",
     "react-native-dropdown-picker": "^5.4.6",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "~2.14.0",
@@ -42,7 +43,10 @@
     "typescript": "^5.3.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "file-loader": "^6.2.0",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4"
   },
   "private": true
 }

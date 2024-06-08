@@ -5,8 +5,9 @@ import { observer } from "mobx-react-lite"
 import { useState, useContext } from 'react';
 import { useToast } from "react-native-toast-notifications";
 
-import { Text, Modal, TouchableOpacity, } from 'react-native';
+import { View, Text, Modal, TouchableOpacity, } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
+import DocumentPicker from 'react-native-document-picker';
 
 import { ImportSourceModalProps } from './import-source-modal.props';
 import { stylePresets } from './import-source-modal.presets';
@@ -108,19 +109,49 @@ export const ImportSourceModal = observer(function ImportSourceModal(props: Impo
     }
 
     const [pickerOpen, setPickerOpen] = useState(false);
+    const [file, setFile] = useState(null)
+    const handleFileImport = async () => {
+        try {
+            const res = await DocumentPicker.pickSingle({
+                type: [DocumentPicker.types.allFiles],
+            });
+            setFile(res);
+            setImportURL(res.uri)
+        }
+        catch (e){
+            if (DocumentPicker.isCancel(e)){
+                console.log("Cancel import file")
+            }
+            else{
+                throw e;
+            }
+        }
+    };
 
     const renderPicker = () => {
         return (
-            <DropDownPicker
-                open={pickerOpen}
-                value={importURL}
-                items={sourceImportURLs}
-                setOpen={setPickerOpen}
-                setValue={setImportURL}
-                placeholder={translate("imporSourcetModal.chooseSource")}
-                placeholderStyle={{ color: color.ligthTheme.text }}
-                autoScroll={true}
-            />
+            // <DropDownPicker
+            //     open={pickerOpen}
+            //     value={importURL}
+            //     items={sourceImportURLs}
+            //     setOpen={setPickerOpen}
+            //     setValue={setImportURL}
+            //     placeholder={translate("imporSourcetModal.chooseSource")}
+            //     placeholderStyle={{ color: color.ligthTheme.text }}
+            //     autoScroll={true}
+            // />
+            <View>
+            <TouchableOpacity onPress={handleFileImport}> 
+                <Text>Import File</Text>
+            </TouchableOpacity>
+            {file && (
+              <View>
+                <Text>File Name: {file.name}</Text>
+                <Text>File Type: {file.type}</Text>
+                <Text>File URI: {file.uri}</Text>
+              </View>
+            )}
+          </View>
         )
     }
 
