@@ -14,7 +14,7 @@ export const HeaderPresets = {
 //Export the different styles for the logo component
 const DEFAULT_STYLE = {
     ROOT: {
-        backgroundColor: color.ligthTheme.primary,
+        backgroundColor: color.lightTheme.primary,
         height: 'auto', 
         marginTop: metric.statusBarHeight,
         padding: spacing[2],

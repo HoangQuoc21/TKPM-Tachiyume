@@ -115,7 +115,7 @@ export const ChapterList = observer(function ChapterList(props: ChapterListProps
     return (
       <View>
         <Row style={titleContainerStyles}>
-          <Column style={{ flex: 4, borderColor: color.ligthTheme.fourth, borderBottomWidth: 1 }}>
+          <Column style={{ flex: 4, borderColor: color.lightTheme.fourth, borderBottomWidth: 1 }}>
             <Text style={titleStyles}>{chapterList.length} {translate("novelDetailScreen.chapters")}</Text>
           </Column>
           <Column style={{ flex: 6 }} />

@@ -88,7 +88,7 @@ export const ImportSourceModal = observer(function ImportSourceModal(props: Impo
 
     const onImportPress = () => {
         if (importURL === '') {
-            toast.show(translate("error.noSouceChoose"), { type: 'warning' })
+            toast.show(translate("error.noSourceChose"), { type: 'warning' })
             return
         }
 
@@ -116,7 +116,7 @@ export const ImportSourceModal = observer(function ImportSourceModal(props: Impo
                 setOpen={setPickerOpen}
                 setValue={setImportURL}
                 placeholder={translate("imporSourcetModal.chooseSource")}
-                placeholderStyle={{ color: color.ligthTheme.text }}
+                placeholderStyle={{ color: color.lightTheme.text }}
                 autoScroll={true}
             />
         )

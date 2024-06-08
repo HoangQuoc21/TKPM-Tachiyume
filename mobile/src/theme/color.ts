@@ -28,7 +28,7 @@ export const color = {
   },
 
   // Light Theme
-  ligthTheme: {
+  lightTheme: {
     // Main color theme for app
     primary: '#FFF8F3',
     secondary: '#F8ECDF',

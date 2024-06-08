@@ -18,7 +18,7 @@ export const StatusBarPresets = {
 const BASE_STYLE = {
   CONTAINER: {
     // flex:1
-    backgroundColor:color.ligthTheme.primary,
+    backgroundColor:color.lightTheme.primary,
   } as ViewStyle,
 }
 

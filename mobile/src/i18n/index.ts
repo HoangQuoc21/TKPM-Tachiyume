@@ -1,16 +1,16 @@
-import * as Localization from 'expo-localization';
-import { I18n } from 'i18n-js';
+import * as Localization from "expo-localization";
+import { I18n } from "i18n-js";
 
 // Import the different language files
-import en from './en.json';
+import en from "./en.json";
 
 // Init the languages
-const LANGUAGE_EN = 'en';
+const LANGUAGE_EN = "en";
 
 // Set the key-value pairs for the different languages you want to support.
 const translations = {
-    en: { ...en  },
-    // Add more languages here
+  en: { ...en },
+  // Add more languages here
 };
 const i18n = new I18n(translations);
 

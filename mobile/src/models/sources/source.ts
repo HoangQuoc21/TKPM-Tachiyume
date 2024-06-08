@@ -24,7 +24,8 @@ abstract class Source {
     this.readLanguage = "";
   }
 
-  abstract getTotalPage(): number;
+  // List of novels filted by users choice
+  abstract findNovelsByFilter(filter: string, page: number): Promise<any[]>;
 
   // List of novels to show in on page
   abstract findNovelsByPage(page: number): Promise<any[]>;

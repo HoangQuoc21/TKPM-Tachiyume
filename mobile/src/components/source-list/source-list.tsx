@@ -123,13 +123,13 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
                         (<TouchableOpacity onPress={clearSearch}>
                             <VectorIcon
                                 name={"close-outline"}
-                                color={color.ligthTheme.accent}
+                                color={color.lightTheme.accent}
                                 size={iconSize.medium}
                             />
                         </TouchableOpacity>) :
                         (<VectorIcon
                             name={"search-outline"}
-                            color={color.ligthTheme.accent}
+                            color={color.lightTheme.accent}
                             size={iconSize.medium}
                         />)}
                 </Column>
@@ -159,7 +159,7 @@ export const SourceList = observer(function SourceList(props: SourceListProps) {
     const renderTitle = () => {
         return (
             <Row style={titleContainerStyles}>
-                <Column style={{ flex: 4, borderColor: color.ligthTheme.fourth, borderBottomWidth: 1 }}>
+                <Column style={{ flex: 4, borderColor: color.lightTheme.fourth, borderBottomWidth: 1 }}>
                     <Text style={titleStyles}>{translate("sourceList.title")}</Text>
                 </Column>
                 <Column style={{ flex: 6 }} />

@@ -34,7 +34,7 @@ const DEFAULT_STYLE = {
     TITLE: {
       ...typography.bodyLarge,
       fontWeight: "bold",
-      color: color.ligthTheme.text,
+      color: color.lightTheme.text,
     } as TextStyle,
     CONTENT_CONTAINER: {
       flexGrow: 1,
@@ -47,16 +47,16 @@ const DEFAULT_STYLE = {
     FOOTER: {
       justifyContent: 'space-around',
       padding: spacing[4],
-      backgroundColor: color.ligthTheme.fourth,
+      backgroundColor: color.lightTheme.fourth,
       borderTopWidth: 0.5,
-      borderColor: color.ligthTheme.boder,
+      borderColor: color.lightTheme.boder,
     } as ViewStyle,
     SHEET_CONTAINER: {
       borderTopLeftRadius: radius[4],
       borderTopRightRadius: radius[4],
-      backgroundColor: color.ligthTheme.fourth,
+      backgroundColor: color.lightTheme.fourth,
       borderWidth: 1,
-      borderColor: color.ligthTheme.boder,
+      borderColor: color.lightTheme.boder,
     },
    
     BUTTON_CONTAINER: {
@@ -67,17 +67,17 @@ const DEFAULT_STYLE = {
     FONT_BUTTON: {
       paddingVertical: spacing[2],
       paddingHorizontal: spacing[3],
-      backgroundColor: color.ligthTheme.accentSecondary,
+      backgroundColor: color.lightTheme.accentSecondary,
       borderRadius: spacing[2],
       borderWidth: 0.3,
-      borderColor: color.ligthTheme.boder,
+      borderColor: color.lightTheme.boder,
       shadowColor: "black",
       shadowOpacity: 0.3,
       shadowRadius: radius[5],
       elevation: 1.4,
     },
     ICON:{
-      color: color.ligthTheme.accent,
+      color: color.lightTheme.accent,
     }
   },
 
