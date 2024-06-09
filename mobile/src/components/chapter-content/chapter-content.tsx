@@ -27,9 +27,10 @@ import { translate } from "../../i18n";
 
 // Import the models
 import Chapter from "../../models/chapter";
+import Source from "../../models/sources/source";
 import { color, iconSize, spacing, typography } from "../../theme";
 import { VectorIcon } from "../vector-icon/vector-icon";
-
+import { getSources }  from "../../storages/novel-sources-storage"
 import { SourceFactory } from '../../factories/source-factory';
 import { ScrollView } from "react-native-gesture-handler";
 import { Slider } from "../slider/slider";
@@ -47,7 +48,8 @@ export const ChapterContent = observer(function ChapterContent(props: ChapterCon
   const [darkMode, setDarkMode] = useState(false);
   const [chapterList, setChapterList] = useState<Chapter[]>([]);
   const [showChapterList, setShowChapterList] = useState(false);
-
+  const [sourceHandle, setSourceHandle] = useState(source); 
+  const [sources, setSources] = useState<Source[]>([]); 
 
   const containerStyles = flatten([stylePresets[preset].CONTAINER, styleOverride,]);
   const loadingContainerStyles = flatten([stylePresets[preset].LOADING_CONTAINER,]);
@@ -66,14 +68,21 @@ export const ChapterContent = observer(function ChapterContent(props: ChapterCon
 
   const settingsSheetRef = useRef(null);
   const chapterListSheetRef = useRef(null);
+  const sourceListSheetRef = useRef(null);
 
   const toggleDarkMode = () => setDarkMode(!darkMode);
   const toggleShownSettings = () => settingsSheetRef.current?.expand();
   const toggleShowChapterList = () => chapterListSheetRef.current?.expand();
+  const toggleShowSourceList = () => sourceListSheetRef.current?.expand();
 
   const handleFontSizeChange = (value) => setFontSize(value);
   const handleFontFamilyChange = (family) => setFontFamily(family);
   const handleLineHeightChange = (value) => setLineHeight(value);
+
+  const initSourceList = async () => {
+    const sourceList = await getSources()
+    setSources(sourceList)
+  }
 
   const initChapterContent = async (source) => {
     //console.log(`Source ID in Chapter Content: ${source.id}`); 
@@ -102,6 +111,7 @@ export const ChapterContent = observer(function ChapterContent(props: ChapterCon
   };
 
   useEffect(() => {
+    initSourceList()
     initChapterContent(source);
     initChapterList(source);
   }, [source, chapter]);
@@ -159,6 +169,9 @@ export const ChapterContent = observer(function ChapterContent(props: ChapterCon
         <TouchableOpacity onPress={toggleDarkMode}>
           <VectorIcon name={darkMode ? "moon" : "sunny"} size={iconSize.medium} style={iconStyles} />
         </TouchableOpacity>
+        <TouchableOpacity onPress={toggleShowSourceList}>
+          <VectorIcon name="book" size={iconSize.medium} style={iconStyles}/>
+        </TouchableOpacity>
       </Row>
     );
   };
@@ -198,6 +211,36 @@ export const ChapterContent = observer(function ChapterContent(props: ChapterCon
     );
   };
 
+  const handleSourceChange = async (newSource) => {
+    // setSource(newSource);
+    await initChapterContent(newSource);
+    await initChapterList(newSource);
+  };
+
+  const renderSourceList = () => {
+    return (
+      <BottomSheet style={sheetContainerStyles} ref={sourceListSheetRef} index={-1} snapPoints={['50%']} enablePanDownToClose={true}>
+        <Column style={{ alignItems: 'center', gap: spacing[2], padding: spacing[4] }}>
+          <Text style={{
+            ...typography.labelLarge,
+            fontWeight: 'bold',
+          }}>
+            {"Choose Source"}
+          </Text>
+          <FlatList
+            data={sources}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => handleSourceChange(item)} style={{ padding: spacing[2] }}>
+                <Text>{item.sourceTitle}</Text>
+              </TouchableOpacity>
+            )}
+            keyExtractor={(item) => item.id.toString()}
+            showsVerticalScrollIndicator={true}
+          />
+        </Column>
+      </BottomSheet>
+    );
+  };
   const renderChapterListShortcut = () => {
     return (
       <BottomSheet style={sheetContainerStyles} ref={chapterListSheetRef} index={-1} snapPoints={['50%']} enablePanDownToClose={true}>
@@ -212,6 +255,7 @@ export const ChapterContent = observer(function ChapterContent(props: ChapterCon
       {renderFooter()}
       {renderSettings()}
       {renderChapterListShortcut()}
+      {renderSourceList()}
     </View>
   );
 });
