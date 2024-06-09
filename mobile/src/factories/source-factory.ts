@@ -13,6 +13,10 @@ export const sourceImportURLs = [
     {label: SourceThree.title, value: SourceThree.importURL},
 ]
 
+const wait = (ms: number): Promise<void> => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  };
+
 // Source factory class
 export class SourceFactory {
     static async ImportSource(SourceImportURL: string): Promise<Source> {
@@ -29,6 +33,7 @@ export class SourceFactory {
 
             const data = await response.json();
             console.log(data);
+            await wait(2000)
             const SourceModule = await import("../models/sources/hoc");
             console.log("Test Dynamic Import")
             console.log(SourceModule)
