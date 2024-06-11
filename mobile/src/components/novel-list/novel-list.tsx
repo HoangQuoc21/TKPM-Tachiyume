@@ -59,7 +59,9 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
 
   // States to save novel list
   const [novelList, setNovelList] = useState<Novel[]>([]);
+  // Page management
   const [page, setPage] = useState(1);
+  const [filterPage, setFilterPage] = useState(1);
 
   // For search
   const [isSearch, setIsSearch] = useState(false);
@@ -96,7 +98,7 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
 
       const novels = await novelSource.findNovelsByPage(1);
       novels.map((novel, index) => {
-        novel.id = `${source.id}-${index + 1}`; // Generate a unique key combining source id and index
+        novel.id = `${source.id}-${index + 1}-${pageNumber}`; // Generate a unique key combining source id and index
       });
 
       if (pageNumber === 1) {
@@ -111,6 +113,9 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
 
   useEffect(() => {
     initNovelList(source, page);
+    if (selectedFilter) {
+      return;
+    }
 
   }, [source, page]);
 
@@ -193,6 +198,31 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
 
     );
   };
+
+  // 
+  const handleFilterNovels = async (filter, pageNumber = 1) => {
+    setLoading(true);  
+    let filteredNovels = [];
+      
+
+    const novelSource = SourceFactory.createSource(sourceId);
+    // Pass the bland filter to the source 
+    filteredNovels = await novelSource.findNovelsByFilter(filter, pageNumber);
+
+    // Append new id to novels
+    filteredNovels.map((novel, index) => {
+      novel.id = `f-${sourceId}-${index + 1}-${pageNumber}`; // Generate a unique key combining source id and index
+    });
+    if (pageNumber === 1) {
+      setSearchedNovelList(filteredNovels);
+    } else {
+      setSearchedNovelList(prevNovels => [...prevNovels, ...filteredNovels]);
+    }
+    
+    setSelectedFilter(filter);
+    setLoading(false);
+  };
+
   const renderFilterButtons = () => {
 
     const filters = [
@@ -203,30 +233,28 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
       "filterNovels.More"
     ];
 
-    const handleFilterNovels = async (filter) => {
-      let filteredNovels = [];
-      // Temporary set page number here
-      let page = 1;
-      const novelSource = SourceFactory.createSource(sourceId);
-      // Pass the bland filter to the source 
-      filteredNovels = await novelSource.findNovelsByFilter(filter, page);
-
-      // Append new id to novels
-      filteredNovels.map((novel, index) => {
-        novel.id = `f-${sourceId}-${index + 1}`; // Generate a unique key combining source id and index
-      });
-
-      setSearchedNovelList(filteredNovels);
-      setSelectedFilter(filter); // Set the selected filter
-
-    };
-
+    
+    
     return (
       <Row style={titleContainerStyles}>
         {filters.map((filter, index) => (
           <TouchableOpacity
             key={filter}
-            onPress={() => handleFilterNovels(filter)}
+            onPress={() => {
+              if (filter === selectedFilter) {
+                setSelectedFilter(null);
+                setSearchedNovelList(novelList);
+                setPage(1);
+                setFilterPage(1);
+      
+                return;
+              } else {
+                setSearchedNovelList([]);
+                setPage(1);
+                handleFilterNovels(filter, 1);
+              }
+              
+            }}
             style={[
               filterButtonStyles,
               index === 0 && { marginLeft: 20 },
@@ -265,7 +293,18 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
         renderItem={({ item }) => renderItem(item)}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={true}
-        onEndReached={() => setPage(prevPage => prevPage + 1)}
+        onEndReached={() => {
+          if (selectedFilter) {
+            // Filtered page increment
+            setFilterPage(filterPage + 1);
+            handleFilterNovels(selectedFilter, filterPage);
+          } else {
+            // Just normal page increment
+            setPage(page + 1);
+          }
+        }
+
+        }
         onEndReachedThreshold={0.5}
         ListFooterComponent={loading && <LoadingCircle />}
       />
