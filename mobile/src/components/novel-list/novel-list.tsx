@@ -57,8 +57,11 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
   const [isEmpty, setIsEmpty] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // States to save novel list
   const [novelList, setNovelList] = useState<Novel[]>([]);
+  const [page, setPage] = useState(1);
 
+  // For search
   const [isSearch, setIsSearch] = useState(false);
   const [foundNovels, setFoundNovels] = useState(true);
   const [search, setSearch] = useState("");
@@ -86,7 +89,7 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
     return () => backHandler.remove();
   }, []);
 
-  const initNovelList = async (source) => {
+  const initNovelList = async (source, pageNumber = 1) => {
     try {
       const novelSource = SourceFactory.createSource(source.id);
       setSourceId(source.id);
@@ -96,16 +99,20 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
         novel.id = `${source.id}-${index + 1}`; // Generate a unique key combining source id and index
       });
 
-      setNovelList(novels);
+      if (pageNumber === 1) {
+        setNovelList(novels);
+      } else {
+        setNovelList(prevNovels => [...prevNovels, ...novels]);
+      }
     } catch (error) {
       console.error('Error finding novels by page:', error);
     }
   };
 
   useEffect(() => {
-    initNovelList(source);
+    initNovelList(source, page);
 
-  }, [source]);
+  }, [source, page]);
 
   useEffect(() => {
     if (novelList.length == 0) {
@@ -258,6 +265,9 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
         renderItem={({ item }) => renderItem(item)}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={true}
+        onEndReached={() => setPage(prevPage => prevPage + 1)}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={loading && <LoadingCircle />}
       />
     );
   };
