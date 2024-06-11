@@ -18,6 +18,8 @@ function getSummaryImage($) {
 
 // Source: Box novel
 export default class SourceTwo extends Source {
+
+
   static title = "Box Novel";
   static importURL = "https://boxnovel.com";
   static idToCreate = 2;
