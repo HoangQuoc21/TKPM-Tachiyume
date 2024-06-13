@@ -42,6 +42,8 @@ abstract class Source {
   
   abstract getId(): Promise<any>;
 
+  abstract createInstance(): Promise<Source>;
+
 }
 
 export default Source;

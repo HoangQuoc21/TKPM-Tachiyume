@@ -3,13 +3,12 @@ import Chapter from "../chapter";
 import Novel from "../novel";
 import Source from "./source";
 import { load } from "cheerio";
-
 function cleanContent(content: string) {
   return content.replace(/\n\n/g, "\n");
 }
 
 // Source: ALL NOVEL
-export default class SourceOne extends Source {
+export default class AllNovel extends Source {
 
  
   static title = "All Novel";
@@ -29,7 +28,11 @@ export default class SourceOne extends Source {
     return this.id;
   }
 
-  // Individual method of sourceOne
+  async createInstance(): Promise<Source> {
+    return new AllNovel();
+  }
+
+  // Individual method of AllNovel
   async parse(body: string) {
     const items = [];
     const $ = load(body);

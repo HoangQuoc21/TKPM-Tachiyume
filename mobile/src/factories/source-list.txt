@@ -1,0 +1,23 @@
+[
+  {
+    "2": "BoxNovel"
+  },
+  {
+    "2": "BoxNovel"
+  },
+  {
+    "2": "BoxNovel"
+  },
+  {
+    "2": "BoxNovel"
+  },
+  {
+    "2": "BoxNovel"
+  },
+  {
+    "1": "AllNovel"
+  },
+  {
+    "3": "LightNovelHeaven"
+  }
+]

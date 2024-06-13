@@ -31,7 +31,7 @@ import Source from "../../models/sources/source";
 import { color, iconSize, spacing, typography } from "../../theme";
 import { VectorIcon } from "../vector-icon/vector-icon";
 import { getSources }  from "../../storages/novel-sources-storage"
-import { SourceFactory } from '../../factories/source-factory';
+import { SourcePlugintory } from '../../factories/source-plugin';
 import { ScrollView } from "react-native-gesture-handler";
 import { Slider } from "../slider/slider";
 
@@ -86,7 +86,7 @@ export const ChapterContent = observer(function ChapterContent(props: ChapterCon
 
   const initChapterContent = async (source) => {
     //console.log(`Source ID in Chapter Content: ${source.id}`); 
-    const chapterSource = SourceFactory.createSource(source.id);
+    const chapterSource = await SourcePlugintory.createSource(source.id);
     await chapterSource.findContentByChapter(chapter).then((chapter) => {
       setChapterContent(chapter.content);
     }).catch((error) => {
@@ -95,7 +95,8 @@ export const ChapterContent = observer(function ChapterContent(props: ChapterCon
   };
 
   const initChapterList = async (source) => {
-    const chapterSource = SourceFactory.createSource(source.id);
+    const chapterSource = await SourcePlugintory.createSource(source.id);
+    console.log(chapterSource)
     await chapterSource.findChaptersByNovel(novel).then((chapters) => {
       const fetchChapterList = [];
       chapters.slice().reverse().forEach((chapter, index) => {

@@ -25,9 +25,9 @@ import Novel from "../../models/novel";
 import { color, iconSize } from "../../theme";
 import { VectorIcon } from "../vector-icon/vector-icon";
 
-import { SourceFactory } from '../../factories/source-factory';
+import { SourcePlugintory } from '../../factories/source-plugin';
 import Source from "../../models/sources/source";
-import SourceOne from "../../models/sources/source-one";
+import AllNovel from "../../models/sources/source-one";
 
 
 export const NovelList = observer(function NovelList(props: NovelListProps) {
@@ -88,10 +88,12 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
 
   const initNovelList = async (source) => {
     try {
-      const novelSource = SourceFactory.createSource(source.id);
+      const novelSource = await SourcePlugintory.createSource(source.id);
+      console.log("Novel Source", novelSource)
       setSourceId(source.id);
 
       const novels = await novelSource.findNovelsByPage(1);
+      console.log("Novel list", novelList)
       novels.map((novel, index) => {
         novel.id = `${source.id}-${index + 1}`; // Generate a unique key combining source id and index
       });
@@ -118,7 +120,7 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
   }, [novelList]);
 
   const handleSearch = async () => {
-    const novelSource = SourceFactory.createSource(sourceId);
+    const novelSource = await SourcePlugintory.createSource(sourceId);
     const searchQuery = search;
 
     setIsSearch(true);
@@ -200,7 +202,7 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
       let filteredNovels = [];
       // Temporary set page number here
       let page = 1;
-      const novelSource = SourceFactory.createSource(sourceId);
+      const novelSource = await SourcePlugintory.createSource(sourceId);
       // Pass the bland filter to the source 
       filteredNovels = await novelSource.findNovelsByFilter(filter, page);
 

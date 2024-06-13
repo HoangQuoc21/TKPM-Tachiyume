@@ -23,7 +23,7 @@ import { FavoriteIcon } from "../favorite-icon/favorite-icon";
 import Novel from "../../models/novel";
 import { color, iconSize } from "../../theme";
 
-import { SourceFactory } from '../../factories/source-factory';
+import { SourcePlugintory } from '../../factories/source-plugin';
 import { ChapterList } from "../chapter-list/chapter-list";
 import { ScrollView } from "react-native-gesture-handler";
 import { Row } from "../row/row";
@@ -70,7 +70,7 @@ export const NovelDetail = observer(function NovelDetail(props: NovelDetailProps
   const [favoriteNovelList, addFavoriteNovelToStorage, removeFavoriteNovelFromStorage] = useContext(FavoriteNovelListContext);
 
   const initNovel = async (source) => {
-    const novelSource = SourceFactory.createSource(source.id);
+    const novelSource = await SourcePlugintory.createSource(source.id);
 
     await novelSource.findNovelDetails(novel).then((detail) => {
       setNovelDetail(detail);

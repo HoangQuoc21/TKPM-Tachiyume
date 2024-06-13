@@ -7,7 +7,7 @@ function cleanContent(content: string) {
   return content.replace(/\n\n/g, "\n");
 }
 
-export default class SourceThree extends Source {
+export default class LightNovelHeaven extends Source {
   getTotalPage(): number {
     throw new Error("Method not implemented.");
   }
@@ -27,6 +27,11 @@ export default class SourceThree extends Source {
   async getId(): Promise<number>{
     return this.id;
   }
+
+  async createInstance(): Promise<Source> {
+    return new LightNovelHeaven();
+  }
+
   // List of novels shown by filter
   async findNovelsByFilter(filter: string, page: number): Promise<Novel[]> {
     // Get the appropriate url for the filter
@@ -273,4 +278,4 @@ export default class SourceThree extends Source {
   }
 }
 
-// export default SourceThree;
+// export default LightNovelHeaven;

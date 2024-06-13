@@ -14,7 +14,7 @@ import { NovelList } from "../../components/novel-list/novel-list";
 
 import { useRoute } from "@react-navigation/native";
 import Source from "../../models/sources/source";
-import SourceOne from "../../models/sources/source-one";
+import AllNovel from "../../models/sources/source-one";
 
 export const NovelListScreen: FC<
   StackScreenProps<NavigatorParamList, typeof NovelListScreenName>

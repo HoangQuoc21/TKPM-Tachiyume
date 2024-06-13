@@ -14,10 +14,10 @@ function getSummaryImage($) {
   return imgUrl;
 }
 
-// export const SourceTwoImportURL = "https://boxnovel.com";
+// export const BoxNovelImportURL = "https://boxnovel.com";
 
 // Source: Box novel
-export default class SourceTwo extends Source {
+export default class BoxNovel extends Source {
 
 
   static title = "Box Novel";
@@ -37,6 +37,11 @@ export default class SourceTwo extends Source {
   async getId(): Promise<number> {
     return this.id;
   }
+
+  async createInstance(): Promise<Source> {
+    return new BoxNovel();
+  }
+
   // List of novels shown by filter
   async findNovelsByFilter(filter: string, page: number): Promise<Novel[]> {
     // Get the appropriate url for the filter
