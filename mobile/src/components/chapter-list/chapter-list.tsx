@@ -25,7 +25,7 @@ import Chapter from "../../models/chapter";
 import { color, iconSize, spacing } from "../../theme";
 import { VectorIcon } from "../vector-icon/vector-icon";
 
-import { SourcePlugintory } from '../../factories/source-plugin';
+import { SourcePlugin } from '../../factories/source-plugin';
 import Source from "../../models/sources/source";
 import AllNovel from "../../models/sources/source-one";
 
@@ -74,7 +74,7 @@ export const ChapterList = observer(function ChapterList(props: ChapterListProps
   const initChapterList = async (source) => {
     //console.log(`Source ID in Chapter List: ${source.id}`);
 
-    const chapterSource = await SourcePlugintory.createSource(source.id);
+    const chapterSource = await SourcePlugin.createSource(source.id);
 
     await chapterSource.findChaptersByNovel(novel).then((chapters) => {
 

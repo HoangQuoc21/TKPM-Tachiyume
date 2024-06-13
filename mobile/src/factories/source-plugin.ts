@@ -8,7 +8,7 @@ const API_URL = 'http://192.168.1.112:8000'
 
 let importedSources: Source[] = [];
 let dataImportedSources: Map<number, string> = new Map<number, string>();
-export class SourcePlugintory {
+export class SourcePlugin {
 
     static async getSource(SourceImportURL: string): Promise<Source | null> {
         try {
@@ -60,7 +60,7 @@ export class SourcePlugintory {
         });
         const responseData = await response.json()
         console.log(responseData)
-        wait(1000)
+        wait(2000)
         const SourceModule = await import('../models/sources/importedInstance');
         const importSource = new SourceModule.default();
         return importSource;

@@ -25,7 +25,7 @@ import Novel from "../../models/novel";
 import { color, iconSize } from "../../theme";
 import { VectorIcon } from "../vector-icon/vector-icon";
 
-import { SourcePlugintory } from '../../factories/source-plugin';
+import { SourcePlugin } from '../../factories/source-plugin';
 import Source from "../../models/sources/source";
 import AllNovel from "../../models/sources/source-one";
 
@@ -88,7 +88,7 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
 
   const initNovelList = async (source) => {
     try {
-      const novelSource = await SourcePlugintory.createSource(source.id);
+      const novelSource = await SourcePlugin.createSource(source.id);
       console.log("Novel Source", novelSource)
       setSourceId(source.id);
 
@@ -120,7 +120,7 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
   }, [novelList]);
 
   const handleSearch = async () => {
-    const novelSource = await SourcePlugintory.createSource(sourceId);
+    const novelSource = await SourcePlugin.createSource(sourceId);
     const searchQuery = search;
 
     setIsSearch(true);
@@ -202,7 +202,7 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
       let filteredNovels = [];
       // Temporary set page number here
       let page = 1;
-      const novelSource = await SourcePlugintory.createSource(sourceId);
+      const novelSource = await SourcePlugin.createSource(sourceId);
       // Pass the bland filter to the source 
       filteredNovels = await novelSource.findNovelsByFilter(filter, page);
 

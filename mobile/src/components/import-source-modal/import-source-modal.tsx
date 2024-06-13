@@ -20,7 +20,7 @@ import { translate } from '../../i18n'
 
 // Import the models
 import Source from '../../models/sources/source';
-import { SourcePlugintory } from '../../factories/source-plugin';
+import { SourcePlugin } from '../../factories/source-plugin';
 
 // Import the contexts
 import { NovelSourceListContext } from '../../providers/novel-source-list-provider';
@@ -93,7 +93,7 @@ export const ImportSourceModal = observer(function ImportSourceModal(props: Impo
             return
         }
 
-        const importSource = await SourcePlugintory.getSource(importURL)
+        const importSource = await SourcePlugin.getSource(importURL)
         console.log(importSource)
         if (!isSourceInList(importSource)) {
             addSource(importSource)

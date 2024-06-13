@@ -19,5 +19,14 @@
   },
   {
     "3": "LightNovelHeaven"
+  },
+  {
+    "3": "LightNovelHeaven"
+  },
+  {
+    "2": "BoxNovel"
+  },
+  {
+    "3": "LightNovelHeaven"
   }
 ]
