@@ -17,7 +17,7 @@ app.post('/send-module', (req, res) => {
 
     try {
         // Đường dẫn tới file hoc.ts trong dự án React Native
-        const filePath = path.resolve(__dirname, '../mobile/src/models/sources/hoc.ts');
+        const filePath = path.resolve(__dirname, '../mobile/src/models/sources/importedModule.ts');
         // Ghi mã nguồn vào file hoc.ts
         fs.writeFileSync(filePath, moduleCode, 'utf-8');
 
