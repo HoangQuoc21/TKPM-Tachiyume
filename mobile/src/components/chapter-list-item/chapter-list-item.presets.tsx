@@ -38,7 +38,17 @@ const DEFAULT_STYLE = {
     shadowRadius: radius[5],
     elevation: 5,
   } as ViewStyle,
+  TEXT_CONTAINER: {
+    flex: 9,
+    ...typography.labelSmall,
+    justifyContent: "center",
+    fontWeight: "normal",
+
+    paddingLeft: spacing[2],
+    fontSize: typography.bodySmall.fontSize,
+  },
   TEXT: {
+    //flex: 7,
     ...typography.labelSmall,
     justifyContent: "center",
     fontWeight: "normal",
@@ -46,6 +56,16 @@ const DEFAULT_STYLE = {
     paddingLeft: spacing[2],
     fontSize: typography.bodySmall.fontSize,
   } as TextStyle,
+  ICON_CONTAINER:{
+    flex: 1,
+    justifyContent: "center",
+    paddingLeft: spacing[2],
+  },
+  ICON: {
+    //flex: 2,
+    justifyContent: "center",
+    color: color.lightTheme.accent,
+  },
 };
 
 const SIMPLE_STYLE = {
@@ -57,6 +77,9 @@ const SIMPLE_STYLE = {
     alignContent: "center",
     justifyContent: "space-between",
   } as ViewStyle,
+  TEXT_CONTAINER: {
+    
+  },
   TEXT: {
     ...typography.labelSmall,
     justifyContent: "center",
@@ -64,12 +87,21 @@ const SIMPLE_STYLE = {
     paddingLeft: spacing[2],
     fontSize: typography.bodySmall.fontSize,
   } as TextStyle,
+
+  ICON_CONTAINER:{
+
+  },
+  ICON: {
+    
+  },
+
   DOWNLOAD_ICON_CONTAINER: {
     paddingRight: spacing[5],
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   } as ViewStyle
+
 };
 
 export const stylePresets = {

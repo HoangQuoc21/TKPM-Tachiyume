@@ -11,6 +11,10 @@ import { Column } from "../column/column";
 import { ChapterScreenName } from "../../screens/chapter/chapter-screen";
 
 import { navigate } from "../../navigators/navigation-utilities";
+import { VectorIcon } from "../vector-icon/vector-icon";
+import { iconSize } from "../../theme";
+import { ExportChapter } from "../export-chapter/export-chapter";
+import { useState } from "react";
 
 import { DownloadIcon } from "../download-icon/download-icon";
 import { View } from "../view/view";
@@ -28,6 +32,11 @@ export const ChapterListItem = observer(function ChapterListItem(props: ChapterL
   const iconContainerStyles = flatten([stylePresets[preset].DOWNLOAD_ICON_CONTAINER]);
 
   const textStyles = flatten([stylePresets[preset].TEXT]);
+  const iconStyles = flatten([stylePresets[preset].ICON]);
+  const textContainerStyles = flatten([stylePresets[preset].TEXT_CONTAINER]);
+  const iconContainerStyles = flatten([stylePresets[preset].ICON_CONTAINER]);
+
+  const [isExportVisible, setExportVisible] = useState(false);
 
   const handleDownload = () => {
     console.log('Download clicked');
@@ -45,17 +54,35 @@ export const ChapterListItem = observer(function ChapterListItem(props: ChapterL
     });
   };
 
+  const handleDownload = () => {
+    setExportVisible(true);
+  };
+
+  const handleCloseExport = () => {
+    setExportVisible(false);
+  };
+
   return (
+    <>
     <TouchableOpacity style={containerStyles} onPress={handlePress}>
-      <Column style={textStyles}>
+      <Column style={textContainerStyles}>
         <Text numberOfLines={1} style={textStyles}>{chapter.title}</Text>
       </Column>
-      <Column>
-        <View style={iconContainerStyles}>
-          <DownloadIcon onPress={handleDownload} />
 
-        </View>
-      </Column>
+      <TouchableOpacity style={iconContainerStyles} onPress={handleDownload}>
+        <VectorIcon name="arrow-down-circle" size={iconSize.medium} style={iconStyles} />
+      </TouchableOpacity>
+
     </TouchableOpacity>
+    {isExportVisible && (
+      <ExportChapter
+        preset="default"
+        isVisible={isExportVisible}
+        onClosePress={handleCloseExport}
+        source={source}
+        chapter={chapter}
+      />
+    )}
+     </>
   );
 });
