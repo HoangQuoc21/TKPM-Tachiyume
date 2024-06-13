@@ -15,14 +15,22 @@ export const ChapterListItemPresets = {
 };
 
 const DEFAULT_STYLE = {
+  DOWNLOAD_ICON_CONTAINER: {
+    paddingRight: spacing[2],
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  } as ViewStyle,
   CONTAINER: {
     flexDirection: "row",
-    marginHorizontal: spacing[1],
+    marginHorizontal: spacing[2],
     marginVertical: spacing[2],
     borderRadius: radius[4],
     alignContent: "center",
     backgroundColor: color.lightTheme.third,
     height: 60,
+    justifyContent: "space-between",
+
 
     // shadow
     shadowColor: "black",
@@ -67,6 +75,7 @@ const SIMPLE_STYLE = {
     marginVertical: spacing[2],
     borderRadius: radius[4],
     alignContent: "center",
+    justifyContent: "space-between",
   } as ViewStyle,
   TEXT_CONTAINER: {
     
@@ -78,12 +87,21 @@ const SIMPLE_STYLE = {
     paddingLeft: spacing[2],
     fontSize: typography.bodySmall.fontSize,
   } as TextStyle,
+
   ICON_CONTAINER:{
 
   },
   ICON: {
     
   },
+
+  DOWNLOAD_ICON_CONTAINER: {
+    paddingRight: spacing[5],
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  } as ViewStyle
+
 };
 
 export const stylePresets = {
