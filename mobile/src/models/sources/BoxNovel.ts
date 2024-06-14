@@ -115,7 +115,6 @@ export default class BoxNovel extends Source {
     }
   }
 
-
   // List of novels to show in one page
   async findNovelsByPage(page: number): Promise<Novel[]> {
     const sourceId = this.id;
@@ -149,7 +148,7 @@ export default class BoxNovel extends Source {
 
     try {
       const pageUrl = `${baseUrl}/page/${page}`;
-
+      console.log("Fetching novels from url")
       // Fetch the page
       const response = await fetch(pageUrl, {
         method: "GET",
@@ -158,6 +157,7 @@ export default class BoxNovel extends Source {
         },
       });
       // Get the body of the page
+      console.log('Fetching succeed')
       const html = await response.text();
       const novelsFromSource = await parse(html);
       //
@@ -266,6 +266,7 @@ export default class BoxNovel extends Source {
       throw error;
     }
   }
+
   async searchNovels(query: string) {
     let queryByNovelName = `${this.baseUrl}/?s=${query}&post_type=wp-manga`;
     let queryByAuthor = `${this.baseUrl}/?s=&post_type=wp-manga&author=${query}`;
@@ -326,5 +327,37 @@ export default class BoxNovel extends Source {
     }
 
     return novels;
+  }
+
+  async findChapterOfNovel(novelTittle: string, chapterTittle: string ){
+    const novels = await this.searchNovels(novelTittle)
+    console.log('Change source for novel: ', novelTittle)
+    console.log("List novel:", novels)
+    // Sử dụng vòng lặp for để kiểm tra
+    let foundNovel = null;
+    for (let novel of novels) {
+        if (novel.title === novelTittle) {
+            foundNovel = novel;
+            break;
+        }
+    }
+    if (foundNovel !== null){
+      console.log("Chapter name: ", chapterTittle)
+      const listChapter = await this.findChaptersByNovel(foundNovel)
+      // console.log(listChapter)
+      
+      let foundChapter = null;
+      for (let chapter of listChapter){
+        if (chapter.title === chapterTittle){
+          foundChapter = chapter;
+          break;
+        }
+      }
+
+      const chapterContent = await this.findContentByChapter(foundChapter)
+      return chapterContent;
+    }
+    
+    return null;
   }
 }

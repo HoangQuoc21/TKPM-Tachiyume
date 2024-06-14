@@ -4,7 +4,7 @@ import RNFS from 'react-native-fs';
 const wait = (ms: number): Promise<void> => {
     return new Promise(resolve => setTimeout(resolve, ms));
 };
-const API_URL = 'http://192.168.1.112:8000'
+const API_URL = 'http://192.168.1.72:8000'
 
 export class SourcePlugin {
 
@@ -22,7 +22,7 @@ export class SourcePlugin {
 
             const apiResponseSendModule = await responseSendModule.json();
             console.log(apiResponseSendModule.message)
-            wait(4000);
+            await wait(4000);
             // import module written in hoc.ts
             const SourceModule = await import('../models/sources/importedModule');
             const importedSource = new SourceModule.default();
@@ -44,7 +44,7 @@ export class SourcePlugin {
         });
         const responseData = await responseGetDataModule.json()
         console.log(responseData.message)
-        wait(2000)
+        await wait(1000)
         const SourceModule = await import('../models/sources/importedInstance');
         const importSource = new SourceModule.default();
         return importSource;

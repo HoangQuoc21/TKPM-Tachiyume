@@ -262,4 +262,11 @@ export default class AllNovel extends Source {
       throw error;
     }
   }
+  
+  async findChapterOfNovel(novelTittle: string, chapterName: string ){
+    const listNovel = await this.searchNovels(novelTittle)
+    console.log('Change Source', listNovel)
+    
+    return null;
+  }
 }

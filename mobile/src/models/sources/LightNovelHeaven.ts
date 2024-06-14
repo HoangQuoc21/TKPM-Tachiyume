@@ -130,14 +130,17 @@ export default class LightNovelHeaven extends Source {
     try {
       // Update with your base URL
       const web = `${this.baseUrl}/page/${page}`;
-      const response = await axios.get(web, {
+      console.log("Fetching novels from url")
+      const response = await fetch(web, {
         method: "GET",
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
+        // headers: {
+        //   "Access-Control-Allow-Origin": "*",
+        // },
       });
-      const data = await parse(response.data);
-      return data;
+      console.log("Fetch success")
+      const html = await response.text();
+      const novel = await parse(html)
+      return novel;
     } catch (error) {
       throw new Error("Failed to fetch novels: " + error.message);
     }
@@ -276,6 +279,39 @@ export default class LightNovelHeaven extends Source {
     let novels = await queryNovels(queryByNovelName);
     return novels
   }
+
+  async findChapterOfNovel(novelTittle: string, chapterTittle: string ){
+    const novels = await this.searchNovels(novelTittle)
+    console.log('Change source for novel: ', novelTittle)
+    console.log("List novel:", novels)
+    // Sử dụng vòng lặp for để kiểm tra
+    let foundNovel = null;
+    for (let novel of novels) {
+        if (novel.title === novelTittle) {
+            foundNovel = novel;
+            break;
+        }
+    }
+    if (foundNovel !== null){
+      console.log("Chapter name: ", chapterTittle)
+      const listChapter = await this.findChaptersByNovel(foundNovel)
+      // console.log(listChapter)
+      
+      let foundChapter = null;
+      for (let chapter of listChapter){
+        if (chapter.title === chapterTittle){
+          foundChapter = chapter;
+          break;
+        }
+      }
+
+      const chapterContent = await this.findContentByChapter(foundChapter)
+      return chapterContent;
+    }
+    
+    return null;
+  }
+
 }
 
 // export default LightNovelHeaven;

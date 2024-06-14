@@ -213,9 +213,13 @@ export const ChapterContent = observer(function ChapterContent(props: ChapterCon
   };
 
   const handleSourceChange = async (newSource) => {
+    const changeSource = await SourcePlugin.createSource(newSource.id)
+    const content = await changeSource.findChapterOfNovel(novel.title, chapter.title)
+
+    console.log(content)
     // setSource(newSource);
-    await initChapterContent(newSource);
-    await initChapterList(newSource);
+    // await initChapterContent(newSource);
+    // await initChapterList(newSource);
   };
 
   const renderSourceList = () => {

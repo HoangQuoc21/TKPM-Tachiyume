@@ -27,7 +27,7 @@ import { VectorIcon } from "../vector-icon/vector-icon";
 
 import { SourcePlugin } from '../../factories/source-plugin';
 import Source from "../../models/sources/source";
-import AllNovel from "../../models/sources/source-one";
+// import AllNovel from "../../models/sources/source-one";
 
 
 export const NovelList = observer(function NovelList(props: NovelListProps) {

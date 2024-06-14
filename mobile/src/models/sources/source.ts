@@ -44,6 +44,7 @@ abstract class Source {
 
   abstract createInstance(): Promise<Source>;
 
+  abstract findChapterOfNovel(novelTittle, chapTittle): Promise<any>;
 }
 
 export default Source;
