@@ -64,7 +64,7 @@ const DEFAULT_STYLE = {
   ICON: {
     //flex: 2,
     justifyContent: "center",
-    color: color.lightTheme.accent,
+    color: color.common.gray,
   },
 };
 

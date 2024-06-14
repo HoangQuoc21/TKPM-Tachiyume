@@ -29,7 +29,7 @@ export const ChapterListItem = observer(function ChapterListItem(props: ChapterL
     styleOverride,
   ]);
 
-  const iconContainerStyles = flatten([stylePresets[preset].DOWNLOAD_ICON_CONTAINER]);
+  
 
   const textStyles = flatten([stylePresets[preset].TEXT]);
   const iconStyles = flatten([stylePresets[preset].ICON]);
@@ -38,9 +38,7 @@ export const ChapterListItem = observer(function ChapterListItem(props: ChapterL
 
   const [isExportVisible, setExportVisible] = useState(false);
 
-  const handleDownload = () => {
-    console.log('Download clicked');
-  }
+  
 
   const handlePress = () => {
     navigate(ChapterScreenName, {
