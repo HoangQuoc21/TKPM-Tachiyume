@@ -26,6 +26,7 @@
     "epub-gen": "^0.1.0",
     "expo": "~50.0.19",
     "expo-file-system": "~16.0.9",
+    "expo-font": "^11.10.3",
     "expo-localization": "~14.8.4",
     "expo-media-library": "~15.9.2",
     "expo-permissions": "^14.4.0",
