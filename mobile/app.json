@@ -22,7 +22,10 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#FFEEDA"
       },
-      "permissions": ["READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"],
+      "permissions": [
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ],
       "package": "com.tkpmchillingchillies.tachiyume"
     },
     "web": {
@@ -36,10 +39,15 @@
     "owner": "tkpm-chillingchillies",
     "plugins": [
       "expo-localization",
-      "expo-font",
+      [
+        "expo-font",
         {
-          "fonts": ["./assets/fonts/Arial.ttf", "./assets/fonts/Times-New-Roman.ttf"]
+          "fonts": [
+            "./assets/fonts/Arial.ttf",
+            "./assets/fonts/Times-New-Roman.ttf"
+          ]
         }
+      ]
     ]
   }
 }
