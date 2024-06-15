@@ -14,6 +14,9 @@ import {
   BackHandler,
 } from "react-native";
 
+import { useFonts } from 'expo-font';
+
+
 //import React, { useState, useRef } from 'react';
 //import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // For icons
@@ -38,6 +41,10 @@ import { Slider } from "../slider/slider";
 export const ChapterContent = observer(function ChapterContent(props: ChapterContentProps) {
   const { preset = "default", style: styleOverride, source, novel, chapter, ...rest } = props;
 
+  const [fontsLoaded] = useFonts({
+    'Arial': require('../../../assets/fonts/Arial.ttf'),
+    'Times-New-Roman': require('../../../assets/fonts/Times-New-Roman.ttf'),
+  })
   const [isEmpty, setIsEmpty] = useState(false);
   const [loading, setLoading] = useState(false);
   const [chapterContent, setChapterContent] = useState<Chapter | null>(null);
@@ -177,7 +184,7 @@ export const ChapterContent = observer(function ChapterContent(props: ChapterCon
             <TouchableOpacity onPress={() => handleFontFamilyChange('Arial')} style={fontButtonStyles}>
               <Text>Arial</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleFontFamilyChange('Times New Roman')} style={fontButtonStyles}>
+            <TouchableOpacity onPress={() => handleFontFamilyChange('Times-New-Roman')} style={fontButtonStyles}>
               <Text>Times New Roman</Text>
             </TouchableOpacity>
           </View>

@@ -66,6 +66,7 @@ export const color = {
     // Accent color
     accent: 'light',
     accentSecondary: 'light',
+    accentThird: '#392306',
 
     // Background color
     background: 'light',

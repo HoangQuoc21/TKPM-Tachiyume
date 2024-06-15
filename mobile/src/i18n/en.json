@@ -10,7 +10,8 @@
   "error": {
     "sourceExisted": "Source existed",
     "noSource": "No source available",
-    "noSourceChose": "Please choose a source"
+    "noSourceChose": "Please choose a source",
+    "noFormatSelected": "Please select a file format"
   },
   "success": {
     "importSource": "Import source success",
@@ -95,5 +96,10 @@
     "latest": "Latest",
     "completed": "Completed",
     "More": "More" 
+  },
+  "exportChapter": {
+    "title": "Export novel chapter",
+    "export": "Export",
+    "select": "Select a file format"
   }
 }
