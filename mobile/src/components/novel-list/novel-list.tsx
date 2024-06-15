@@ -57,8 +57,13 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
   const [isEmpty, setIsEmpty] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // States to save novel list
   const [novelList, setNovelList] = useState<Novel[]>([]);
+  // Page management
+  const [page, setPage] = useState(1);
+  const [filterPage, setFilterPage] = useState(1);
 
+  // For search
   const [isSearch, setIsSearch] = useState(false);
   const [foundNovels, setFoundNovels] = useState(true);
   const [search, setSearch] = useState("");
@@ -86,7 +91,7 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
     return () => backHandler.remove();
   }, []);
 
-  const initNovelList = async (source) => {
+  const initNovelList = async (source, pageNumber = 1) => {
     try {
       const novelSource = await SourcePlugin.createSource(source.id);
       console.log("Novel Source", novelSource)
@@ -95,19 +100,26 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
       const novels = await novelSource.findNovelsByPage(1);
       console.log("Novel list", novelList)
       novels.map((novel, index) => {
-        novel.id = `${source.id}-${index + 1}`; // Generate a unique key combining source id and index
+        novel.id = `${source.id}-${index + 1}-${pageNumber}`; // Generate a unique key combining source id and index
       });
 
-      setNovelList(novels);
+      if (pageNumber === 1) {
+        setNovelList(novels);
+      } else {
+        setNovelList(prevNovels => [...prevNovels, ...novels]);
+      }
     } catch (error) {
       console.error('Error finding novels by page:', error);
     }
   };
 
   useEffect(() => {
-    initNovelList(source);
+    initNovelList(source, page);
+    if (selectedFilter) {
+      return;
+    }
 
-  }, [source]);
+  }, [source, page]);
 
   useEffect(() => {
     if (novelList.length == 0) {
@@ -188,6 +200,31 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
 
     );
   };
+
+  // 
+  const handleFilterNovels = async (filter, pageNumber = 1) => {
+    setLoading(true);  
+    let filteredNovels = [];
+      
+
+    const novelSource = SourceFactory.createSource(sourceId);
+    // Pass the bland filter to the source 
+    filteredNovels = await novelSource.findNovelsByFilter(filter, pageNumber);
+
+    // Append new id to novels
+    filteredNovels.map((novel, index) => {
+      novel.id = `f-${sourceId}-${index + 1}-${pageNumber}`; // Generate a unique key combining source id and index
+    });
+    if (pageNumber === 1) {
+      setSearchedNovelList(filteredNovels);
+    } else {
+      setSearchedNovelList(prevNovels => [...prevNovels, ...filteredNovels]);
+    }
+    
+    setSelectedFilter(filter);
+    setLoading(false);
+  };
+
   const renderFilterButtons = () => {
 
     const filters = [
@@ -221,7 +258,21 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
         {filters.map((filter, index) => (
           <TouchableOpacity
             key={filter}
-            onPress={() => handleFilterNovels(filter)}
+            onPress={() => {
+              if (filter === selectedFilter) {
+                setSelectedFilter(null);
+                setSearchedNovelList(novelList);
+                setPage(1);
+                setFilterPage(1);
+      
+                return;
+              } else {
+                setSearchedNovelList([]);
+                setPage(1);
+                handleFilterNovels(filter, 1);
+              }
+              
+            }}
             style={[
               filterButtonStyles,
               index === 0 && { marginLeft: 20 },
@@ -260,6 +311,20 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
         renderItem={({ item }) => renderItem(item)}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={true}
+        onEndReached={() => {
+          if (selectedFilter) {
+            // Filtered page increment
+            setFilterPage(filterPage + 1);
+            handleFilterNovels(selectedFilter, filterPage);
+          } else {
+            // Just normal page increment
+            setPage(page + 1);
+          }
+        }
+
+        }
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={loading && <LoadingCircle />}
       />
     );
   };
