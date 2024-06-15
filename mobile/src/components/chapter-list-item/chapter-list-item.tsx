@@ -53,23 +53,25 @@ export const ChapterListItem = observer(function ChapterListItem(props: ChapterL
 
   return (
     <>
-    <TouchableOpacity style={containerStyles} onPress={handlePress}>
-      <Column style={textContainerStyles}>
-        <Text numberOfLines={1} style={textStyles}>{chapter.title}</Text>
-      </Column>
+  <TouchableOpacity style={containerStyles} onPress={handlePress}>
+    <Column style={textContainerStyles}>
+      <Text numberOfLines={1} style={textStyles}>{chapter.title}</Text>
+    </Column>
+    {preset === "default" && (
       <TouchableOpacity style={iconContainerStyles} onPress={handleDownload}>
         <VectorIcon name="arrow-down-circle" size={iconSize.medium} style={iconStyles} />
       </TouchableOpacity>
-    </TouchableOpacity>
-    {isExportVisible && (
-      <ExportChapter
-        preset="default"
-        isVisible={isExportVisible}
-        onClosePress={handleCloseExport}
-        source={source}
-        chapter={chapter}
-      />
     )}
-     </>
+  </TouchableOpacity>
+  {isExportVisible && (
+    <ExportChapter
+      preset="default"
+      isVisible={isExportVisible}
+      onClosePress={handleCloseExport}
+      source={source}
+      chapter={chapter}
+    />
+  )}
+</>
   );
 });
