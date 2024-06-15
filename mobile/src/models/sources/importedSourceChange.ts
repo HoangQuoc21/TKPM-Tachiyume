@@ -299,7 +299,7 @@ export default class LightNovelHeaven extends Source {
       
       let foundChapter = null;
       for (let chapter of listChapter){
-        if (chapter.title.includes(chapterTittle) || chapterTittle.includes(chapter.title)) {
+        if (chapter.title === chapterTittle){
           foundChapter = chapter;
           break;
         }

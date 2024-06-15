@@ -348,7 +348,7 @@ export default class BoxNovel extends Source {
       
       let foundChapter = null;
       for (let chapter of listChapter){
-        if (chapter.title === chapterTittle){
+        if (chapter.title.includes(chapterTittle) || chapterTittle.includes(chapter.title)) {
           foundChapter = chapter;
           break;
         }

@@ -263,9 +263,34 @@ export default class AllNovel extends Source {
     }
   }
   
-  async findChapterOfNovel(novelTittle: string, chapterName: string ){
-    const listNovel = await this.searchNovels(novelTittle)
-    console.log('Change Source', listNovel)
+  async findChapterOfNovel(novelTittle: string, chapterTittle: string ){
+    const novels = await this.searchNovels(novelTittle)
+    console.log('Change source for novel: ', novelTittle)
+    console.log("List novel:", novels)
+    // Sử dụng vòng lặp for để kiểm tra
+    let foundNovel = null;
+    for (let novel of novels) {
+        if (novel.title === novelTittle) {
+            foundNovel = novel;
+            break;
+        }
+    }
+    if (foundNovel !== null){
+      console.log("Chapter name: ", chapterTittle)
+      const listChapter = await this.findChaptersByNovel(foundNovel)
+      // console.log(listChapter)
+      
+      let foundChapter = null;
+      for (let chapter of listChapter){
+        if (chapter.title.includes(chapterTittle) || chapterTittle.includes(chapter.title)) {
+          foundChapter = chapter;
+          break;
+        }
+      }
+
+      const chapterContent = await this.findContentByChapter(foundChapter)
+      return chapterContent;
+    }
     
     return null;
   }

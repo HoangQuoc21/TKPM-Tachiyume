@@ -4,7 +4,7 @@ import RNFS from 'react-native-fs';
 const wait = (ms: number): Promise<void> => {
     return new Promise(resolve => setTimeout(resolve, ms));
 };
-const API_URL = 'http://192.168.1.72:8000'
+const API_URL = 'http://192.168.0.108:8000'
 
 export class SourcePlugin {
 
@@ -46,6 +46,23 @@ export class SourcePlugin {
         console.log(responseData.message)
         await wait(1000)
         const SourceModule = await import('../models/sources/importedInstance');
+        const importSource = new SourceModule.default();
+        return importSource;
+    }
+
+    static async changeSource(idSource: number): Promise<Source | null> {
+        // call api to write instance in importedInstance.ts
+        const responseGetDataModule = await fetch(`${API_URL}/change-source`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id: idSource }),
+        });
+        const responseData = await responseGetDataModule.json()
+        console.log(responseData.message)
+        await wait(1000)
+        const SourceModule = await import('../models/sources/importedSourceChange');
         const importSource = new SourceModule.default();
         return importSource;
     }

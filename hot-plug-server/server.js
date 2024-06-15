@@ -112,6 +112,49 @@ app.post('/get-data-module', (req, res) => {
     }
 });
 
+app.post('/change-source', (req, res) => {
+    try {
+        const { id } = req.body;
+        const filePath = path.resolve(__dirname, '../mobile/src/factories/source-list.txt');
+        const sourceList = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+
+        let found = false;
+        let sourceName = '';
+
+        // Tìm kiếm ID trong danh sách nguồn
+        for (const item of sourceList) {
+            if (item[id]) {
+                found = true;
+                sourceName = item[id];
+                break;
+            }
+        }
+
+        if (found) {
+            // Định dạng tên file nguồn
+            const formattedTitleName = sourceName.replace(/\s+/g, '');
+
+            // Đường dẫn đến file nguồn
+            const staticModulePath = path.resolve(__dirname, `../mobile/src/models/sources/${formattedTitleName}.ts`);
+
+            // Đọc nội dung file nguồn
+            const moduleContent = fs.readFileSync(staticModulePath, 'utf-8');
+
+            // Đường dẫn đến file sẽ ghi
+            const outputPath = path.resolve(__dirname, '../mobile/src/models/sources/importedSourceChange.ts');
+
+            // Ghi nội dung vào file importedInstance.ts
+            fs.writeFileSync(outputPath, moduleContent, 'utf-8');
+
+            res.status(200).json({ message: `Module ${formattedTitleName} đã được ghi vào importedSourceChange.ts thành công!` });
+        } else {
+            res.status(404).json({ error: 'ID not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Lỗi khi xử lí', details: error.message });
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server đang chạy tại http://localhost:${port}`);
 });
