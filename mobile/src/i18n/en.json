@@ -7,11 +7,15 @@
     "cancel": "Cancel",
     "search": "Search"
   },
-  "errors": {
-   
+  "error": {
+    "sourceExisted": "Source existed",
+    "noSource": "No source available",
+    "noSourceChose": "Please choose a source",
+    "noFormatSelected": "Please select a file format"
   },
   "success": {
-   
+    "importSource": "Import source success",
+    "clearSource": "Clear source success"
   },
   "mainTab": {
     "favorite": "Favorite",
@@ -25,12 +29,7 @@
     "aboutDeveloperTeam": "About developer team"
   },
   "browseScreen": {
-    "header": "Browse",
-    "importModal":{
-      "title": "Import novel source",
-      "novelUrl": "Novel URL",
-      "import": "Import"
-    }
+    "header": "Browse"
   },
   "chapterScreen": {
     "header": "Chapter",
@@ -40,7 +39,7 @@
       "light": "Light",
       "dark": "Dark"
     },
-    "settingPopup":{
+    "settingPopup": {
       "fontSize": "Font Size",
       "min": "min",
       "Max": "Max",
@@ -49,7 +48,8 @@
     }
   },
   "favoriteScreen": {
-    "header": "Favorite"
+    "header": "Favorite",
+    "empty": "No favorite novel"
   },
   "historyScreen": {
     "header": "History"
@@ -65,10 +65,12 @@
     },
     "download": "Download",
     "read": "Read",
-    "addToFavorite": "Add to Favorite"
+    "addToFavorite": "Add to Favorite",
+    "chapters": "Chapters"
   },
   "novelListScreen": {
     "header": "Novel List",
+    "empty": "No novel available",
     "popular": "Popular",
     "lastest": "Lastest"
   },
@@ -76,5 +78,28 @@
     "header": "Splash",
     "version": "Version: ",
     "developedBy": "Developed by: Chillin Chillies"
+  },
+  "sourceList": {
+    "title": "Sources",
+    "empty": "No source available",
+    "clear": "Clear sources"
+  },
+  "imporSourcetModal": {
+    "title": "Import novel source",
+    "novelUrl": "Novel URL",
+    "import": "Import",
+    "chooseSource": "Choose a source"
+  },
+  "filterNovels": {
+    "trending": "Trending",
+    "popular": "Popular",
+    "latest": "Latest",
+    "completed": "Completed",
+    "More": "More" 
+  },
+  "exportChapter": {
+    "title": "Export novel chapter",
+    "export": "Export",
+    "select": "Select a file format"
   }
 }

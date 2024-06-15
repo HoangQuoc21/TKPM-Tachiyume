@@ -10,7 +10,7 @@ import { NavigatorParamList } from "../../navigators/app-navigator"
 import { Logo } from '../../components/logo/logo';
 import { Screen } from "../../components/screen/screen"
 import { Column } from '../../components/column/column';
-import i18n from '../../i18n'
+import { translate } from '../../i18n'
 
 // import the app name from app.json
 import {expo} from '../../../app.json'
@@ -69,7 +69,7 @@ export const SplashScreen: FC<
     const renderAppVersion = () => {
         return (
             <Text style={styles.TEXT}>
-                {i18n.t('splashScreen.version')} {appVersion}
+                {translate('splashScreen.version')} {appVersion}
             </Text>
         )
     }
@@ -77,7 +77,7 @@ export const SplashScreen: FC<
     const renderDeveloper = () => {
         return (
             <Text style={styles.TEXT}>
-                {i18n.t('splashScreen.developedBy')}
+                {translate('splashScreen.developedBy')}
             </Text>
         )
     }

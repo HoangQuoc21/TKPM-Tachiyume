@@ -9,9 +9,13 @@ export const color = {
     white: 'white',
     blue: 'blue',
     red: 'red',
+    pink: "#FF6086",
 
     // Transparent color
     transparent: 'rgba(0,0,0,0)',
+
+    // Overlay color
+    overlay: 'rgba(0,0,0,0.5)',
 
     // Status color
     status: {
@@ -24,22 +28,28 @@ export const color = {
   },
 
   // Light Theme
-  ligthTheme: {
+  lightTheme: {
     // Main color theme for app
     primary: '#FFF8F3',
-    secondary: 'black',
+    secondary: '#F8ECDF',
+    third: "#FEF2E5",
+    fourth: "#F2E6DA",
 
     // Text and text-related color
     text: '#201B13',
     textSecondary: 'black',
-    placeHolder: 'black',
+    placeHolder: '',
 
     // Accent color
-    accent: 'black',
-    accentSecondary: 'black',
+    accent: '#201B13',
+    accentSecondary: '#F9DFBB',
+    accentThird: "#7E570E",
 
-    // Background color
-    background: 'black',
+    // Border color
+    boder: "#D2C4B4",
+
+    // Inactive color
+    inactive: '#4F4539',
   },
 
   // Dark Theme
@@ -49,13 +59,14 @@ export const color = {
     secondary: 'light',
 
     // Text and text-related color
-    text: 'light',
+    text: '#fff',
     textSecondary: 'light',
     placeHolder: 'light',
 
     // Accent color
     accent: 'light',
     accentSecondary: 'light',
+    accentThird: '#392306',
 
     // Background color
     background: 'light',

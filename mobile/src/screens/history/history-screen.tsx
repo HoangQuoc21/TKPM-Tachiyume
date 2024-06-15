@@ -1,5 +1,5 @@
-import {observer} from 'mobx-react-lite';
-import React, {FC, useEffect, useState} from 'react';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useEffect, useState } from 'react';
 import styles from './history-screen.styles';
 import { StackScreenProps } from "@react-navigation/stack"
 import { View, Text } from 'react-native';
@@ -9,47 +9,21 @@ import { NavigatorParamList } from "../../navigators/app-navigator"
 // Import the custom components
 import { Screen } from "../../components/screen/screen"
 import { Column } from '../../components/column/column';
-import i18n from '../../i18n'
+import { HistoryChapterList } from '../../components/history-chapter-list/history-chapter-list';
+import { translate } from '../../i18n'
 
 export const HistoryScreen: FC<
     StackScreenProps<NavigatorParamList, typeof HistoryScreenName>
 > = observer(({ navigation, route }) => {
-
-    const renderHeader = () => {
+    const renderHistoryChapterList = () => {
         return (
-            <View style={styles.HEADER}>
-                <Text style={styles.TEXT}>
-                    This is the header of the history screen
-                </Text>
-            </View>
-        )
-    }
-
-    const renderBody = () => {
-        return (
-            <View style={styles.BODY}>
-                <Text style={styles.TEXT}>
-                    This is the body of the history screen
-                </Text>
-            </View>
-        )
-    }
-
-    const renderFooter = () => {
-        return (
-            <View style={styles.FOOTER}>
-                <Text style={styles.TEXT}>
-                    This is the footer of the history screen
-                </Text>
-            </View>
+            <HistoryChapterList />
         )
     }
 
     return (
         <Screen style={styles.ROOT} preset='fixed' unsafe>
-            {renderHeader()}
-            {renderBody()}
-            {renderFooter()}
+            {renderHistoryChapterList()}
         </Screen>
     )
 })
