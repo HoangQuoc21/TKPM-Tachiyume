@@ -20,7 +20,7 @@ import { translate } from '../../i18n'
 import { color, radius, spacing } from '../../theme';
 
 import { fileFormats, exportFile} from '../../export/fileGenerators'; // Import các hàm đã tạo
-import { SourceFactory } from '../../factories/source-factory';
+import { SourcePlugin } from '../../factories/source-plugin';
 import { useEffect} from "react";
 import Chapter from '../../models/chapter';
 
@@ -51,7 +51,7 @@ export const ExportChapter = observer(function ExportChapter(props: ExportChapte
 
     const initChapterContent = async (source) => {
         //console.log(`Source ID in Chapter Content: ${source.id}`); 
-        const chapterSource = SourceFactory.createSource(source.id);
+        const chapterSource = await SourcePlugin.createSource(source.id);
         await chapterSource.findContentByChapter(chapter).then((chapter) => {
           setChapterContent(chapter.content);
         }).catch((error) => {

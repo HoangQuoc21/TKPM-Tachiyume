@@ -207,7 +207,7 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
     let filteredNovels = [];
       
 
-    const novelSource = SourceFactory.createSource(sourceId);
+    const novelSource = await SourcePlugin.createSource(sourceId);
     // Pass the bland filter to the source 
     filteredNovels = await novelSource.findNovelsByFilter(filter, pageNumber);
 
@@ -269,7 +269,7 @@ export const NovelList = observer(function NovelList(props: NovelListProps) {
               } else {
                 setSearchedNovelList([]);
                 setPage(1);
-                handleFilterNovels(filter, 1);
+                handleFilterNovels(filter);
               }
               
             }}
