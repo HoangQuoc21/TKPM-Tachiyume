@@ -32,7 +32,9 @@
     "expo-permissions": "^14.4.0",
     "expo-status-bar": "~1.11.1",
     "expo-system-ui": "^2.9.4",
+    "html-to-text": "^9.0.5",
     "i18n-js": "^4.4.3",
+    "jszip": "^3.10.1",
     "mobx-react-lite": "^4.0.7",
     "mobx-state-tree": "^6.0.0",
     "pdf-lib": "^1.17.1",
@@ -45,6 +47,7 @@
     "react-native-safe-area-context": "4.8.2",
     "react-native-screens": "~3.29.0",
     "react-native-toast-notifications": "^3.4.0",
+    "react-native-zip-archive": "^7.0.0",
     "typescript": "^5.3.0"
   },
   "devDependencies": {

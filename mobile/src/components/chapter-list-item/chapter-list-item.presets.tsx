@@ -15,12 +15,6 @@ export const ChapterListItemPresets = {
 };
 
 const DEFAULT_STYLE = {
-  DOWNLOAD_ICON_CONTAINER: {
-    paddingRight: spacing[2],
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  } as ViewStyle,
   CONTAINER: {
     flexDirection: "row",
     marginHorizontal: spacing[2],
@@ -94,13 +88,6 @@ const SIMPLE_STYLE = {
   ICON: {
     
   },
-
-  DOWNLOAD_ICON_CONTAINER: {
-    paddingRight: spacing[5],
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  } as ViewStyle
 
 };
 
