@@ -35,7 +35,11 @@
     },
     "owner": "tkpm-chillingchillies",
     "plugins": [
-      "expo-localization"
+      "expo-localization",
+      "expo-font",
+        {
+          "fonts": ["./assets/fonts/Arial.ttf", "./assets/fonts/Times-New-Roman.ttf"]
+        }
     ]
   }
 }

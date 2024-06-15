@@ -93,11 +93,11 @@ const DEFAULT_STYLE = {
       flexGrow: 1,
       paddingVertical: spacing[2],
       paddingHorizontal: spacing[2],
-      backgroundColor: 'black',
+      backgroundColor: color.darkTheme.accentThird,
     } as ViewStyle,
     CONTENT: {
       ...typography.bodySmall,
-      color: 'white',
+      color: color.lightTheme.primary,
     },
     FOOTER: {
       flexDirection: 'row',

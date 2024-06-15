@@ -30,6 +30,7 @@ export const ChapterListItem = observer(function ChapterListItem(props: ChapterL
   ]);
 
 
+
   const textStyles = flatten([stylePresets[preset].TEXT]);
   const iconStyles = flatten([stylePresets[preset].ICON]);
   const textContainerStyles = flatten([stylePresets[preset].TEXT_CONTAINER]);
