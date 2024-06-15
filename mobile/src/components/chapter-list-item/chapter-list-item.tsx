@@ -16,6 +16,11 @@ import { iconSize } from "../../theme";
 import { ExportChapter } from "../export-chapter/export-chapter";
 import { useState } from "react";
 
+import { DownloadIcon } from "../download-icon/download-icon";
+import { View } from "../view/view";
+
+
+
 export const ChapterListItem = observer(function ChapterListItem(props: ChapterListItemProps) {
   const { preset = "default", style: styleOverride, chapter: chapter, novel: novel, source: source } = props;
 
@@ -23,6 +28,7 @@ export const ChapterListItem = observer(function ChapterListItem(props: ChapterL
     stylePresets[preset].CONTAINER,
     styleOverride,
   ]);
+
 
   const textStyles = flatten([stylePresets[preset].TEXT]);
   const iconStyles = flatten([stylePresets[preset].ICON]);
