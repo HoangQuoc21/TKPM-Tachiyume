@@ -3,6 +3,7 @@ import Chapter from "../chapter";
 import Novel from "../novel";
 import Source from "./source";
 import { load } from "cheerio";
+import { useToast } from "react-native-toast-notifications";
 function cleanContent(content: string) {
   return content.replace(/\n\n/g, "\n");
 }
@@ -265,10 +266,15 @@ export default class AllNovel extends Source {
   
   async findChapterOfNovel(novelTittle: string, chapterTittle: string ){
     const novels = await this.searchNovels(novelTittle)
+    const toast = useToast();
     console.log('Change source for novel: ', novelTittle)
     console.log("List novel:", novels)
     // Sử dụng vòng lặp for để kiểm tra
     let foundNovel = null;
+    if (novels.length === 0) {
+      toast.show("No novel found");
+      return null;
+    }
     for (let novel of novels) {
         if (novel.title === novelTittle) {
             foundNovel = novel;

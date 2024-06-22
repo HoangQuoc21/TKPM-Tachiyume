@@ -1,18 +1,21 @@
 import Source from '../models/sources/source';
 import RNFS from 'react-native-fs';
+import {API_URL} from "@env"
+
 
 const wait = (ms: number): Promise<void> => {
     return new Promise(resolve => setTimeout(resolve, ms));
 };
-const API_URL = 'http://192.168.1.175:8000'
+const api_url = API_URL;
 
 export class SourcePlugin {
 
     static async getSource(SourceImportURL: string): Promise<Source | null> {
         try {
+            // console.log('API_URL', API_URL);
             const fileContent = await RNFS.readFile(SourceImportURL, 'utf8');
             // call api to write module in hoc.ts
-            const responseSendModule = await fetch(`${API_URL}/send-module`, {
+            const responseSendModule = await fetch(`${api_url}/send-module`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

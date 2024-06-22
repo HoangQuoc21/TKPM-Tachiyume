@@ -1,26 +1,27 @@
+import { string } from "mobx-state-tree/dist/internal";
+import Chapter from "../chapter";
+import Novel from "../novel";
 import Source from "./source";
 import { load } from "cheerio";
-import axios from "axios";
-import Novel from "../novel";
-
+import { useToast } from "react-native-toast-notifications";
 function cleanContent(content: string) {
   return content.replace(/\n\n/g, "\n");
 }
 
-export default class LightNovelHeaven extends Source {
-  getTotalPage(): number {
-    throw new Error("Method not implemented.");
-  }
-  static title = "Light Novel Heaven";
-  static importURL = "https://lightnovelheaven.com";
-  static idToCreate = 3;
+// Source: ALL NOVEL
+export default class AllNovel extends Source {
+
+ 
+  static title = "All Novel";
+  static importURL = "https://allnovel.org";
+  static idToCreate = 1;
   constructor() {
     super();
-    this.id = 3;
-    this.sourceTitle = "Light Novel Heaven";
-    this.baseUrl = "https://lightnovelheaven.com/";
+    this.id = 1;
+    this.sourceTitle = "All Novel";
+    this.baseUrl = "https://allnovel.org";
     this.thumbnail =
-      "https://lightnovelheaven.com/wp-content/uploads/2020/07/cropped-mid-2-192x192.png";
+      "https://allnovel.org/uploads/thumbs/logo-allnovel-2-1-ad7cde4de9-4a0ffbf5f789092106e8046d01d3c362.png";
     this.readLanguage = "English";
   }
 
@@ -29,118 +30,108 @@ export default class LightNovelHeaven extends Source {
   }
 
   async createInstance(): Promise<Source> {
-    return new LightNovelHeaven();
+    return new AllNovel();
   }
 
-  // List of novels shown by filter
-  async findNovelsByFilter(filter: string, page: number): Promise<Novel[]> {
-    // Get the appropriate url for the filter
+  // Individual method of AllNovel
+  async parse(body: string) {
+    const items = [];
+    const $ = load(body);
+    const doc = $("div.col-truyen-main.archive").first();
+    // console.log(doc)
+    if (!doc) return items;
+    const rows = doc.find("div.row").toArray();
+    for (let [index, element] of rows.entries()) {
+      // ES6
+      //console.log(index)
+      const url = $(element).find("h3.truyen-title > a").attr("href").trim();
+      if (url.length > 0) {
+        const item = {
+          url,
+          sourceId: this.id, // Assuming sourceId is defined elsewhere
+          title: $(element).find("h3.truyen-title > a").text().trim(),
+          thumbnail: null,
+        };
+        const thumbnail = $(element).find("div.col-xs-3 img").attr("src") 
+        item.thumbnail = `${this.baseUrl}${thumbnail}`;
+        items.push(item);
+        // try {
+        //   const response = await fetch(`${sourceBaseUrl}${url}`);
+        //   const responseData = await response.text();
+        //   const $img = load(responseData);
+
+        //   item.thumbnail = `${sourceBaseUrl}${$img("div.books img").attr("src")}`;
+
+        //   //console.log(item)
+        //   items.push(item);
+        // } catch (e) {
+        //   throw e;
+        // }
+      }
+    }
+    return items;
+  }
+
+
+  async findNovelsByFilter(filter: string, page: number): Promise<any[]> {
     switch (filter) {
       case "filterNovels.popular":
-        filter = "";
+        filter = "most-popular";
         break;
       case "filterNovels.trending":
-        filter = "trending";
+        filter = "hot-novel";
         break;
       case "filterNovels.latest":
-        filter = "latest";
+        filter = "latest-release-novel";
         break;
-      case "filterNovels.A-Z":
-        filter = "alphabet";
+      case "filterNovels.completed":
+        filter = "completed-novel";
         break;
       default:
-        filter = "latest";
+        filter = "most-popular";
         break;
     }
 
-
     const sourceId = this.id;
-    const baseUrl = this.baseUrl;
+    const sourceBaseUrl = this.baseUrl;
 
-    // function to parse the body reposonse from the fetch
-    async function parse(body: string) {
-      const items = [];
-      const $ = load(body);
-
-      // Check if the page has the class .page-item-detail
-      $(".c-tabs-item__content").each((index, element) => {
-          const item = {
-            url: $(element).find(".tab-thumb > a").attr("href").trim(),
-            sourceId: this.id,
-            title: $(element).find(".post-title > h3 > a").text().trim(),
-            thumbnail: cleanContent(
-              $(element).find("img.img-responsive").attr("data-src")?.trim()
-            ),
-          };
-          items.push(item);
-        });
-
-      return items;
-    }
+    
 
     try {
-      const pageUrl = `${baseUrl}/?s&post_type=wp-manga&m_orderby=${filter}`;
-
-      // Fetch the page
-      const response = await fetch(pageUrl, {
+      // Update with your base URL
+      const web = `${sourceBaseUrl}/${filter}?page=${page}`;
+      const response = await fetch(web, {
         method: "GET",
         headers: {
           "Access-Control-Allow-Origin": "*",
         },
       });
-      // Get the body of the page
       const html = await response.text();
-      const novelsFromSource = await parse(html);
-      //
-      // console.log("Novels from source 2", novelsFromSource);
-      return novelsFromSource;
+      const data = await this.parse(html);
+      return data;
     } catch (error) {
-      console.log("Failed to fetch novels: " + error.message);
       throw new Error("Failed to fetch novels: " + error.message);
     }
+
   }
 
   // List of novels to show in one page
-  async findNovelsByPage(page: number): Promise<Novel[]> {
-    async function parse(body: string) {
-      const items = [];
-      const $ = load(body);
-
-      const doc = $(".page-item-detail");
-      // console.log(doc)
-
-      if (!doc.length) return items;
-
-      doc.each((index, element) => {
-        const url = $(element).find(".h5 > a").attr("href")?.trim();
-        if (url && url.length > 0) {
-          const item = {
-            url,
-            sourceId: this.id,
-            title: $(element).find(".h5 > a").text().trim(),
-            thumbnail: $(element).find("img").attr("data-src")?.trim() || "",
-          };
-          items.push(item);
-        }
-      });
-
-      return items;
-    }
+  async findNovelsByPage(page: number): Promise<any[]> {
+    const sourceId = this.id;
+    const sourceBaseUrl = this.baseUrl;
 
     try {
       // Update with your base URL
-      const web = `${this.baseUrl}/page/${page}`;
-      console.log("Fetching novels from url")
+      const web = `${sourceBaseUrl}/most-popular?page=${page}`;
       const response = await fetch(web, {
         method: "GET",
-        // headers: {
-        //   "Access-Control-Allow-Origin": "*",
-        // },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
       });
-      console.log("Fetch success")
       const html = await response.text();
-      const novel = await parse(html)
-      return novel;
+      const data = await this.parse(html);
+      return data;
     } catch (error) {
       throw new Error("Failed to fetch novels: " + error.message);
     }
@@ -149,43 +140,42 @@ export default class LightNovelHeaven extends Source {
   // Novel details (get details from a novel in list of novels )
   async findNovelDetails(novel: Novel) {
     try {
-      const response = await fetch(`${novel.url}`);
+      const response = await fetch(`${this.baseUrl}${novel.url}`);
       const html = await response.text();
       const $ = load(html);
 
-      novel.sourceId = this.id;
-      novel.title = $(".post-title > h1").text().trim();
-      console.log('Novel title is:', novel.title);
-      novel.thumbnail =
-        $(".summary_image > a > img").attr("data-src")?.trim() || "";
-      novel.description = $(".summary__content > p")
-        .map((i, el) => $(el).text().trim())
-        .get()
-        .join("\n\n");
-      novel.rating = parseFloat($(".total_votes").text().trim()) || 0;
-
-      const authors = $(".author-content > a")
-        .map((i, el) => $(el).text().trim())
-        .get();
-      novel.authors = authors.length ? authors : [];
-
-      const genres = $(".genres-content > a")
-        .map((i, el) => $(el).text().trim())
-        .get();
-      novel.category = genres.length ? genres : [];
-
-      $(".post-content_item").each((i, el) => {
-        const header = $(el).find(".summary-heading > h5").text().trim();
-        const content = $(el).find(".summary-content").text().trim();
-
-        if (header.toLowerCase() === "status") {
-          novel.status = content;
-        } else if (header.toLowerCase() === "alternative") {
-          novel.alternateNames = content.split(",").map((name) => name.trim());
-        } else if (header.toLowerCase() === "release") {
-          novel.releaseYear = parseInt(content, 10);
-        }
+      novel.sourceId = this.id; // Assuming `sourceId` is defined elsewhere in your code.
+      novel.title = $("div.books h3.title").text().trim();
+      novel.thumbnail = this.baseUrl + `${$("div.books img").attr("src").trim()}`;
+      novel.description = $("div.desc-text > p").text().trim();
+      const lastestChapters = [];
+      const chapterWrapHTML = $(".l-chapter .l-chapters");
+      const chapterListHTML = chapterWrapHTML.find("li");
+      chapterListHTML.each((index, element) => {
+        let chapter = {
+          url: $(element).find("a").attr("href"),
+          name: $(element).find("a").attr("title"),
+          id: null,
+        };
+        lastestChapters.push(chapter);
       });
+      novel.lastestChapters = lastestChapters;
+      $("div.info").each((index, element) => {
+        const el = $(element);
+
+        novel.authors = el
+          .find("div:eq(0) > a")
+          .text()
+          .split(",")
+          .map((author) => author.trim());
+        const category = [];
+        el.find("div:eq(2) > a").each((idx, a) => {
+          category.push($(a).text());
+        });
+        novel.category = category;
+        novel.status = el.find("div:eq(4) > a").text();
+      });
+
       return novel;
     } catch (error) {
       console.error("Failed to fetch novel details:", error);
@@ -198,19 +188,25 @@ export default class LightNovelHeaven extends Source {
       let items = [];
 
       // Fetch the novel page to get the novel ID
-      const web = `${novel.url}ajax/chapters`;
-      const response = await axios.post(web);
-      const $ = load(response.data);
+      let response = await fetch(`${this.baseUrl}${novel.url}`);
+      let html = await response.text();
+      let $ = load(html);
+      let id = $("div#rating").attr("data-novel-id");
+
+      // Construct the URL to fetch chapters data
+      let chaptersUrl = `${this.baseUrl}/ajax-chapter-option?novelId=${id}`;
+      response = await fetch(chaptersUrl);
+      html = await response.text();
+      $ = load(html);
 
       // Iterate over each option element and extract chapter details
-      $(".wp-manga-chapter").each((index, element) => {
-        const chapter = {
-          url: $(element).find("a").attr("href").trim(),
-          title: $(element).find("a").text().trim(),
-          id: parseFloat($(element).find("a").text().trim()),
-          uploadDate: $(element).find("span.chapter-release-date").text().trim(),
+      $("select option").each((index, element) => {
+        let chapter = {
+          url: $(element).attr("value").trim(),
+          title: $(element).text().trim(),
+          id: parseFloat($(element).text().trim()), // Assuming the name contains a float number
         };
-        items.unshift(chapter);
+        items.push(chapter);
       });
 
       return items;
@@ -220,72 +216,65 @@ export default class LightNovelHeaven extends Source {
     }
   }
 
-  async findContentByChapter(chapter: any) {
+  // Get content from a chapter
+  async findContentByChapter(chapter: Chapter) {
     try {
       // Fetch the chapter page
-      const response = await axios.get(`${chapter.url}`);
-      const $ = load(response.data);
-
-      const main = $(".reading-content").first();
-      if (!main.length) {
-        throw new Error("No content found for chapter");
-      }
-
+      const response = await fetch(`${this.baseUrl}${chapter.url}`);
+      const html = await response.text();
+      const $ = load(html);
+      // Update the chapter URL to the absolute URL
+      chapter.url = `${this.baseUrl}${chapter.url}`;
       chapter.content = "";
+      // Remove all script tags within `div.chapter-c`
+      $("div.chapter-c script").remove();
+      // Select paragraphs in 'div.chapter-c', append '::' to each, then replace '::' with '\n\n'
+      $("div.chapter-c p").append("::");
       chapter.content = cleanContent(
-        main
-          .find("p")
-          .map((i, el) => $(el).text().trim())
-          .get()
-          .join("\n\n")
+        $("div.chapter-c").text().replaceAll("::", "\n\n").trim()
       );
-
       return chapter;
     } catch (error) {
       console.error("Failed to fetch chapter:", error);
       throw error;
     }
   }
-
-  // async findNovelDetails(novel: any): Promise<any> {}
-  async searchNovels(query: string): Promise<any[]> {
-    let queryByNovelName = `${this.baseUrl}/?s=${query}&post_type=wp-manga`
-    async function queryNovels(url) {
-      try {
-        const response = await axios.get(url);
-        const html = response.data;
-        const $ = load(html);
-
-        const novels = [];
-        if ($(".not-found-content").length > 0) {
-          return null;
-        }
-        $(".c-tabs-item__content").each((index, element) => {
-          const item = {
-            url: $(element).find(".tab-thumb > a").attr("href").trim(),
-            title: $(element).find(".post-title > h3 > a").text().trim(),
-            thumbnail: $(element).find("img.img-responsive").attr("data-src").trim(),
-            sourceId: this.id,
-          };
-          novels.push(item);
-        });
-
-        return novels;
-      } catch (error) {
-        console.error("Failed to fetch search results:", error);
-        throw error;
-      }
+  async searchNovels(query: string) {
+    const queryByKeyword: string = query;
+    const toTitleCase = (str: string) => {
+      return str.split(' ').map(word => {
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+      }).join(' ');
     }
-    let novels = await queryNovels(queryByNovelName);
-    return novels
+    const queryByGenre: string = toTitleCase(query);
+    try {
+      const responseByKeyword = await fetch(`${this.baseUrl}/search?keyword=${queryByKeyword}`);
+      let html = await responseByKeyword.text();
+      const novelListByKeyword = await this.parse(html);
+      const responseByGenre = await fetch(`${this.baseUrl}/genre/${queryByGenre}`);
+      html = await responseByGenre.text();
+      const novelListByGenre = await this.parse(html);
+      // Combine two lists the return to client
+      const data = novelListByKeyword.concat(novelListByGenre)
+      return data;
+      
+    } catch(error) {
+      console.error("Failed to fetch chapter:", error);
+      throw error;
+    }
   }
-
+  
   async findChapterOfNovel(novelTittle: string, chapterTittle: string ){
     const novels = await this.searchNovels(novelTittle)
+    const toast = useToast();
     console.log('Change source for novel: ', novelTittle)
     console.log("List novel:", novels)
     // Sử dụng vòng lặp for để kiểm tra
     let foundNovel = null;
+    if (novels.length === 0) {
+      toast.show("No novel found");
+      return null;
+    }
     for (let novel of novels) {
         if (novel.title === novelTittle) {
             foundNovel = novel;
@@ -299,7 +288,7 @@ export default class LightNovelHeaven extends Source {
       
       let foundChapter = null;
       for (let chapter of listChapter){
-        if (chapter.title === chapterTittle){
+        if (chapter.title.includes(chapterTittle) || chapterTittle.includes(chapter.title)) {
           foundChapter = chapter;
           break;
         }
@@ -311,7 +300,4 @@ export default class LightNovelHeaven extends Source {
     
     return null;
   }
-
 }
-
-// export default LightNovelHeaven;

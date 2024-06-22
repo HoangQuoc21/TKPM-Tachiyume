@@ -220,9 +220,9 @@ export const ChapterContent = observer(function ChapterContent(props: ChapterCon
   };
 
   const handleSourceChange = async (newSource) => {
-    const changeSource = await SourcePlugin.createSource(newSource.id)
+    const changeSource = await SourcePlugin.changeSource(newSource.id)
     const content = await changeSource.findChapterOfNovel(novel.title, chapter.title)
-
+    setChapterContent(content);
     console.log(content)
     // setSource(newSource);
     // await initChapterContent(newSource);
