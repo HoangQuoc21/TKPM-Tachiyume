@@ -2,6 +2,7 @@ import Source from "./source";
 import { load } from "cheerio";
 import axios from "axios";
 import Novel from "../novel";
+import { useToast } from "react-native-toast-notifications";
 
 function cleanContent(content: string) {
   return content.replace(/\n\n/g, "\n");
@@ -284,8 +285,13 @@ export default class LightNovelHeaven extends Source {
     const novels = await this.searchNovels(novelTittle)
     console.log('Change source for novel: ', novelTittle)
     console.log("List novel:", novels)
+    const toast = useToast();
     // Sử dụng vòng lặp for để kiểm tra
     let foundNovel = null;
+    if (novels.length === 0) {
+      toast.show("No novel found");
+      return null;
+    }
     for (let novel of novels) {
         if (novel.title === novelTittle) {
             foundNovel = novel;
